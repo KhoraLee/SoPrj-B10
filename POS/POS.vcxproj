@@ -184,6 +184,9 @@
   <ItemGroup>
     <ClCompile Include="POS.c" />
   </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="type.h" />
+  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>
