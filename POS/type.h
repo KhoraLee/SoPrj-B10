@@ -1,17 +1,17 @@
 #pragma once
 
 typedef struct _product {
-    char name[15]; // »óÇ° ¸í
-    int price; // °¡°İ
-    int sales; // ±İÀÏ ÃÑ ÆÇ¸Å °¹¼ö
+    char name[16]; // ìƒí’ˆ ëª…, 15Â ê¸€ì + \0
+    int price; // ê°€ê²©
+    int sales; // ê¸ˆì¼ ì´ íŒë§¤ ê°¯ìˆ˜
 } Product;
 
 typedef struct _all_product {
-    Product* list; // ¸ğµç »óÇ°µéÀ» Æ÷ÇÔÇÑ Array
+    Product* list; // ëª¨ë“  ìƒí’ˆë“¤ì„ í¬í•¨í•œ Array
     int list_size; // Array Size
 } All_Product;
 
 typedef struct _table {
-    Product* list; // malloc À¸·Î ¹è¿­ ÇÒ´ç ÈÄ Ãß°¡ ÁÖ¹®¸¶´Ù realloc
-    int list_size; // ÁÖ¹®ÇÑ »óÇ° °¹¼ö
+    Product* list; // malloc ìœ¼ë¡œ ë°°ì—´ í• ë‹¹ í›„ ì¶”ê°€ ì£¼ë¬¸ë§ˆë‹¤ realloc
+    int list_size; // ì£¼ë¬¸í•œ ìƒí’ˆ ê°¯ìˆ˜
 } Table;
