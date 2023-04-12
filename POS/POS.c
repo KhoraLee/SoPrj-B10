@@ -1,5 +1,5 @@
 #include <stdio.h>
-#include "type.h";
+#include "type.h"
 #include <locale.h>
 
 Table tables[4]; // 테이블 4개

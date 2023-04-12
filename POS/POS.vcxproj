@@ -185,9 +185,11 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="POS.c" />
+    <ClCompile Include="Util.c" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="type.h" />
+    <ClInclude Include="Util.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include=".editorconfig" />
