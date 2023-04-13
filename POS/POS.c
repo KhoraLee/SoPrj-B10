@@ -15,8 +15,4 @@ int main()
     printf("%s", s1);
   // all_product.list[0].name
 
-
-
-
-
 }

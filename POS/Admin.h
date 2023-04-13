@@ -9,5 +9,5 @@ void PrintReceipt(int t);
 //주문내역 출력 , 인자 : table 번호
 
 
-void Order(char* string); //상품 주문
-void Cancle(char* string); //상품 취소
+int Order(int t, char* string); //상품 주문
+void Cancle(int t,char* string); //상품 취소
