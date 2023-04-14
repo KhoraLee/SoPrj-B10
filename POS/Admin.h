@@ -10,4 +10,4 @@ void PrintReceipt(int t);
 
 
 int Order(int t, char* string); //상품 주문
-void Cancle(int t,char* string); //상품 취소
+int Cancle(int t,char* string); //상품 취소

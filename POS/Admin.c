@@ -100,7 +100,7 @@ int Order(int t, char* string)//상품 주문
 	
 }
 //상품 주문 명령어 (3번) 을 입력하면 주문내역부터 호출한 후 상품명 입력받음 -> Cancle 호출
-void Cancle(int t, char* string)//상품 취소
+int Cancle(int t, char* string)//상품 취소
 {
 	if (all_product.list_size == 0) //product.txt가 null일 때
 	{
