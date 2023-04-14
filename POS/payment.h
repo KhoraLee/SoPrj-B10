@@ -4,7 +4,7 @@
 int table_order_price(int tablenum);
 
 // 결제 선택 메뉴 출력
-void payment_choice();
+void payment_choice(void);
 
 // 한 번에 결제_메뉴 출력
 void purchase_all_showmenu(int tablenum);
@@ -20,3 +20,5 @@ int calculate_ratio(int ratio[], int people_num, int tablenum);
 
 // 비율 결제_결과 출력
 void purchase_ratio_result(int ratio[], int people_num, int tablenum, int date);
+
+int partial_pay(char*, int);

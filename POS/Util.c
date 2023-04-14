@@ -1,3 +1,4 @@
+#include <ctype.h>
 #include "Util.h"
 
 // 개행문자 전까지 입력을 읽어들임
@@ -66,9 +67,9 @@ void trim(char* string) {
 
 // 문자열에서 모든 횡공백류를 제거
 void remove_all_spaces(char* string) {
-    int len = strlen(string);
+    size_t len = strlen(string);
     int swap = 1;
-    for (int i = len - 1 ; i > 0 && swap; i--) {
+    for (size_t i = len - 1 ; i > 0 && swap; i--) {
         swap = 0;
         for (int j = 0; j < i; j++) {
             if(string[j] == ' ' || string[j] == '\t') {
@@ -79,4 +80,13 @@ void remove_all_spaces(char* string) {
         }
     }
     trim(string);
+}
+
+void to_lower(char* string) {
+    size_t len = strlen(string);
+    for (int i = 0; i < len; i++) {
+        if (isupper(string[i])) {
+            string[i] = tolower(string[i]);
+        }
+    }
 }

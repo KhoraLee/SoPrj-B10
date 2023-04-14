@@ -129,7 +129,7 @@
     <ClCompile>
       <WarningLevel>Level3</WarningLevel>
       <SDLCheck>true</SDLCheck>
-      <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions);_CRT_SECURE_NO_WARNINGS</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <AdditionalOptions>/utf-8 %(AdditionalOptions)</AdditionalOptions>
       <LanguageStandard_C>stdc11</LanguageStandard_C>
@@ -186,10 +186,12 @@
   <ItemGroup>
     <ClCompile Include="POS.c" />
     <ClCompile Include="Util.c" />
+    <ClCompile Include="payment.c" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="type.h" />
     <ClInclude Include="Util.h" />
+    <ClInclude Include="payment.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include=".editorconfig" />
