@@ -3,27 +3,13 @@
 #include <stdlib.h>
 #include <string.h>
 #include <ctype.h>
+
 #include "type.h"
 #include "Util.h"
 #include "payment.h"
 
 extern Table tables[4]; // 테이블 4개
 extern All_Product all_product; // 모든 상품들의 목록을 포함한 구조체
-
-// 현재 테이블의 총 주문금액을 반환
-// 주문금액 0원 이하일 시 -1 반환
-int table_order_price(int tablenum) {
-
-    int i;
-    int order_price = 0; // 주문액 총합 저장
-    for (i = 0; i < tables[tablenum].list_size; i++) { // 현재 테이블에 주문상품 종류 수만큼 반복
-        order_price += tables[tablenum].list[i].price * tables[tablenum].list[i].sales;
-    }
-    if (order_price <= 0) { // 주문 총액이 0 이하일 경우 -1 반환
-        return -1;
-    }
-    return order_price;
-}
 
 // 결제 선택 메뉴 출력
 void payment_choice() {
@@ -32,7 +18,6 @@ void payment_choice() {
     printf("3. 일부만 결제\n");
     printf("0. 돌아가기\n");
     printf("결제 방식 선택 - 번호 선택 > ");
-    return;
 }
 
 // 한 번에 결제_메뉴 출력
@@ -44,7 +29,6 @@ void purchase_all_showmenu(int tablenum) {
     printf("1. 결제\n");
     printf("0. 돌아d가기\n");
     printf("한 번에 결제 - 번호 선택 >");
-    return;
 }
 
 // 한 번에 결제_결과 출력
@@ -52,14 +36,12 @@ void purchase_all_result(int tablenum, int date) {
     printf("결제가 완료되었습니다.\n");
     printf("결제 금액 : %d\n", table_order_price(tablenum));
     printf("결제 일시 : %d\n", date);
-    return;
 }
 
 // 비율 결제_메뉴 출력
 // 인원수와 비율 저장할 배열를 인자로 받음
 // 비율 저장할 배열은 호출할 함수에서 미리 선언
-void purchase_with_ratio_showmenu(int number_of_people, int ratio_param[]) {
-
+int purchase_with_ratio_showmenu(int number_of_people, int ratio_param[]) {
     // 결제 인원수가 다른 함수에서도 인자로 쓰이므로 입출력 부분 프롬프트에서 구현
     /*
     int order_price = table_order_price(tablenum);
@@ -93,50 +75,15 @@ void purchase_with_ratio_showmenu(int number_of_people, int ratio_param[]) {
     printf("0. 돌아가기\n");
     printf("비율 결제 - 번호 선택 > ");
 
-    return;
-}
-
-// 비율에 따른 개개인 결제금액 계산
-// 파라미터는 (비율결제메뉴에서 받은, 결제 인원수, 테이블 번호, 계산값 저장할 인자)
-// 계산값 저장할 인자는 호출할 함수에서 미리 선언
-void calculate_ratio(int ratio[], int number_of_people, int tablenum, int pay_individual_param[]) {
-
-    int pay_sum = table_order_price(tablenum); // 결제할 총액
-
-    int i;
-    int ratio_sum = 0; // 비율의 총합을 저장할 변수
-    int unit; // 비율 계산시에 사용할 단위금액
-    int pay_individual[10]; // 개개인 결제 할당량 저장
-
-    for (i = 0; i < number_of_people; i++) {
-        ratio_sum = ratio_sum + ratio[i]; // 입력받은 비율의 총합
-    }
-
-    unit = (pay_sum / 100) / ratio_sum * 100;
-    // 비율과 곱해줄 단위금액
-    // 나머지는 처음 비율 입력한 사람이 계산
-
-    for (i = 1; i < number_of_people; i++) { // 첫 번째 사람 제외 결제금액 할당
-        pay_individual[i] = unit * ratio[i]; // 단위금액 * 개개인 비율
-        pay_sum -= pay_individual[i];
-    }
-    pay_individual[0] = pay_sum;
-
-    // 인자에 계산값 저장
-    for (i = 0; i < number_of_people; i++) {
-        pay_individual_param[i] = pay_individual[i];
-    }
-
-    return;
+    return 0;
 }
 
 // 비율 결제_결과 출력
 // 파라미터는 calculate_ratio() 와 동일 + 날짜까지
 void purchase_with_ratio_result(int ratio[], int number_of_people, int tablenum, int date) {
-
     int i;
     int pay_individual[10]; // 인원수는 10 이하
-    calculate_ratio(ratio, number_of_people, tablenum, pay_individual); // 비율별 결제금액 저장
+    calculate_ratio(tablenum, number_of_people, ratio, pay_individual); // 비율별 결제금액 저장
 
     printf("결제가 완료되었습니다.\n");
     printf("총 결제 금액 : %d\n", table_order_price(tablenum));
@@ -147,47 +94,65 @@ void purchase_with_ratio_result(int ratio[], int number_of_people, int tablenum,
     return;
 }
 
+// 현재 테이블의 총 주문금액을 반환
+// 주문금액 0원 이하일 시 -1 반환
+int table_order_price(int tablenum) {
+    int i;
+    int order_price = 0; // 주문액 총합 저장
+    for (i = 0; i < tables[tablenum].list_size; i++) { // 현재 테이블에 주문상품 종류 수만큼 반복
+        order_price += tables[tablenum].list[i].price * tables[tablenum].list[i].sales;
+    }
+    if (order_price <= 0) { // 주문 총액이 0 이하일 경우 -1 반환
+        return -1;
+    }
+    return order_price;
+}
+
+// 비율에 따른 개개인 결제금액 계산
+// 파라미터는 (테이블 번호, 결제 인원수, 인원별 비율, 계산값 저장할 인자)
+// 계산값 저장할 인자는 호출할 함수에서 미리 선언
+void calculate_ratio(int tablenum, int number_of_people, int ratio[], int pay_individual_param[]) {
+    int pay_sum = table_order_price(tablenum); // 결제할 총액
+
+    int i;
+    int ratio_sum = 0; // 비율의 총합을 저장할 변수
+    int unit; // 비율 계산시에 사용할 단위금액
+
+    for (i = 0; i < number_of_people; i++) {
+        ratio_sum = ratio_sum + ratio[i]; // 입력받은 비율의 총합
+    }
+
+    unit = (pay_sum / 100) / ratio_sum * 100;
+    // 비율과 곱해줄 단위금액
+    // 나머지는 처음 비율 입력한 사람이 계산
+
+    for (i = 1; i < number_of_people; i++) { // 첫 번째 사람 제외 결제금액 할당
+        pay_individual_param[i] = unit * ratio[i]; // 단위금액 * 개개인 비율
+        pay_sum -= pay_individual_param[i];
+    }
+    pay_individual_param[0] = pay_sum;
+}
 
 // 테이블에 있는 "전체" 상품 결제 완료 후
 // 테이블 주문내역 초기화
-// 전체 리스트에 결제수량 더해주기
+// 전체 리스트에 결제된 수량 더해주기
 void end_purchase(int tablenum) {
-
-    // 전체 리스트에 결제수량 더하기
-    int i, j, k;
+    // 전체 리스트에 결제된 수량 더하기
+    int i, j;
     for (i = 0; i < tables[tablenum].list_size; i++) { // tables[tablenum].list[] 인덱스
-        for (k = 0; k < all_product.list_size; k++) { // allproduct.list[] 인덱스
-            for (j = 0;;) { // 상품명이 동일한지 name[] 인덱스 탐색
-
-                // 주문시에 all_product와 같은 주문명 받아오므로 공백 검사 불필요
-                // 특정 상품이 주문된 상태에서 상품 정보 변경될 시 고려 필요
-                /*
-                char tablename[16];
-                strcpy(tablename, tables[tablenum].list[i].name);
-                char allproductname[16];
-                strcpy(allproductname, all_product.list[k].name);
-                remove_all_spaces(tablename);
-                remove_all_spaces(allproductname);
-                */
-
-                if (tables[tablenum].list[i].name[j] == all_product.list[k].name[j]) { // 첫 문자 같으면 탐색 시작
-                    j++; // 다음 문자
-                }
-                else { // 탐색 중 다르면 다음 allproduct 인덱스 탐색
-                    break;
-                }
-                if ((tables[tablenum].list[i].name[j] == '\0') && (all_product.list[k].name[j] == '\0')) { // 확인 완료
-                    all_product.list[i].sales += tables[tablenum].list[i].sales; // 결제수량 더해주기
-                    break; // 다음 allproduct 인덱스 탐색
-                }
+        for (j = 0; j < all_product.list_size; j++) { // allproduct.list[] 인덱스
+            // 주문시에 all_product와 같은 주문명 받아오므로 공백 검사 불필요
+            // 특정 상품이 주문된 상태에서 상품 정보 변경될 시 고려 필요
+            if (!strcmp(tables[tablenum].list[i].name, all_product.list[j].name)) {
+                all_product.list[j].sales += tables[tablenum].list[i].sales; // 결제수량 더해주기
+                break; // 다음 tables[tablenum].list 탐색
             }
         }
     }
+
     // 테이블 주문내역 초기화
     free(tables[tablenum].list);
     tables[tablenum].list_size = 0;
-
-    return;
 }
 
 // 문자열을 입력받아 상품명들과 수량을 분석하여 조건에 따라
@@ -198,7 +163,7 @@ void end_purchase(int tablenum) {
 // -3: 올바르지 않은 수량
 // -4: 주문 수량 보다 결제 수량이 더 많음
 // -5: 메모리 할당 오류
-int partial_pay(char* input, int table_num) {
+int partial_pay(int table_num, char* input) {
     int parse_count = 0;
     int arr_size = 0;
     char* tmp = malloc(sizeof(char) * (strlen(input) + 1)); // 원본 문자열과 동일한 크기의 임시 배열
@@ -286,24 +251,26 @@ int partial_pay(char* input, int table_num) {
     }
 
     // 정말로 결제?
-    printf("이대로 결제하시겠습니까?\n");
-    printf("1. 결제\n");
-    printf("0. 돌아가기\n");
-    printf("POS / 일부만 결제 - 번호 선택 > ");
-    
-    char* confirm_str = read_line(); // 선택지 입력받기
-    
-    while(1) {
-        trim(confirm_str);
-        to_lower(confirm_str);
-        if (!strcmp(confirm_str, "0") || !strcmp(confirm_str, "back")) return -10; // 돌아가기
-        else if (!strcmp(confirm_str, "1") || !strcmp(confirm_str, "one")) break; // 결제 진행
-
-        // 입력 오류, 다시 입력받기
-        printf("오류 : 0(back) 또는 1(one)만 입력하십시오.\n");
+    {
+        printf("이대로 결제하시겠습니까?\n");
+        printf("1. 결제\n");
+        printf("0. 돌아가기\n");
         printf("POS / 일부만 결제 - 번호 선택 > ");
-        free(confirm_str); // 기존 문자열 free
-        confirm_str = read_line(); // 재입력 받기
+        
+        char* confirm_str = read_line(); // 선택지 입력받기
+        
+        while(1) {
+            trim(confirm_str);
+            to_lower(confirm_str);
+            if (!strcmp(confirm_str, "0") || !strcmp(confirm_str, "back")) return -10; // 돌아가기
+            else if (!strcmp(confirm_str, "1") || !strcmp(confirm_str, "one")) break; // 결제 진행
+            
+            // 입력 오류, 다시 입력받기
+            printf("오류 : 0(back) 또는 1(one)만 입력하십시오.\n");
+            printf("POS / 일부만 결제 - 번호 선택 > ");
+            free(confirm_str); // 기존 문자열 free
+            confirm_str = read_line(); // 재입력 받기
+        }
     }
 
     int total_price = 0; // 결제하려는 토탈 금액
