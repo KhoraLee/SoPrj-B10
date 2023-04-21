@@ -11,42 +11,19 @@ extern Table tables[4]; // 테이블 4개
 extern All_Product all_product; // 모든 상품들의 목록을 포함한 구조체
 
 // 현재 테이블의 총 주문금액을 반환
-// 동적 메모리 할당 실패 시 -1 반환
 // 주문금액 0원 이하일 시 -1 반환
 int table_order_price(int tablenum) {
 
     int i;
-    int iter;
-    iter = tables[tablenum].list_size; // 현재 테이블 주문상품 가짓수
-
-    int* price;
-    price = (int*)malloc(sizeof(int) * iter); // 상품별 가격을 저장할 배열
-    if (price == NULL) { // 메모리 할당 오류
-        return -1;
+    int order_price = 0; // 주문액 총합 저장
+    for (i = 0; i < tables[tablenum].list_size; i++) { // 현재 테이블에 주문상품 종류 수만큼 반복
+        order_price += tables[tablenum].list[i].price * tables[tablenum].list[i].sales;
     }
-    int* quantity;
-    quantity = (int*)malloc(sizeof(int) * iter); // 상품별 수량을 저장할 배열
-    if (quantity == NULL) { // 메모리 할당 오류
-        return -1;
-    }
-
-    int temp, order_price; // 현재 주문액 총합 저장할 변수
-    order_price = 0;
-    for (i = 0; i < iter; i++) {
-        price[i] = tables[tablenum].list->price;
-        quantity[i] = tables[tablenum].list->sales;
-        temp = price[i] * quantity[i];
-        order_price = order_price + temp;
-    }
-    free(price);
-    free(quantity);
-
     if (order_price <= 0) { // 주문 총액이 0 이하일 경우 -1 반환
         return -1;
     }
     return order_price;
 }
-
 
 // 결제 선택 메뉴 출력
 void payment_choice() {
@@ -79,80 +56,137 @@ void purchase_all_result(int tablenum, int date) {
 }
 
 // 비율 결제_메뉴 출력
-int purchase_ratio_showmenu(int tablenum) {
-    int order_price = table_order_price(tablenum);
+// 인원수와 비율 저장할 배열를 인자로 받음
+// 비율 저장할 배열은 호출할 함수에서 미리 선언
+void purchase_with_ratio_showmenu(int number_of_people, int ratio_param[]) {
 
-    int command_num;
-    int number_of_people;
+    // 결제 인원수가 다른 함수에서도 인자로 쓰이므로 입출력 부분 프롬프트에서 구현
+    /*
+    int order_price = table_order_price(tablenum);
+    printf("주문 금액 확인 : %d\n", order_price;
+    printf("결제할 사람 수 : ");
+    scanf("%d", &number_of_people);
+    */
+
     int i;
     int ratio[10];
 
-    printf("주문 금액 확인 : %d\n", order_price);
-    printf("결제할 사람 수 : ");
-    scanf("%d", &number_of_people);
-
-    if (!(number_of_people <= 2 && number_of_people >= 10)) {
+    if (number_of_people < 2 || number_of_people > 10) {
         printf("오류 : 인원수는 2에서 10 사이의 정수만 가능합니다. 유효한 숫자를 입력해 주세요.\n");
         return -1;
     }
     for (i = 0; i < number_of_people;) {
         scanf("%d", &ratio[i]);
-        if (!(ratio[i] >= 1 && ratio[i] <= 9)) {
+        if (ratio[i] < 1 || ratio[i] > 9) {
             printf("오류 : 비율은 1에서 9 사이의 정수입니다. 유효한 숫자를 입력해 주세요.\n");
             continue;
             // 기획서대로는 '비율 결제 메뉴를 다시 출력' 이라고 되어 있는데 확인 필요
             // 큰 문제 없다 싶으면 현재 코드대로 비율 입력만 다시 하면 되게 하기
             // 수정해야 하면 return -1; 후 프롬프트 재실행
         }
+        ratio_param[i] = ratio[i]; // 인자에 저장
         i++;
     }
+
     printf("이대로 결제 하시겠습니까?\n");
     printf("1. 결제\n");
     printf("0. 돌아가기\n");
     printf("비율 결제 - 번호 선택 > ");
-    return ratio;
+
+    return;
 }
 
-// 입력받은 비율에 따른 개개인의 결제금액을 계산하는 함수
-// 파라미터는 (비율결제메뉴에서 리턴받은 비율(배열), 결제 인원수, 테이블 번호)
-int calculate_ratio(int ratio[], int people_num, int tablenum) {
+// 비율에 따른 개개인 결제금액 계산
+// 파라미터는 (비율결제메뉴에서 받은, 결제 인원수, 테이블 번호, 계산값 저장할 인자)
+// 계산값 저장할 인자는 호출할 함수에서 미리 선언
+void calculate_ratio(int ratio[], int number_of_people, int tablenum, int pay_individual_param[]) {
 
-    int pay_sum = table_order_price(tablenum);
+    int pay_sum = table_order_price(tablenum); // 결제할 총액
 
     int i;
-    int ratio_sum = 0; // 비율의 총합
+    int ratio_sum = 0; // 비율의 총합을 저장할 변수
     int unit; // 비율 계산시에 사용할 단위금액
-    int pay_individual[10]; // 개개인 결제 할당량
+    int pay_individual[10]; // 개개인 결제 할당량 저장
 
-    for (i = 0; i < people_num; i++) {
-        ratio_sum = ratio_sum + ratio[i];
+    for (i = 0; i < number_of_people; i++) {
+        ratio_sum = ratio_sum + ratio[i]; // 입력받은 비율의 총합
     }
 
-    unit = (pay_sum / 100) / ratio_sum;
-    for (i = 0; i < people_num; i++) {
-        pay_individual[i] = (unit * 100) * ratio[i];
-        if (i > 0) {
-            pay_sum -= pay_individual[i];
-        }
+    unit = (pay_sum / 100) / ratio_sum * 100;
+    // 비율과 곱해줄 단위금액
+    // 나머지는 처음 비율 입력한 사람이 계산
+
+    for (i = 1; i < number_of_people; i++) { // 첫 번째 사람 제외 결제금액 할당
+        pay_individual[i] = unit * ratio[i]; // 단위금액 * 개개인 비율
+        pay_sum -= pay_individual[i];
     }
     pay_individual[0] = pay_sum;
 
-    return pay_individual;
+    // 인자에 계산값 저장
+    for (i = 0; i < number_of_people; i++) {
+        pay_individual_param[i] = pay_individual[i];
+    }
+
+    return;
 }
 
 // 비율 결제_결과 출력
 // 파라미터는 calculate_ratio() 와 동일 + 날짜까지
-void purchase_ratio_result(int ratio[], int people_num, int tablenum, int date) {
-    
-    int* pay_individual = calculate_ratio(ratio, people_num, tablenum);
-    
+void purchase_with_ratio_result(int ratio[], int number_of_people, int tablenum, int date) {
+
     int i;
+    int pay_individual[10]; // 인원수는 10 이하
+    calculate_ratio(ratio, number_of_people, tablenum, pay_individual); // 비율별 결제금액 저장
+
     printf("결제가 완료되었습니다.\n");
     printf("총 결제 금액 : %d\n", table_order_price(tablenum));
-    for (i = 1; i <= people_num; i++) {
-        printf("%d/%d인 결제 금액 : %d\n", i, people_num, pay_individual[i - 1]);
+    for (i = 1; i <= number_of_people; i++) {
+        printf("%d/%d인 결제 금액 : %d\n", i, number_of_people, pay_individual[i - 1]);
     }
     printf("결제 일시 : %d\n", date);
+    return;
+}
+
+
+// 테이블에 있는 "전체" 상품 결제 완료 후
+// 테이블 주문내역 초기화
+// 전체 리스트에 결제수량 더해주기
+void end_purchase(int tablenum) {
+
+    // 전체 리스트에 결제수량 더하기
+    int i, j, k;
+    for (i = 0; i < tables[tablenum].list_size; i++) { // tables[tablenum].list[] 인덱스
+        for (k = 0; k < all_product.list_size; k++) { // allproduct.list[] 인덱스
+            for (j = 0;;) { // 상품명이 동일한지 name[] 인덱스 탐색
+
+                // 주문시에 all_product와 같은 주문명 받아오므로 공백 검사 불필요
+                // 특정 상품이 주문된 상태에서 상품 정보 변경될 시 고려 필요
+                /*
+                char tablename[16];
+                strcpy(tablename, tables[tablenum].list[i].name);
+                char allproductname[16];
+                strcpy(allproductname, all_product.list[k].name);
+                remove_all_spaces(tablename);
+                remove_all_spaces(allproductname);
+                */
+
+                if (tables[tablenum].list[i].name[j] == all_product.list[k].name[j]) { // 첫 문자 같으면 탐색 시작
+                    j++; // 다음 문자
+                }
+                else { // 탐색 중 다르면 다음 allproduct 인덱스 탐색
+                    break;
+                }
+                if ((tables[tablenum].list[i].name[j] == '\0') && (all_product.list[k].name[j] == '\0')) { // 확인 완료
+                    all_product.list[i].sales += tables[tablenum].list[i].sales; // 결제수량 더해주기
+                    break; // 다음 allproduct 인덱스 탐색
+                }
+            }
+        }
+    }
+    // 테이블 주문내역 초기화
+    free(tables[tablenum].list);
+    tables[tablenum].list_size = 0;
+
     return;
 }
 
