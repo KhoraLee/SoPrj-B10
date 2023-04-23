@@ -162,7 +162,8 @@ void end_purchase(int tablenum) {
 // -2: 존재하지 않는 상품명
 // -3: 올바르지 않은 수량
 // -4: 주문 수량 보다 결제 수량이 더 많음
-// -5: 메모리 할당 오류
+// -5: 중복된 상품명 입력
+// -6: 메모리 할당 오류
 int partial_pay(int table_num, char* input) {
     int parse_count = 0;
     int arr_size = 0;
@@ -185,7 +186,7 @@ int partial_pay(int table_num, char* input) {
             }
         }
         
-        if (!isalpha(input[0])) return -1; // 상품 갯수 다음이 알파벳 아니면 오류 반환
+        if (!is_alpha(input[0])) return -1; // 상품 갯수 다음이 알파벳 아니면 오류 반환
         if ((ret = sscanf(input, "%[a-zA-Z ]", tmp)) != 1) break; // 상품명 읽기
         trim(tmp); // 후행 공백 제거
         if ((tmp_len = strlen(tmp)) > 15) return -1; // 실 상품명 길이가 15자가 넘으면 올마르지 않은 상품명이기에 오류 반환
@@ -230,6 +231,20 @@ int partial_pay(int table_num, char* input) {
     }
 
     if (parse_count % 2 != 0) return -1; // 상품명과 상품 갯수가 짝이 맞지 않음 -> 입력이 잘못됨
+    
+    // 상품명 중복 체크
+    for (int i = 0; i < arr_size; i++) {
+        for (int j = i + 1; j < arr_size; j++) {
+            char a[16], b[16];
+            strcpy(a, products[i]);
+            remove_all_spaces(a);
+            to_lower(a);
+            strcpy(b, products[j]);
+            remove_all_spaces(b);
+            to_lower(b);
+            if (!strcmp(a, b)) return -5;
+        }
+    }
 
     // 주문 내역에 결제할 상품이 있는지 확인후 인덱스 저장
     int* index_table = malloc(sizeof(int) * arr_size);
