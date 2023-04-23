@@ -69,7 +69,7 @@ void trim(char* string) {
 void remove_all_spaces(char* string) {
     size_t len = strlen(string);
     int swap = 1;
-    for (size_t i = len - 1 ; i > 0 && swap; i--) {
+    for (int i = len - 1 ; i > 0 && swap; i--) {
         swap = 0;
         for (int j = 0; j < i; j++) {
             if(string[j] == ' ' || string[j] == '\t') {
@@ -80,6 +80,10 @@ void remove_all_spaces(char* string) {
         }
     }
     trim(string);
+}
+
+int is_alpha(int c){
+    return ((c >= 'a' && c <= 'z') || (c >= 'A' && c <= 'Z') ? 1 : 0);
 }
 
 void to_lower(char* string) {

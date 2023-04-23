@@ -16,5 +16,9 @@ void trim(char*);
 // 문자열 내부에 모든 횡공백류 제거
 void remove_all_spaces(char*);
 
+// 문자가 알파벳인지 체크
+// isalpha가 있지만 윈도우 환경에서 한글이 들어가면 뻗어버리는 문제가 있음.
+int is_alpha(int);
+
 // 문자열내 모든 알파벳 소문자로
 void to_lower(char*);
