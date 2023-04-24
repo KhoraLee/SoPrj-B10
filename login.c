@@ -15,6 +15,8 @@
 
 int latest_login_date;
 
+extern char base_dir[];
+
 int process_login(char date[]) {
     int ret, day = checkDate(date);
     if (day < 0) {
@@ -22,7 +24,11 @@ int process_login(char date[]) {
     }
     if ((ret = makeFile(date)) != 0) {
         latest_login_date = ret;
-        return -3;
+        if (day == ret){
+            return -3;
+        } else {
+            return -4;
+        }
     } else {
         return day;
     }
@@ -33,20 +39,20 @@ int makeFile(char date[]) {
     int day = checkDate(date);
     char date_str[9];
     sprintf(date_str, "%d", day);
-    
-    if (checkFile(day) == -1) {
-        return -1; // 마지막 정산일 이후의 파일이 아님
+    int ret = checkFile(day);
+    if (ret != 0) {
+        return ret; // 마지막 정산일 이후의 파일이 아님
     }
 
-    fp = fopen(date, "r");
+    fp = fopen(date_str, "r");
     if (fp == NULL) {
-        fp = fopen(date, "w");
+        fp = fopen(date_str, "w");
         if (fp == NULL) {
             printf("치명적 오류");
             exit(1);
         }
         else {
-            printf("데이터 파일 위치 에 정산파일을 성공적으로 생성했습니다 : ");
+            printf("데이터 파일 위치 %s에 정산파일을 성공적으로 생성했습니다: %s/%s\n", base_dir, base_dir, date_str);
             return 0;
         }
     }

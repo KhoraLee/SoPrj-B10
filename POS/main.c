@@ -25,6 +25,11 @@ int main() {
             printf("오류 : 그레고리력에 존재하지 않는 날짜입니다.\n");
         } else if (result == -3) {
             printf("오류 : 데이터 파일 위치 %s에 %d 파일이 존재합니다. 마지막 정산일 이후의 날 짜로만 로그인 할 수 있습니다.\n", base_dir, latest_login_date);
+        } else if (result == -4) {
+            int year = latest_login_date / 10000;
+            int month = (latest_login_date / 100) - year * 100;
+            int date = latest_login_date % 100;
+            printf("로그인 실패: 마지막 로그인 날짜가 %d년 %d월 %d일입니다. 마지막 정산일 이후의 날짜로만 로그인 할 수 있습니다.\n", year, month, date);
         } else {
             date = result; // 로그인 날짜 저장
             break;

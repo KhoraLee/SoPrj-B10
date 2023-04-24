@@ -82,7 +82,7 @@ void table_management_prompt(int table_num) {
         } else if (!strcmp(input, "3") || !strcmp(input, "three")) {
             cancel_order(table_num);
         } else if (!strcmp(input, "4") || !strcmp(input, "four")) {
-            process_payment(table_num);
+//            process_payment(table_num);
         } else if (!strcmp(input, "0") || !strcmp(input, "back")) {
             return;
         } else {
