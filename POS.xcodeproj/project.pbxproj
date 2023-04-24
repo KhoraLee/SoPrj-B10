@@ -7,9 +7,12 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		B10049C129E9D18100486570 /* payment.c in Sources */ = {isa = PBXBuildFile; fileRef = B10049BE29E9D18100486570 /* payment.c */; };
-		B10049C229E9D18100486570 /* POS.c in Sources */ = {isa = PBXBuildFile; fileRef = B10049BF29E9D18100486570 /* POS.c */; };
-		B10049C329E9D18100486570 /* Util.c in Sources */ = {isa = PBXBuildFile; fileRef = B10049C029E9D18100486570 /* Util.c */; };
+		B10049C129E9D18100486570 /* payment_prompts.c in Sources */ = {isa = PBXBuildFile; fileRef = B10049BE29E9D18100486570 /* payment_prompts.c */; };
+		B10049C229E9D18100486570 /* main.c in Sources */ = {isa = PBXBuildFile; fileRef = B10049BF29E9D18100486570 /* main.c */; };
+		B10049C329E9D18100486570 /* utils.c in Sources */ = {isa = PBXBuildFile; fileRef = B10049C029E9D18100486570 /* utils.c */; };
+		B10F699229F66C7200EE01E2 /* login.c in Sources */ = {isa = PBXBuildFile; fileRef = B10F699129F66C7200EE01E2 /* login.c */; };
+		B10F699529F6776400EE01E2 /* prompts.c in Sources */ = {isa = PBXBuildFile; fileRef = B10F699429F6776400EE01E2 /* prompts.c */; };
+		B10F699829F6837C00EE01E2 /* sell_prompts.c in Sources */ = {isa = PBXBuildFile; fileRef = B10F699729F6837C00EE01E2 /* sell_prompts.c */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -25,13 +28,19 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
-		B10049BE29E9D18100486570 /* payment.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = payment.c; path = POS/payment.c; sourceTree = "<group>"; };
-		B10049BF29E9D18100486570 /* POS.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = POS.c; path = POS/POS.c; sourceTree = "<group>"; };
-		B10049C029E9D18100486570 /* Util.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = Util.c; path = POS/Util.c; sourceTree = "<group>"; };
-		B10049C429E9D18C00486570 /* type.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = type.h; path = POS/type.h; sourceTree = "<group>"; };
-		B10049C529E9D18C00486570 /* Util.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Util.h; path = POS/Util.h; sourceTree = "<group>"; };
-		B10049C629E9D18C00486570 /* payment.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = payment.h; path = POS/payment.h; sourceTree = "<group>"; };
+		B10049BE29E9D18100486570 /* payment_prompts.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = payment_prompts.c; path = POS/payment_prompts.c; sourceTree = "<group>"; };
+		B10049BF29E9D18100486570 /* main.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = main.c; path = POS/main.c; sourceTree = "<group>"; };
+		B10049C029E9D18100486570 /* utils.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = utils.c; path = POS/utils.c; sourceTree = "<group>"; };
+		B10049C429E9D18C00486570 /* types.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = types.h; path = POS/types.h; sourceTree = "<group>"; };
+		B10049C529E9D18C00486570 /* utils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = utils.h; path = POS/utils.h; sourceTree = "<group>"; };
+		B10049C629E9D18C00486570 /* payment_prompts.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = payment_prompts.h; path = POS/payment_prompts.h; sourceTree = "<group>"; };
 		B1054C0729D17E4300775196 /* POS */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = POS; sourceTree = BUILT_PRODUCTS_DIR; };
+		B10F699029F66C7200EE01E2 /* login.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = login.h; sourceTree = "<group>"; };
+		B10F699129F66C7200EE01E2 /* login.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = login.c; sourceTree = "<group>"; };
+		B10F699329F6776400EE01E2 /* prompts.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = prompts.h; sourceTree = "<group>"; };
+		B10F699429F6776400EE01E2 /* prompts.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = prompts.c; sourceTree = "<group>"; };
+		B10F699629F6837C00EE01E2 /* sell_prompts.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = sell_prompts.h; sourceTree = "<group>"; };
+		B10F699729F6837C00EE01E2 /* sell_prompts.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = sell_prompts.c; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -48,9 +57,12 @@
 		B10049BC29E9D16A00486570 /* Sources */ = {
 			isa = PBXGroup;
 			children = (
-				B10049BE29E9D18100486570 /* payment.c */,
-				B10049BF29E9D18100486570 /* POS.c */,
-				B10049C029E9D18100486570 /* Util.c */,
+				B10049BF29E9D18100486570 /* main.c */,
+				B10049C029E9D18100486570 /* utils.c */,
+				B10F699129F66C7200EE01E2 /* login.c */,
+				B10F699429F6776400EE01E2 /* prompts.c */,
+				B10F699729F6837C00EE01E2 /* sell_prompts.c */,
+				B10049BE29E9D18100486570 /* payment_prompts.c */,
 			);
 			name = Sources;
 			sourceTree = "<group>";
@@ -58,9 +70,12 @@
 		B10049BD29E9D16F00486570 /* Headers */ = {
 			isa = PBXGroup;
 			children = (
-				B10049C629E9D18C00486570 /* payment.h */,
-				B10049C429E9D18C00486570 /* type.h */,
-				B10049C529E9D18C00486570 /* Util.h */,
+				B10049C429E9D18C00486570 /* types.h */,
+				B10049C529E9D18C00486570 /* utils.h */,
+				B10F699029F66C7200EE01E2 /* login.h */,
+				B10F699329F6776400EE01E2 /* prompts.h */,
+				B10F699629F6837C00EE01E2 /* sell_prompts.h */,
+				B10049C629E9D18C00486570 /* payment_prompts.h */,
 			);
 			name = Headers;
 			sourceTree = "<group>";
@@ -68,8 +83,8 @@
 		B1054BFE29D17E4200775196 = {
 			isa = PBXGroup;
 			children = (
-				B10049BC29E9D16A00486570 /* Sources */,
 				B10049BD29E9D16F00486570 /* Headers */,
+				B10049BC29E9D16A00486570 /* Sources */,
 				B1054C0829D17E4300775196 /* Products */,
 			);
 			sourceTree = "<group>";
@@ -139,9 +154,12 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				B10049C329E9D18100486570 /* Util.c in Sources */,
-				B10049C229E9D18100486570 /* POS.c in Sources */,
-				B10049C129E9D18100486570 /* payment.c in Sources */,
+				B10F699529F6776400EE01E2 /* prompts.c in Sources */,
+				B10049C329E9D18100486570 /* utils.c in Sources */,
+				B10F699229F66C7200EE01E2 /* login.c in Sources */,
+				B10F699829F6837C00EE01E2 /* sell_prompts.c in Sources */,
+				B10049C229E9D18100486570 /* main.c in Sources */,
+				B10049C129E9D18100486570 /* payment_prompts.c in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -261,7 +279,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = QW2GW32H77;
+				DEVELOPMENT_TEAM = "";
 				ENABLE_HARDENED_RUNTIME = YES;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
@@ -271,7 +289,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = QW2GW32H77;
+				DEVELOPMENT_TEAM = "";
 				ENABLE_HARDENED_RUNTIME = YES;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};

@@ -1,4 +1,5 @@
-#pragma once
+#ifndef payment_prompts_h
+#define payment_prompts_h
 
 // 결제 선택 메뉴 출력
 void payment_choice(void);
@@ -28,3 +29,5 @@ void end_purchase(int);
 // 입력된 상품들 부분적으로 결제 후 결제된 금액 혹은
 // 오류 발생시 오류 코드를 반환
 int partial_pay(int, char*);
+
+#endif

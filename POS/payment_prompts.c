@@ -1,15 +1,14 @@
-// payment.c
+#include "types.h"
+#include "utils.h"
+#include "payment_prompts.h"
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 #include <ctype.h>
 
-#include "type.h"
-#include "Util.h"
-#include "payment.h"
-
 extern Table tables[4]; // 테이블 4개
-extern All_Product all_product; // 모든 상품들의 목록을 포함한 구조체
+extern Product_Array all_products; // 모든 상품들의 목록을 포함한 구조체
 
 // 결제 선택 메뉴 출력
 void payment_choice() {
@@ -99,8 +98,8 @@ void purchase_with_ratio_result(int ratio[], int number_of_people, int tablenum,
 int table_order_price(int tablenum) {
     int i;
     int order_price = 0; // 주문액 총합 저장
-    for (i = 0; i < tables[tablenum].list_size; i++) { // 현재 테이블에 주문상품 종류 수만큼 반복
-        order_price += tables[tablenum].list[i].price * tables[tablenum].list[i].sales;
+    for (i = 0; i < tables[tablenum].length; i++) { // 현재 테이블에 주문상품 종류 수만큼 반복
+        order_price += tables[tablenum].products[i].price * tables[tablenum].products[i].amount;
     }
     if (order_price <= 0) { // 주문 총액이 0 이하일 경우 -1 반환
         return -1;
@@ -139,20 +138,20 @@ void calculate_ratio(int tablenum, int number_of_people, int ratio[], int pay_in
 void end_purchase(int tablenum) {
     // 전체 리스트에 결제된 수량 더하기
     int i, j;
-    for (i = 0; i < tables[tablenum].list_size; i++) { // tables[tablenum].list[] 인덱스
-        for (j = 0; j < all_product.list_size; j++) { // allproduct.list[] 인덱스
+    for (i = 0; i < tables[tablenum].length; i++) { // tables[tablenum].list[] 인덱스
+        for (j = 0; j < all_products.length; j++) { // allproduct.list[] 인덱스
             // 주문시에 all_product와 같은 주문명 받아오므로 공백 검사 불필요
             // 특정 상품이 주문된 상태에서 상품 정보 변경될 시 고려 필요
-            if (!strcmp(tables[tablenum].list[i].name, all_product.list[j].name)) {
-                all_product.list[j].sales += tables[tablenum].list[i].sales; // 결제수량 더해주기
+            if (!strcmp(tables[tablenum].products[i].name, all_products.products[j].name)) {
+                all_products.products[j].amount += tables[tablenum].products[i].amount; // 결제수량 더해주기
                 break; // 다음 tables[tablenum].list 탐색
             }
         }
     }
 
     // 테이블 주문내역 초기화
-    free(tables[tablenum].list);
-    tables[tablenum].list_size = 0;
+    free(tables[tablenum].products);
+    tables[tablenum].length = 0;
 }
 
 // 문자열을 입력받아 상품명들과 수량을 분석하여 조건에 따라
@@ -250,9 +249,9 @@ int partial_pay(int table_num, char* input) {
     int* index_table = malloc(sizeof(int) * arr_size);
     for (int i = 0; i < arr_size; i++) {
         int index = -1;
-        for (int j = 0; j < tables[table_num].list_size; j++) {
+        for (int j = 0; j < tables[table_num].length; j++) {
             char tmp[16];
-            strcpy(tmp, tables[table_num].list[j].name);
+            strcpy(tmp, tables[table_num].products[j].name);
             remove_all_spaces(tmp);
             to_lower(tmp);
             if (strcmp(tmp, products[i]) == 0) {
@@ -261,7 +260,7 @@ int partial_pay(int table_num, char* input) {
             }
         }
         if (index == -1) return -2; // 존재하지 않는 상품명
-        if (tables[table_num].list[index].sales < numbers[i]) return -4; // 주문한 상품수보다 계산하려는 상품수가 더 많음
+        if (tables[table_num].products[index].amount < numbers[i]) return -4; // 주문한 상품수보다 계산하려는 상품수가 더 많음
         index_table[i] = index; // 인덱스 저장
     }
 
@@ -292,17 +291,17 @@ int partial_pay(int table_num, char* input) {
 
     for (int i = 0; i < arr_size; i++) {
         int index = index_table[i];
-        tables[table_num].list[index].sales -= numbers[i]; // 테이블에 존제하는 갯수 감소
+        tables[table_num].products[index].amount -= numbers[i]; // 테이블에 존제하는 갯수 감소
 
         int ap_index = -1;
-        for (int j = 0; j < all_product.list_size; j++) {
-            if (strcmp(all_product.list[j].name, tables[table_num].list[index].name) == 0) {
+        for (int j = 0; j < all_products.length; j++) {
+            if (strcmp(all_products.products[j].name, tables[table_num].products[index].name) == 0) {
                 ap_index = j;
                 break;
             }
         }
-        all_product.list[ap_index].sales += numbers[i]; // 정산을 위해 판매 내역에 더하기
-        total_price += numbers[i] * all_product.list[ap_index].price;
+        all_products.products[ap_index].amount += numbers[i]; // 정산을 위해 판매 내역에 더하기
+        total_price += numbers[i] * all_products.products[ap_index].price;
     }
     
     // 작업이 끝났으니 malloc 한 항목들 free
