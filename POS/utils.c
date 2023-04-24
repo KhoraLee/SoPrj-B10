@@ -153,7 +153,7 @@ void to_lower(char* string) {
     }
 }
 
-int checkDate(char date_input[8]) { // 날짜 규칙확인
+int checkDate(char date_input[]) { // 날짜 규칙확인
     int non_leap_year_dates[12] = { 31,28,31,30,31,30,31,31,30,31,30,31 };
     int leap_year_dates[12] = { 31,29,31,30,31,30,31,31,30,31,30,31 };
     int day, year, month, date;

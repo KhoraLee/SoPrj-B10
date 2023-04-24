@@ -95,7 +95,7 @@ void table_management_prompt(int table_num) {
             } else if ((cmd_int = is_correct_command(input)) != -1) {
                 printf("오류 : 현재 메뉴에 '%d'번 선택지는 존재하지 않습니다.", cmd_int);
             } else {
-                printf("오류 : ‘6’이라는 명령어는 없습니다\n");
+                printf("오류 : ‘%s’이라는 명령어는 없습니다\n", input);
             }
             printf("-----------------+-------------------------------------+----------------------------------");
             // TODO: 올바른 입력 출력
@@ -110,9 +110,9 @@ void print_receipt(int table_num) {
     Table *table = &tables[table_num - 1];
     int total_price = 0;
     
-    printf("  <주문 내역>\n");
-    printf("    테이블 번호 : %d번\n", table_num);
-    printf("    주문 내역 : \n");
+    printf("<주문 내역>\n");
+    printf("\t테이블 번호 : %d번\n", table_num);
+    printf("\t주문 내역 : \n");
     
     // 주문 내역 출력
     for (int i = 0; i < table->length; i++) {
