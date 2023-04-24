@@ -52,9 +52,9 @@ void sell_prompt() {
             } else {
                 printf("오류 : '%s'이라는 명령어는 없습니다\n", input);
             }
-            printf("-----------------+-------------------------------------+----------------------------------");
+            printf("-----------------+-------------------------------------+----------------------------------\n");
             // TODO: 올바른 입력 출력
-            printf("-----------------+-------------------------------------+----------------------------------");
+            printf("-----------------+-------------------------------------+----------------------------------\n");
         }
         free(input); // 입력받은 문자열 free
         if (table_num > 0) {
@@ -145,7 +145,7 @@ void order_product(int table_num) {
         trim(input);
         remove_all_space(input);
         to_lower(input);
-        if (strcmp(input, "0") == 0 || strcmp(input, "back")) {
+        if (strcmp(input, "0") == 0 || strcmp(input, "back") == 0) {
             return;
         }
         for (i = 0; i < all_products.length; i++) {
@@ -192,7 +192,7 @@ void add_order(int table_num, Product *order_product) {
             strcpy(table.products[0].name, order_product->name); //상품명 저장
             table.products[0].price = order_product->price; //가격 저장
             table.products[0].amount = 1; //개수 저장
-            table.length++; //다음 인덱스를 가리킴
+            table.length += 1; //다음 인덱스를 가리킴
         } else {
             void* realloced = realloc(table.products, (table.length + 1) * sizeof(Product));
             if (realloced == NULL) {

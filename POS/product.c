@@ -24,10 +24,10 @@ int read_product_file(void){
     
     int ret = mkdir(base_dir, 0777);
     if (ret == 0) {
-        printf("경고: 데이터 폴더 %s가 없습니다.\n", base_dir);
+        printf("오류: 데이터 폴더 %s가 없습니다.\n", base_dir);
         printf("데이터 폴더를 새로 생성했습니다.\n");
     } if(ret == -1 && errno != EEXIST) {
-        printf("경고: 데이터 폴더 %s가 없습니다.\n", base_dir);
+        printf("오류: 데이터 폴더 %s가 없습니다.\n", base_dir);
         printf("오류: 데이터 폴더를 생성하지 못했습니다. 프로그램을 종료합니다.\n");
         exit(EXIT_FAILURE);
     }
@@ -76,7 +76,7 @@ int read_product_file(void){
 
     while(1){
         fgetpos(fp, &p);//잘못된 입력 출력하기 위해
-        switch(c = readproductline(fp)){//각 행을 읽어서 올바른 입력인지 파악
+        switch(c = read_product_line(fp)){//각 행을 읽어서 올바른 입력인지 파악
             case 2: // 마지막 행
                 fclose(fp);
                 if(err) {
@@ -194,7 +194,7 @@ int read_product_file(void){
     }
 }
 
-int readproductline(FILE* fp){
+int read_product_line(FILE* fp){
     int length, tab = 0;
     char c, name[16];
     int price = 0;
@@ -269,7 +269,7 @@ int readproductline(FILE* fp){
     if(c != '\n' && c != EOF)//이 두 개가 아닌 다른게 나오면
         return -1;            //에러
     else{
-        addproduct(name, price);//모든 에러 넘겼으니 상품추가
+        add_product(name, price);//모든 에러 넘겼으니 상품추가
         if(c=='\n')//다음 행
             return 1;
         else        //마지막 행
@@ -299,7 +299,7 @@ int productcmp(char* name){//상품명 인수로 받아서 all_product.list랑 �
     return -1;//동치인 인덱스 발견하지 못하면 -1 반환
 }
 
-void addproduct(char* name, int price){
+void add_product(char* name, int price){
     int idx;
     
     if ((idx=productcmp(name))>=0) { //productcmp로 동치비교를 해서 동치인 인덱스 반환
@@ -322,4 +322,24 @@ void addproduct(char* name, int price){
         all_products.products[all_products.length].amount = 0;
         all_products.length++;//all_product.list에 Product 할당
     }
+}
+
+void write_product_file(void){
+    int i;
+    FILE* fp;
+    
+    char datafile_dir[FILENAME_MAX];
+    sprintf(datafile_dir ,"%s%s", base_dir, PRODUCTFILE);
+
+    fp = fopen(datafile_dir, "w");
+    
+    if(!fp){
+        printf("오류 : 데이터 파일 위치에 상품파일을 생성하지 못했습니다. 프로그램을 종료합니다.\n"); //???
+        exit(EXIT_FAILURE);
+    }
+    
+    for(i=0; i<all_products.length; i++){
+        fprintf(fp, "%-15s\t\t%d\n", all_products.products[i].name, all_products.products[i].price);
+    }
+    fclose(fp);
 }

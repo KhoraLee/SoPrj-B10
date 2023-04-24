@@ -4,7 +4,9 @@
 #include <stdio.h>
 
 int read_product_file(void);
-int readproductline(FILE* fp);
-int productcmp(char* name);
-void addproduct(char* name, int price);
+int read_product_line(FILE* fp);
+int product_cmp(char* name);
+void add_product(char* name, int price);
+void write_product_file(void);
+
 #endif

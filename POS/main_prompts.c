@@ -1,6 +1,7 @@
 #include "main_prompts.h"
 #include "sell_prompts.h"
 #include "utils.h"
+#include "product.h"
 
 #include <stdlib.h>
 #include <string.h>
@@ -29,7 +30,7 @@ void main_prompt() {
 //            add_product_prompt();
         } else if (!strcmp(input, "4") || !strcmp(input, "four")) {
             if (exit_check() == 0) {
-                
+                write_product_file();
                 return;
             }
         } else {
