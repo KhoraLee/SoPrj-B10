@@ -1,7 +1,6 @@
 #ifndef payment_prompts_h
 #define payment_prompts_h
 
-
 void process_payment(int table);
 
 void pay_all_at_once(int table);

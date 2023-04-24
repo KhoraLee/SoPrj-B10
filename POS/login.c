@@ -37,8 +37,8 @@ int process_login(char date[]) {
 int makeFile(char date[]) {
     FILE* fp;
     int day = checkDate(date);
-    char date_str[9];
-    sprintf(date_str, "%d", day);
+    char date_str[FILENAME_MAX];
+    sprintf(date_str, "%s%08d", base_dir, day);
     int ret = checkFile(day);
     if (ret != 0) {
         return ret; // 마지막 정산일 이후의 파일이 아님
@@ -65,19 +65,13 @@ int checkFile(int date) {
     int count;
     int idx;
     int max = 0;
-    const char* path = ".";
 
-    if ((count = scandir(path, &namelist, NULL, alphasort)) == -1) {
-        fprintf(stderr, "%s Directory Scan Error: %s\n", path, strerror(errno));
-        return 1;
+    if ((count = scandir(base_dir, &namelist, NULL, alphasort)) == -1) {
+        printf("오류: 프로그램이 데이터 파일 위치를 파악할 수 없습니다. 프로그램을 종료합니다.");
+        exit(EXIT_FAILURE);
     }
 
     for (idx = 0; idx < count; idx++) {
-
-        for (int i = 0; i < sizeof(namelist[idx]->d_name); i++) {
-            if (!isdigit(namelist[idx]->d_name[i]))
-                break;
-        }
         if (checkDate(namelist[idx]->d_name) > 0) {
             if (max < checkDate(namelist[idx]->d_name))
                 max = checkDate(namelist[idx]->d_name);

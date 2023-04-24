@@ -5,6 +5,8 @@
 #include <stdlib.h>
 #include <string.h>
 
+extern Table tables[4]; // 테이블 4개
+extern Product_Array all_products; // 모든 상품들의 목록을 포함한 구조체
 extern int date;
 
 void main_prompt() {
@@ -26,8 +28,10 @@ void main_prompt() {
         } else if (!strcmp(input, "3") || !strcmp(input, "three")) {
 //            add_product_prompt();
         } else if (!strcmp(input, "4") || !strcmp(input, "four")) {
-            // TODO: 종료 가능인지 체크 후 종료
-            return;
+            if (exit_check() == 0) {
+                
+                return;
+            }
         } else {
             int cmd_int;
             if (strlen(input) == 0) {
@@ -47,3 +51,14 @@ void main_prompt() {
     }
 }
 
+int exit_check() {
+    for (int i = 0; i < 4; i++) {
+        Table table = tables[i];
+        for (int j = 0; j < table.length; j++) {
+            if (table.products[j].amount != 0) {
+                return -1;
+            }
+        }
+    }
+    return 0;
+}

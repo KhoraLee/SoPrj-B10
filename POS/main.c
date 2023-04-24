@@ -2,8 +2,10 @@
 #include "types.h"
 #include "login.h"
 #include "main_prompts.h"
+#include "product.h"
 
 #include <stdio.h>
+#include <stdlib.h>
 #include <locale.h>
 
 Table tables[4]; // 테이블 4개
@@ -13,9 +15,12 @@ int date; // 로그인된 날짜
 
 extern int latest_login_date; // 로그인 실패시 사용, 가장 최근 로그인 날짜
 
-int main() {
+int main(int argc, char* argv[]) {
     setlocale(LC_ALL, "en-US.UTF-8");
-    get_current_dir(base_dir);
+    
+    get_current_dir(argv[0], base_dir);
+    // 파일 무결성 검사
+    if(read_product_file() == -1) exit(EXIT_FAILURE);
     
     // 로그인
     while (1) {

@@ -4,14 +4,6 @@
 #include <string.h>
 #include <ctype.h>
 
-#ifdef _WIN32
-#include <direct.h>
-#define GetCurrentDir _getcwd
-#else
-#include <unistd.h>
-#define GetCurrentDir getcwd
-#endif
-
 // 개행문자 전까지 입력을 읽어들임
 // 메모리 누수 방지를 위해선 사용 후 free 해줘야함.
 char* read_line() {
@@ -60,6 +52,14 @@ void trim(char* string) {
     int len = strlen(string);
     int pre = 0;
     int suf = len - 1;
+    
+    int flag = 0;
+    for (int i = 0; i < len && flag == 0; i++) {
+        if (is_alpha(string[i]) || isdigit(string[i])) {
+            flag = 1;
+        }
+    }
+    if (flag == 0) string[0] = '\0';
 
     // 횡공백류가 아닌 첫번째 위치 찾기
     while (string[pre] == ' ' || string[pre] == '\t') {
@@ -211,6 +211,20 @@ int checkDate(char date_input[8]) { // 날짜 규칙확인
         return -1; // 날짜가 6글자나 8글자가 아님 // YYYYMMDD YYMMDD 형식으로 출력
 }
 
-void get_current_dir(char *at) {
-    GetCurrentDir(at, FILENAME_MAX);
+void get_current_dir(char *from, char *at) {
+    int last = 0;
+#ifdef _WIN32
+    char divider = '\\';
+#else
+    char divider = '/';
+#endif
+
+    for (int i = strlen(from) - 1; i > 0; i--) {
+        if (from[i] == divider) {
+            last = i;
+            break;
+        }
+    }
+    strncpy(at, from, last + 1);
+    sprintf(at, "%s%s%c", at, "posdata", divider);
 }

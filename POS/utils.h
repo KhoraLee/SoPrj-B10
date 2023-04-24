@@ -36,6 +36,6 @@ void to_lower(char *string);
 int checkDate(char date_input[]);
 
 // 프로그램 위치 불러오기
-void get_current_dir(char *at);
+void get_current_dir(char *from, char *at);
 
 #endif

@@ -191,6 +191,7 @@
     <ClInclude Include="login.h" />
     <ClInclude Include="main_prompts.h" />
     <ClInclude Include="payment_prompts.h" />
+    <ClInclude Include="product.h" />
     <ClInclude Include="sell_prompts.h" />
     <ClInclude Include="types.h" />
     <ClInclude Include="utils.h" />
@@ -200,6 +201,7 @@
     <ClCompile Include="main.c" />
     <ClCompile Include="main_prompts.c" />
     <ClCompile Include="payment_prompts.c" />
+    <ClCompile Include="product.c" />
     <ClCompile Include="sell_prompts.c" />
     <ClCompile Include="utils.c" />
   </ItemGroup>

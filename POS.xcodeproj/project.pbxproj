@@ -13,6 +13,7 @@
 		B10F699A29F6C1E600EE01E2 /* login.c in Sources */ = {isa = PBXBuildFile; fileRef = B10F699929F6C1E600EE01E2 /* login.c */; };
 		B10F699D29F6C1FE00EE01E2 /* main_prompts.c in Sources */ = {isa = PBXBuildFile; fileRef = B10F699B29F6C1FE00EE01E2 /* main_prompts.c */; };
 		B10F699E29F6C1FE00EE01E2 /* sell_prompts.c in Sources */ = {isa = PBXBuildFile; fileRef = B10F699C29F6C1FE00EE01E2 /* sell_prompts.c */; };
+		B10F69A429F6C5ED00EE01E2 /* product.c in Sources */ = {isa = PBXBuildFile; fileRef = B10F69A329F6C5ED00EE01E2 /* product.c */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -41,6 +42,9 @@
 		B10F699F29F6C20D00EE01E2 /* login.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = login.h; path = POS/login.h; sourceTree = "<group>"; };
 		B10F69A029F6C20D00EE01E2 /* main_prompts.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = main_prompts.h; path = POS/main_prompts.h; sourceTree = "<group>"; };
 		B10F69A129F6C20D00EE01E2 /* sell_prompts.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = sell_prompts.h; path = POS/sell_prompts.h; sourceTree = "<group>"; };
+		B10F69A229F6C5E800EE01E2 /* product.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = product.h; path = POS/product.h; sourceTree = "<group>"; };
+		B10F69A329F6C5ED00EE01E2 /* product.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = product.c; path = POS/product.c; sourceTree = "<group>"; };
+		B10F69A529F6DDE100EE01E2 /* POS.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; name = POS.entitlements; path = POS/POS.entitlements; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -63,6 +67,7 @@
 				B10049BE29E9D18100486570 /* payment_prompts.c */,
 				B10F699B29F6C1FE00EE01E2 /* main_prompts.c */,
 				B10F699C29F6C1FE00EE01E2 /* sell_prompts.c */,
+				B10F69A329F6C5ED00EE01E2 /* product.c */,
 			);
 			name = Sources;
 			sourceTree = "<group>";
@@ -76,6 +81,7 @@
 				B10049C429E9D18C00486570 /* types.h */,
 				B10049C529E9D18C00486570 /* utils.h */,
 				B10049C629E9D18C00486570 /* payment_prompts.h */,
+				B10F69A229F6C5E800EE01E2 /* product.h */,
 			);
 			name = Headers;
 			sourceTree = "<group>";
@@ -83,6 +89,7 @@
 		B1054BFE29D17E4200775196 = {
 			isa = PBXGroup;
 			children = (
+				B10F69A529F6DDE100EE01E2 /* POS.entitlements */,
 				B10049BD29E9D16F00486570 /* Headers */,
 				B10049BC29E9D16A00486570 /* Sources */,
 				B1054C0829D17E4300775196 /* Products */,
@@ -159,6 +166,7 @@
 				B10049C129E9D18100486570 /* payment_prompts.c in Sources */,
 				B10F699A29F6C1E600EE01E2 /* login.c in Sources */,
 				B10F699D29F6C1FE00EE01E2 /* main_prompts.c in Sources */,
+				B10F69A429F6C5ED00EE01E2 /* product.c in Sources */,
 				B10F699E29F6C1FE00EE01E2 /* sell_prompts.c in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -278,9 +286,10 @@
 		B1054C0F29D17E4300775196 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CODE_SIGN_ENTITLEMENTS = POS/POS.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = "";
-				ENABLE_HARDENED_RUNTIME = YES;
+				ENABLE_HARDENED_RUNTIME = NO;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
 			name = Debug;
@@ -288,9 +297,10 @@
 		B1054C1029D17E4300775196 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CODE_SIGN_ENTITLEMENTS = POS/POS.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = "";
-				ENABLE_HARDENED_RUNTIME = YES;
+				ENABLE_HARDENED_RUNTIME = NO;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
 			name = Release;
