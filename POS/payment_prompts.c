@@ -72,7 +72,7 @@ void pay_all_at_once(int table_num) {
     printf("결제하시겠습니까?\n");
     printf("1. 결제\n");
     printf("0. 돌아가기\n");
-    printf("POS / 한 번에 결제 - 번호 선택 >");
+    printf("POS / 한 번에 결제 - 번호 선택 > ");
     char* confirm_str = read_line(); // 선택지 입력받기
     
     while(1) {
@@ -140,7 +140,7 @@ void pay_with_ratio(int table_num) {
     printf("이대로 결제하시겠습니까?\n");
     printf("1. 결제\n");
     printf("0. 돌아가기\n");
-    printf("POS / 비율 결제 - 번호 선택 >");
+    printf("POS / 비율 결제 - 번호 선택 > ");
 
     char* confirm_str = read_line(); // 선택지 입력받기
     

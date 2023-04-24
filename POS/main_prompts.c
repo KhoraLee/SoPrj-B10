@@ -15,7 +15,7 @@ void main_prompt() {
         printf("\t3. 새 상품 추가\n");
         printf("\t4. 종료\n");
 
-        printf("POS / 메인 메뉴 – 번호 선택 > ");
+        printf("POS / 메인 메뉴 - 번호 선택 > ");
         char* input = read_line(); // 선택지 입력받기
         trim(input);
         to_lower(input);

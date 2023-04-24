@@ -19,7 +19,7 @@ int main() {
     
     // 로그인
     while (1) {
-        printf("POS / 로그인 메뉴 – 날짜 입력>");
+        printf("POS / 로그인 메뉴 - 날짜 입력> ");
         char *input = read_line();
         trim(input);
         int result = process_login(input);

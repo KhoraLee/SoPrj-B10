@@ -27,7 +27,7 @@ void sell_prompt() {
         printf("\t4. 4번 테이블\n");
         printf("\t0. 돌아가기\n");
 
-        printf("POS / 판매관리(테이블 관리) – 테이블 번호 선택 > ");
+        printf("POS / 판매관리(테이블 관리) - 테이블 번호 선택 > ");
         char* input = read_line(); // 선택지 입력받기
         trim(input);
         to_lower(input);
@@ -72,7 +72,7 @@ void table_management_prompt(int table_num) {
         printf("\t4. 결제\n");
         printf("\t0. 돌아가기\n");
 
-        printf("POS / %d번 테이블 – 테이블 번호 선택 > ", table_num);
+        printf("POS / %d번 테이블 - 테이블 번호 선택 > ", table_num);
         char* input = read_line(); // 선택지 입력받기
         trim(input);
         to_lower(input);
