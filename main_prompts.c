@@ -1,12 +1,6 @@
-//
-//  prompts.c
-//  POS
-//
-//  Created by 이승윤 on 2023/04/24.
-//
+#include "main_prompts.h"
 #include "sell_prompts.h"
 #include "utils.h"
-#include "prompts.h"
 
 #include <stdlib.h>
 #include <string.h>
@@ -43,7 +37,7 @@ void main_prompt() {
             } else if ((cmd_int = is_correct_command(input)) != -1) {
                 printf("오류 : 현재 메뉴에 '%d'번 선택지는 존재하지 않습니다.", cmd_int);
             } else {
-                printf("오류 : ‘6’이라는 명령어는 없습니다\n");
+                printf("오류 : '%s'이라는 명령어는 없습니다\n", input);
             }
             printf("-----------------+-------------------------------------+----------------------------------");
             // TODO: 올바른 입력 출력

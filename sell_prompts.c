@@ -6,6 +6,7 @@
 //
 
 #include "sell_prompts.h"
+#include "payment_prompts.h"
 #include "types.h"
 #include "utils.h"
 
@@ -49,7 +50,7 @@ void sell_prompt() {
             } else if ((cmd_int = is_correct_command(input)) != -1) {
                 printf("오류 : 현재 메뉴에 '%d'번 선택지는 존재하지 않습니다.", cmd_int);
             } else {
-                printf("오류 : ‘6’이라는 명령어는 없습니다\n");
+                printf("오류 : '%s'이라는 명령어는 없습니다\n", input);
             }
             printf("-----------------+-------------------------------------+----------------------------------");
             // TODO: 올바른 입력 출력
@@ -82,7 +83,7 @@ void table_management_prompt(int table_num) {
         } else if (!strcmp(input, "3") || !strcmp(input, "three")) {
             cancel_order(table_num);
         } else if (!strcmp(input, "4") || !strcmp(input, "four")) {
-//            process_payment(table_num);
+            process_payment(table_num);
         } else if (!strcmp(input, "0") || !strcmp(input, "back")) {
             return;
         } else {
@@ -141,7 +142,8 @@ void order_product(int table_num) {
     while (1) {
         printf("POS /(상품 주문) - 상품명 입력 > ");
         char *input = read_line();
-        remove_all_spaces(input);
+        trim(input);
+        remove_all_space(input);
         to_lower(input);
         if (strcmp(input, "0") == 0 || strcmp(input, "back")) {
             return;
@@ -149,7 +151,7 @@ void order_product(int table_num) {
         for (i = 0; i < all_products.length; i++) {
             char comparing[16];
             strcpy(comparing, all_products.products[i].name);
-            remove_all_spaces(comparing);
+            remove_all_space(comparing);
             to_lower(comparing);
             if (strcmp(input, comparing) == 0) {
                 product_to_order = &all_products.products[i];
@@ -215,10 +217,15 @@ void cancel_order(int table_num) {
     while (1) {
         printf("POS / (상품 취소) - 상품명 입력 > ");
         char *input = read_line();
-        remove_all_spaces(input); // string 을 입력받고, 공백을 다 없애줌
+        trim(input);
+        remove_all_space(input); // string 을 입력받고, 공백을 다 없애줌
         
         for (int i = 0; i < table.length; i++) {
-            if (!strcmp(input, table.products[i].name)) { // 주문내역에 상품이 이미 있음
+            char comparing[16];
+            strcpy(comparing, table.products[i].name);
+            remove_all_space(comparing);
+            to_lower(comparing);
+            if (!strcmp(input, comparing)) { // 주문내역에 상품이 이미 있음
                  if (table.products[i].amount == 0) {
                      printf("오류 : 주문내역에 없는 상품명입니다. 주문내역에 있는 상품명을 입력해주세요\n");
                  } else {

@@ -15,6 +15,9 @@ void trim(char *string);
 // 문자열 내부에 모든 횡공백류 제거
 void remove_all_spaces(char *string);
 
+// 문자열 내부에 모든 공백 제거
+void remove_all_space(char* string);
+
 // 입력된 명령어를 숫자로 반환
 // 존제하지 않을경우 -1 반환
 int is_correct_command(char *string);

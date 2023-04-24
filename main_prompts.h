@@ -1,5 +1,5 @@
-#ifndef prompts_h
-#define prompts_h
+#ifndef main_prompts_h
+#define main_prompts_h
 
 #include <stdio.h>
 

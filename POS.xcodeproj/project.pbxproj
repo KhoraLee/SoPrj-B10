@@ -11,7 +11,7 @@
 		B10049C229E9D18100486570 /* main.c in Sources */ = {isa = PBXBuildFile; fileRef = B10049BF29E9D18100486570 /* main.c */; };
 		B10049C329E9D18100486570 /* utils.c in Sources */ = {isa = PBXBuildFile; fileRef = B10049C029E9D18100486570 /* utils.c */; };
 		B10F699229F66C7200EE01E2 /* login.c in Sources */ = {isa = PBXBuildFile; fileRef = B10F699129F66C7200EE01E2 /* login.c */; };
-		B10F699529F6776400EE01E2 /* prompts.c in Sources */ = {isa = PBXBuildFile; fileRef = B10F699429F6776400EE01E2 /* prompts.c */; };
+		B10F699529F6776400EE01E2 /* main_prompts.c in Sources */ = {isa = PBXBuildFile; fileRef = B10F699429F6776400EE01E2 /* main_prompts.c */; };
 		B10F699829F6837C00EE01E2 /* sell_prompts.c in Sources */ = {isa = PBXBuildFile; fileRef = B10F699729F6837C00EE01E2 /* sell_prompts.c */; };
 /* End PBXBuildFile section */
 
@@ -37,8 +37,8 @@
 		B1054C0729D17E4300775196 /* POS */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = POS; sourceTree = BUILT_PRODUCTS_DIR; };
 		B10F699029F66C7200EE01E2 /* login.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = login.h; sourceTree = "<group>"; };
 		B10F699129F66C7200EE01E2 /* login.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = login.c; sourceTree = "<group>"; };
-		B10F699329F6776400EE01E2 /* prompts.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = prompts.h; sourceTree = "<group>"; };
-		B10F699429F6776400EE01E2 /* prompts.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = prompts.c; sourceTree = "<group>"; };
+		B10F699329F6776400EE01E2 /* main_prompts.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = main_prompts.h; sourceTree = "<group>"; };
+		B10F699429F6776400EE01E2 /* main_prompts.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = main_prompts.c; sourceTree = "<group>"; };
 		B10F699629F6837C00EE01E2 /* sell_prompts.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = sell_prompts.h; sourceTree = "<group>"; };
 		B10F699729F6837C00EE01E2 /* sell_prompts.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = sell_prompts.c; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -60,7 +60,7 @@
 				B10049BF29E9D18100486570 /* main.c */,
 				B10049C029E9D18100486570 /* utils.c */,
 				B10F699129F66C7200EE01E2 /* login.c */,
-				B10F699429F6776400EE01E2 /* prompts.c */,
+				B10F699429F6776400EE01E2 /* main_prompts.c */,
 				B10F699729F6837C00EE01E2 /* sell_prompts.c */,
 				B10049BE29E9D18100486570 /* payment_prompts.c */,
 			);
@@ -73,7 +73,7 @@
 				B10049C429E9D18C00486570 /* types.h */,
 				B10049C529E9D18C00486570 /* utils.h */,
 				B10F699029F66C7200EE01E2 /* login.h */,
-				B10F699329F6776400EE01E2 /* prompts.h */,
+				B10F699329F6776400EE01E2 /* main_prompts.h */,
 				B10F699629F6837C00EE01E2 /* sell_prompts.h */,
 				B10049C629E9D18C00486570 /* payment_prompts.h */,
 			);
@@ -154,7 +154,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				B10F699529F6776400EE01E2 /* prompts.c in Sources */,
+				B10F699529F6776400EE01E2 /* main_prompts.c in Sources */,
 				B10049C329E9D18100486570 /* utils.c in Sources */,
 				B10F699229F66C7200EE01E2 /* login.c in Sources */,
 				B10F699829F6837C00EE01E2 /* sell_prompts.c in Sources */,

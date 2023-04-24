@@ -1,7 +1,7 @@
 #include "utils.h"
 #include "types.h"
 #include "login.h"
-#include "prompts.h"
+#include "main_prompts.h"
 
 Table tables[4]; // 테이블 4개
 Product_Array all_products; // 모든 상품들의 목록을 포함한 구조체

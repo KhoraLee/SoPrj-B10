@@ -9,97 +9,55 @@
 
 extern Table tables[4]; // 테이블 4개
 extern Product_Array all_products; // 모든 상품들의 목록을 포함한 구조체
+extern int date;
 
-// 결제 선택 메뉴 출력
-void payment_choice() {
-    printf("1. 한번에 결제\n");
-    printf("2. 비율 결제\n");
-    printf("3. 일부만 결제\n");
-    printf("0. 돌아가기\n");
-    printf("결제 방식 선택 - 번호 선택 > ");
-}
+void process_payment(int table) {
+    while(1) {
+        int payment_method_input;
 
-// 한 번에 결제_메뉴 출력
-void purchase_all_showmenu(int tablenum) {
-    int order_price = table_order_price(tablenum);
+        printf("1. 한번에 결제\n");
+        printf("2. 비율 결제\n");
+        printf("3. 일부만 결제\n");
+        printf("0. 돌아가기\n");
 
-    printf("주문 금액 확인 : %d\n", order_price);
-    printf("결제하시겠습니까?\n");
-    printf("1. 결제\n");
-    printf("0. 돌아d가기\n");
-    printf("한 번에 결제 - 번호 선택 >");
-}
-
-// 한 번에 결제_결과 출력
-void purchase_all_result(int tablenum, int date) {
-    printf("결제가 완료되었습니다.\n");
-    printf("결제 금액 : %d\n", table_order_price(tablenum));
-    printf("결제 일시 : %d\n", date);
-}
-
-// 비율 결제_메뉴 출력
-// 인원수와 비율 저장할 배열를 인자로 받음
-// 비율 저장할 배열은 호출할 함수에서 미리 선언
-int purchase_with_ratio_showmenu(int number_of_people, int ratio_param[]) {
-    // 결제 인원수가 다른 함수에서도 인자로 쓰이므로 입출력 부분 프롬프트에서 구현
-    /*
-    int order_price = table_order_price(tablenum);
-    printf("주문 금액 확인 : %d\n", order_price;
-    printf("결제할 사람 수 : ");
-    scanf("%d", &number_of_people);
-    */
-
-    int i;
-    int ratio[10];
-
-    if (number_of_people < 2 || number_of_people > 10) {
-        printf("오류 : 인원수는 2에서 10 사이의 정수만 가능합니다. 유효한 숫자를 입력해 주세요.\n");
-        return -1;
-    }
-    for (i = 0; i < number_of_people;) {
-        scanf("%d", &ratio[i]);
-        if (ratio[i] < 1 || ratio[i] > 9) {
-            printf("오류 : 비율은 1에서 9 사이의 정수입니다. 유효한 숫자를 입력해 주세요.\n");
-            continue;
-            // 기획서대로는 '비율 결제 메뉴를 다시 출력' 이라고 되어 있는데 확인 필요
-            // 큰 문제 없다 싶으면 현재 코드대로 비율 입력만 다시 하면 되게 하기
-            // 수정해야 하면 return -1; 후 프롬프트 재실행
+        printf("결제 방식 선택 - 번호 선택 > ");
+        char* input = read_line(); // 선택지 입력받기
+        trim(input);
+        to_lower(input);
+        if (!strcmp(input, "1") || !strcmp(input, "one")) {
+            pay_all_at_once(table);
+        } else if (!strcmp(input, "2") || !strcmp(input, "two")) {
+            pay_with_ratio(table);
+        } else if (!strcmp(input, "3") || !strcmp(input, "three")) {
+            pay_partially(table);
+        } else if (!strcmp(input, "0") || !strcmp(input, "back")) {
+            return;
+        } else {
+            int cmd_int;
+            if (strlen(input) == 0) {
+                printf("오류 : 명령어를 입력해주세요.\n");
+            } else if (is_contain_spaces(input)) {
+                printf("오류 : 명령어가 너무 많습니다. 최대 1개의 명령어만 인자로 입력해주세요.\n");
+            } else if ((cmd_int = is_correct_command(input)) != -1) {
+                printf("오류 : 현재 메뉴에 '%d'번 선택지는 존재하지 않습니다.", cmd_int);
+            } else {
+                printf("오류 : '%s'이라는 명령어는 없습니다\n", input);
+            }
+            printf("-----------------+-------------------------------------+----------------------------------");
+            // TODO: 올바른 입력 출력
+            printf("-----------------+-------------------------------------+----------------------------------");
         }
-        ratio_param[i] = ratio[i]; // 인자에 저장
-        i++;
     }
-
-    printf("이대로 결제 하시겠습니까?\n");
-    printf("1. 결제\n");
-    printf("0. 돌아가기\n");
-    printf("비율 결제 - 번호 선택 > ");
-
-    return 0;
-}
-
-// 비율 결제_결과 출력
-// 파라미터는 calculate_ratio() 와 동일 + 날짜까지
-void purchase_with_ratio_result(int ratio[], int number_of_people, int tablenum, int date) {
-    int i;
-    int pay_individual[10]; // 인원수는 10 이하
-    calculate_ratio(tablenum, number_of_people, ratio, pay_individual); // 비율별 결제금액 저장
-
-    printf("결제가 완료되었습니다.\n");
-    printf("총 결제 금액 : %d\n", table_order_price(tablenum));
-    for (i = 1; i <= number_of_people; i++) {
-        printf("%d/%d인 결제 금액 : %d\n", i, number_of_people, pay_individual[i - 1]);
-    }
-    printf("결제 일시 : %d\n", date);
-    return;
 }
 
 // 현재 테이블의 총 주문금액을 반환
 // 주문금액 0원 이하일 시 -1 반환
-int table_order_price(int tablenum) {
+int get_total_price(int table_num) {
+    Table table = tables[table_num - 1];
     int i;
     int order_price = 0; // 주문액 총합 저장
-    for (i = 0; i < tables[tablenum].length; i++) { // 현재 테이블에 주문상품 종류 수만큼 반복
-        order_price += tables[tablenum].products[i].price * tables[tablenum].products[i].amount;
+    for (i = 0; i < table.length; i++) { // 현재 테이블에 주문상품 종류 수만큼 반복
+        order_price += table.products[i].price * table.products[i].amount;
     }
     if (order_price <= 0) { // 주문 총액이 0 이하일 경우 -1 반환
         return -1;
@@ -107,11 +65,153 @@ int table_order_price(int tablenum) {
     return order_price;
 }
 
+void pay_all_at_once(int table_num) {
+    int order_price = get_total_price(table_num);
+
+    printf("주문 금액 확인 : %d\n", order_price);
+    printf("결제하시겠습니까?\n");
+    printf("1. 결제\n");
+    printf("0. 돌아가기\n");
+    printf("POS / 한 번에 결제 - 번호 선택 >");
+    char* confirm_str = read_line(); // 선택지 입력받기
+    
+    while(1) {
+        trim(confirm_str);
+        to_lower(confirm_str);
+        if (!strcmp(confirm_str, "0") || !strcmp(confirm_str, "back")) {
+            return; // 돌아가기
+        } else if (!strcmp(confirm_str, "1") || !strcmp(confirm_str, "one")){
+            break; // 결제 진행
+        }
+        // 입력 오류, 다시 입력받기
+        printf("오류 : 0(back) 또는 1(one)만 입력하십시오.\n");
+        printf("POS / 일부만 결제 - 번호 선택 > ");
+        free(confirm_str); // 기존 문자열 free
+        confirm_str = read_line(); // 재입력 받기
+    }
+    free(confirm_str); // 기존 문자열 free
+    end_purchase(table_num); // 결제 종료
+    printf("결제가 완료되었습니다.\n");
+    printf("결제 금액 : %d\n", order_price);
+    printf("결제 일시 : %d\n", date);
+
+}
+
+void pay_with_ratio(int table_num) {
+    int order_price = get_total_price(table_num);
+    int people_num;
+    char* input;
+    
+    printf("주문 금액 확인 : %d\n", order_price);
+    printf("결제할 사람 수 : ");
+    input = read_line(); // 입력받기
+    people_num = atoi(input);
+    if (strlen(input) > 2) {
+        printf("오류 : 인원수는 2에서 10 사이의 정수만 가능합니다. 유효한 숫자를 입력해 주세요.");
+        return;
+    } else {
+        for (int i = 0 ; i < strlen(input); i++) {
+            if (!isdigit(input[i])) {
+                printf("오류 : 인원수는 2에서 10 사이의 정수만 가능합니다. 유효한 숫자를 입력해 주세요.");
+                return;
+            }
+        }
+        if (people_num < 2 || people_num > 10) {
+            printf("오류 : 인원수는 2에서 10 사이의 정수만 가능합니다. 유효한 숫자를 입력해 주세요.");
+            return;
+        }
+    }
+    
+    int *arr = malloc(sizeof(int) * people_num);
+    for (int i = 0; i < people_num; i++) {
+        int ratio;
+        printf("(%d/%d)인: ",i + 1, people_num);
+        input = read_line(); // 입력받기
+        ratio = atoi(input);
+        if (strlen(input) == 1 && ratio > 0 && ratio < 10) {
+            arr[i] = ratio;
+        } else {
+            printf("오류 : 비율은 1에서 9 사이의 정수입니다. 유효한 숫자를 입력해 주세요.\n");
+            return;
+        }
+        free(input); // 기존 문자열 free
+    }
+    
+    printf("이대로 결제하시겠습니까?\n");
+    printf("1. 결제\n");
+    printf("0. 돌아가기\n");
+    printf("POS / 비율 결제 - 번호 선택 >");
+
+    char* confirm_str = read_line(); // 선택지 입력받기
+    
+    while(1) {
+        trim(confirm_str);
+        to_lower(confirm_str);
+        if (!strcmp(confirm_str, "0") || !strcmp(confirm_str, "back")) return; // 돌아가기
+        else if (!strcmp(confirm_str, "1") || !strcmp(confirm_str, "one")) break; // 결제 진행
+        
+        // 입력 오류, 다시 입력받기
+        printf("오류 : 0(back) 또는 1(one)만 입력하십시오.\n");
+        printf("POS / 일부만 결제 - 번호 선택 > ");
+        free(confirm_str); // 기존 문자열 free
+        confirm_str = read_line(); // 재입력 받기
+    }
+
+    int *result_arr = malloc(sizeof(int) * people_num);
+    calculate_ratio(table_num, people_num, arr, result_arr);
+
+    printf("결제가 완료되었습니다.\n");
+    printf("총 결제 금액 : %d\n", order_price);
+    for (int i = 0; i < people_num; i++) {
+        printf("%d/%d인 결제 금액 : %d", i + 1, people_num, result_arr[i]);
+    }
+    printf("결제 일시 : %d", date);
+    return;
+    
+}
+
+void pay_partially(int table_num) {
+    Table table = tables[table_num - 1];
+    int order_price = get_total_price(table_num);
+
+    printf("주문 금액 확인 : %d\n", order_price);
+    printf("주문내역 :\n");
+    // 주문 내역 출력
+    for (int i = 0; i < table.length; i++) {
+        printf("%s\t%d\t%d\n", table.products[i].name, table.products[i].price, table.products[i].amount);
+    }
+    printf("부분 결제할 상품: ");
+    char *input = read_line();
+    int ret;
+    while ((ret = partial_pay(table_num, input)) < 0) {
+        // TODO: 오류 출력
+        if (ret == -1) {
+            
+        } else if (ret == -2) {
+            
+        } else if (ret == -3) {
+            
+        } else if (ret == -4) {
+            
+        } else if (ret == -5) {
+            
+        } else if (ret == -6) {
+            
+        } else if (ret == -10) { // 돌아가기
+            return;
+        }
+        // 다시 입력받기
+        free(input);
+        printf("부분 결제할 상품: ");
+        input = read_line();
+    }
+}
+
 // 비율에 따른 개개인 결제금액 계산
 // 파라미터는 (테이블 번호, 결제 인원수, 인원별 비율, 계산값 저장할 인자)
 // 계산값 저장할 인자는 호출할 함수에서 미리 선언
 void calculate_ratio(int tablenum, int number_of_people, int ratio[], int pay_individual_param[]) {
-    int pay_sum = table_order_price(tablenum); // 결제할 총액
+    int pay_sum = get_total_price(tablenum); // 결제할 총액
 
     int i;
     int ratio_sum = 0; // 비율의 총합을 저장할 변수
@@ -189,7 +289,7 @@ int partial_pay(int table_num, char* input) {
         if ((ret = sscanf(input, "%[a-zA-Z ]", tmp)) != 1) break; // 상품명 읽기
         trim(tmp); // 후행 공백 제거
         if ((tmp_len = strlen(tmp)) > 15) return -1; // 실 상품명 길이가 15자가 넘으면 올마르지 않은 상품명이기에 오류 반환
-        remove_all_spaces(tmp); // 띄어쓰기 제거
+        remove_all_space(tmp); // 띄어쓰기 제거
         to_lower(tmp); // 모두 소문자로 변환
         strcpy(name, tmp); // 상품명 임시 저장
         memcpy(input, input + tmp_len, strlen(input) - tmp_len + 1); // 숫자를 읽기 위해 상품명 부분 제거후 당기기
@@ -236,10 +336,10 @@ int partial_pay(int table_num, char* input) {
         for (int j = i + 1; j < arr_size; j++) {
             char a[16], b[16];
             strcpy(a, products[i]);
-            remove_all_spaces(a);
+            remove_all_space(a);
             to_lower(a);
             strcpy(b, products[j]);
-            remove_all_spaces(b);
+            remove_all_space(b);
             to_lower(b);
             if (!strcmp(a, b)) return -5;
         }
@@ -252,7 +352,7 @@ int partial_pay(int table_num, char* input) {
         for (int j = 0; j < tables[table_num].length; j++) {
             char tmp[16];
             strcpy(tmp, tables[table_num].products[j].name);
-            remove_all_spaces(tmp);
+            remove_all_space(tmp);
             to_lower(tmp);
             if (strcmp(tmp, products[i]) == 0) {
                 index = j;

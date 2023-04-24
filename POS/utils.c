@@ -93,6 +93,24 @@ void remove_all_spaces(char* string) {
     trim(string);
 }
 
+// 문자열에서 모든 공백 제거
+void remove_all_space(char* string) {
+    size_t len = strlen(string);
+    int swap = 1;
+    for (int i = len - 1 ; i > 0 && swap; i--) {
+        swap = 0;
+        for (int j = 0; j < i; j++) {
+            if(string[j] == ' ') {
+                string[j] = string[j + 1];
+                string[j + 1] = ' ';
+                swap = 1;
+            }
+        }
+    }
+    trim(string);
+}
+
+
 int is_correct_command(char *string) {
     char command_list[10][6] = {
         "0", "back",
