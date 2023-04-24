@@ -67,12 +67,12 @@ void pay_all_at_once(int table_num) {
     int order_price = get_total_price(table_num);
     
     while(1) {
-        char* confirm_str = read_line(); // 선택지 입력받기
         printf("주문 금액 확인 : %d\n", order_price);
         printf("결제하시겠습니까?\n");
         printf("1. 결제\n");
         printf("0. 돌아가기\n");
         printf("POS / 한 번에 결제 - 번호 선택 > ");
+        char* confirm_str = read_line(); // 선택지 입력받기
 
         trim(confirm_str);
         to_lower(confirm_str);
@@ -269,7 +269,6 @@ void calculate_ratio(int tablenum, int number_of_people, int ratio[], int pay_in
 
     int i;
     int ratio_sum = 0; // 비율의 총합을 저장할 변수
-    int unit; // 비율 계산시에 사용할 단위금액
 
     for (i = 0; i < number_of_people; i++) {
         ratio_sum = ratio_sum + ratio[i]; // 입력받은 비율의 총합
@@ -425,26 +424,26 @@ int partial_pay(int table_num, char* input) {
     }
 
     // 정말로 결제?
-    {
+    while(1) {
         printf("이대로 결제하시겠습니까?\n");
         printf("1. 결제\n");
         printf("0. 돌아가기\n");
         printf("POS / 일부만 결제 - 번호 선택 > ");
         
         char* confirm_str = read_line(); // 선택지 입력받기
-        
-        while(1) {
-            trim(confirm_str);
-            to_lower(confirm_str);
-            if (!strcmp(confirm_str, "0") || !strcmp(confirm_str, "back")) return -10; // 돌아가기
-            else if (!strcmp(confirm_str, "1") || !strcmp(confirm_str, "one")) break; // 결제 진행
-            
-            // 입력 오류, 다시 입력받기
-            printf("오류 : 0(back) 또는 1(one)만 입력하십시오.\n");
-            printf("POS / 일부만 결제 - 번호 선택 > ");
+
+        trim(confirm_str);
+        to_lower(confirm_str);
+        if (!strcmp(confirm_str, "0") || !strcmp(confirm_str, "back")) {
             free(confirm_str); // 기존 문자열 free
-            confirm_str = read_line(); // 재입력 받기
+            return -10; // 돌아가기
+        } else if (!strcmp(confirm_str, "1") || !strcmp(confirm_str, "one")) {
+            free(confirm_str); // 기존 문자열 free
+            break; // 결제 진행
         }
+        // 입력 오류, 다시 입력받기
+        printf("오류 : 0(back) 또는 1(one)만 입력하십시오.\n");
+        free(confirm_str); // 기존 문자열 free
     }
 
     int total_price = 0; // 결제하려는 토탈 금액

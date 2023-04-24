@@ -32,6 +32,8 @@ void main_prompt() {
             if (exit_check() == 0) {
                 write_product_file();
                 return;
+            } else {
+                printf("오류 : 모든 테이블에 결제가 끝나지 않아 종료가 불가능합니다.\n");
             }
         } else {
             int cmd_int;

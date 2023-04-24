@@ -77,13 +77,25 @@ void table_management_prompt(int table_num) {
         trim(input);
         to_lower(input);
         if (!strcmp(input, "1") || !strcmp(input, "one")) {
-            print_receipt(table_num);
+            if (is_empty_table(table_num)) {
+                printf("오류 : 주문된 상품이 없습니다.\n");
+            } else {
+                print_receipt(table_num);
+            }
         } else if (!strcmp(input, "2") || !strcmp(input, "two")) {
             order_product(table_num);
         } else if (!strcmp(input, "3") || !strcmp(input, "three")) {
-            cancel_order(table_num);
+            if (is_empty_table(table_num)) {
+                printf("오류 : 주문된 상품이 없습니다.\n");
+            } else {
+                cancel_order(table_num);
+            }
         } else if (!strcmp(input, "4") || !strcmp(input, "four")) {
-            process_payment(table_num);
+            if (is_empty_table(table_num)) {
+                printf("오류 : 주문된 상품이 없습니다.\n");
+            } else {
+                process_payment(table_num);
+            }
         } else if (!strcmp(input, "0") || !strcmp(input, "back")) {
             return;
         } else {
@@ -97,9 +109,9 @@ void table_management_prompt(int table_num) {
             } else {
                 printf("오류 : ‘%s’이라는 명령어는 없습니다\n", input);
             }
-            printf("-----------------+-------------------------------------+----------------------------------");
+            printf("-----------------+-------------------------------------+----------------------------------\n");
             // TODO: 올바른 입력 출력
-            printf("-----------------+-------------------------------------+----------------------------------");
+            printf("-----------------+-------------------------------------+----------------------------------\n");
         }
         free(input); // 입력받은 문자열 free
     }
@@ -116,17 +128,40 @@ void print_receipt(int table_num) {
     
     // 주문 내역 출력
     for (int i = 0; i < table->length; i++) {
+        if (table->products[i].amount == 0) continue;
         printf("%s\t%d\t%d\n", table->products[i].name, table->products[i].price, table->products[i].amount);
         total_price += table->products[i].price * table->products[i].amount;
     }
     // 합계 금액 출력
-    printf("    합계 : %d원\n", total_price);
+    printf("\t합계 : %d원\n", total_price);
 }
 
 void order_product(int table_num) {
     int i;
     Product *product_to_order = NULL;
+    
+    while(1) {
+        printf("상품 주문하기");
+        printf("주문하시겠습니까?\n");
+        printf("1. 상품 주문\n");
+        printf("0. 돌아가기\n");
+        printf("POS / 상품 주문 - 번호 선택 > ");
+        char* confirm_str = read_line(); // 선택지 입력받기
 
+        trim(confirm_str);
+        to_lower(confirm_str);
+        if (!strcmp(confirm_str, "0") || !strcmp(confirm_str, "back")) {
+            free(confirm_str); // 기존 문자열 free
+            return; // 돌아가기
+        } else if (!strcmp(confirm_str, "1") || !strcmp(confirm_str, "one")){
+            free(confirm_str); // 기존 문자열 free
+            break; // 결제 진행
+        }
+        // 입력 오류, 다시 입력받기
+        printf("오류 : 0(back) 또는 1(one)만 입력하십시오.\n");
+        free(confirm_str); // 기존 문자열 free
+    }
+    
     printf("<상품 주문>");
     printf("\t테이블 번호 %d\n", table_num);
     printf("\t상품 목록:\n");
@@ -142,9 +177,6 @@ void order_product(int table_num) {
         trim(input);
         remove_all_space(input);
         to_lower(input);
-        if (strcmp(input, "0") == 0 || strcmp(input, "back") == 0) {
-            return;
-        }
         for (i = 0; i < all_products.length; i++) {
             char comparing[16];
             strcpy(comparing, all_products.products[i].name);
@@ -160,6 +192,28 @@ void order_product(int table_num) {
         }
 
         printf("오류 : 상품목록에 없는 상품명입니다. 상품목록에 있는 상품명을 입력해주세요\n");
+    }
+    
+    while(1) {
+        printf("정말로 주문하시겠습니까?\n");
+        printf("1. 주문\n");
+        printf("0. 돌아가기\n");
+        printf("POS / 일부만 결제 - 번호 선택 > ");
+        
+        char* confirm_str = read_line(); // 선택지 입력받기
+
+        trim(confirm_str);
+        to_lower(confirm_str);
+        if (!strcmp(confirm_str, "0") || !strcmp(confirm_str, "back")) {
+            free(confirm_str); // 기존 문자열 free
+            return; // 돌아가기
+        } else if (!strcmp(confirm_str, "1") || !strcmp(confirm_str, "one")) {
+            free(confirm_str); // 기존 문자열 free
+            break; // 주문 진행
+        }
+        // 입력 오류, 다시 입력받기
+        printf("오류 : 0(back) 또는 1(one)만 입력하십시오.\n");
+        free(confirm_str); // 기존 문자열 free
     }
 
     // 주문목록에 추가
@@ -183,8 +237,8 @@ void add_order(int table_num, Product *order_product) {
     if (!is_already_existing_order) {
         if (table->length == 0) {  //주문내역이 아예 비어있음
             if ((table->products = malloc(sizeof(Product))) == NULL) { //메모리 부족으로 malloc 호출 실패하면 종료됨
-                fprintf(stderr, "메모리가 부족하여 주문이 불가합니다.");
-                exit(EXIT_FAILURE);
+                printf("오류 : 메모리 문제로 주문에 실패하였습니다. 이전 메뉴로 돌아갑니다.\n");
+                return;
             }
             strcpy(table->products[0].name, order_product->name); //상품명 저장
             table->products[0].price = order_product->price; //가격 저장
@@ -193,8 +247,8 @@ void add_order(int table_num, Product *order_product) {
         } else {
             void* realloced = realloc(table->products, (table->length + 1) * sizeof(Product));
             if (realloced == NULL) {
-                fprintf(stderr, "메모리가 부족하여 주문이 불가합니다.");
-                exit(EXIT_FAILURE);
+                printf("오류 : 메모리 문제로 주문에 실패하였습니다. 이전 메뉴로 돌아갑니다.\n");
+                return;
             } else {
                 table->products = realloced;
             }
@@ -209,8 +263,32 @@ void add_order(int table_num, Product *order_product) {
 void cancel_order(int table_num) {
     Table *table = &tables[table_num - 1];
     int is_existing_order = 0;
+    
+    while(1) {
+        printf("상품 취소하기");
+        printf("취소하시겠습니까?\n");
+        printf("1. 상품 취소\n");
+        printf("0. 돌아가기\n");
+        printf("POS / (상품 취소) - 번호 선택 > ");
+        char* confirm_str = read_line(); // 선택지 입력받기
+
+        trim(confirm_str);
+        to_lower(confirm_str);
+        if (!strcmp(confirm_str, "0") || !strcmp(confirm_str, "back")) {
+            free(confirm_str); // 기존 문자열 free
+            return; // 돌아가기
+        } else if (!strcmp(confirm_str, "1") || !strcmp(confirm_str, "one")){
+            free(confirm_str); // 기존 문자열 free
+            break; // 결제 진행
+        }
+        // 입력 오류, 다시 입력받기
+        printf("오류 : 0(back) 또는 1(one)만 입력하십시오.\n");
+        free(confirm_str); // 기존 문자열 free
+    }
+    
     print_receipt(table_num);
 
+    int idx = -1;
     while (1) {
         printf("POS / (상품 취소) - 상품명 입력 > ");
         char *input = read_line();
@@ -226,7 +304,7 @@ void cancel_order(int table_num) {
                  if (table->products[i].amount == 0) {
                      printf("오류 : 주문내역에 없는 상품명입니다. 주문내역에 있는 상품명을 입력해주세요\n");
                  } else {
-                     table->products[i].amount--; //주문한 상품의 개수 -1
+                     idx = i;
                      is_existing_order = 1;
                      break;
                  }
@@ -238,5 +316,42 @@ void cancel_order(int table_num) {
         } else {
             break;
         }
+    }
+    
+    while(1) {
+        printf("정말로 취소하시겠습니까?\n");
+        printf("1. 취소\n");
+        printf("0. 돌아가기\n");
+        printf("POS / (상품 취소) - 번호 선택 > ");
+        
+        char* confirm_str = read_line(); // 선택지 입력받기
+
+        trim(confirm_str);
+        to_lower(confirm_str);
+        if (!strcmp(confirm_str, "0") || !strcmp(confirm_str, "back")) {
+            free(confirm_str); // 기존 문자열 free
+            return; // 돌아가기
+        } else if (!strcmp(confirm_str, "1") || !strcmp(confirm_str, "one")) {
+            free(confirm_str); // 기존 문자열 free
+            break; // 취소 진행
+        }
+        // 입력 오류, 다시 입력받기
+        printf("오류 : 0(back) 또는 1(one)만 입력하십시오.\n");
+        free(confirm_str); // 기존 문자열 free
+    }
+    
+    table->products[idx].amount--; //주문한 상품의 개수 -1
+}
+
+int is_empty_table(int table_num) {
+    Table *table = &tables[table_num - 1];
+    int total_order = 0;
+    for (int i = 0; i < table->length; i++) {
+        total_order += table->products[i].amount;
+    }
+    if (total_order == 0) {
+        return 1;
+    } else {
+        return 0;
     }
 }
