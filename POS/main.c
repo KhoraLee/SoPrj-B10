@@ -3,6 +3,9 @@
 #include "login.h"
 #include "main_prompts.h"
 
+#include <stdio.h>
+#include <locale.h>
+
 Table tables[4]; // 테이블 4개
 Product_Array all_products; // 모든 상품들의 목록을 포함한 구조체
 char base_dir[FILENAME_MAX];
@@ -11,6 +14,7 @@ int date; // 로그인된 날짜
 extern int latest_login_date; // 로그인 실패시 사용, 가장 최근 로그인 날짜
 
 int main() {
+    setlocale(LC_ALL, "en-US.UTF-8");
     get_current_dir(base_dir);
     
     // 로그인

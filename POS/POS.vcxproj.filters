@@ -15,28 +15,49 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="POS.c">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Util.c">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="payment.c">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-  </ItemGroup>
-  <ItemGroup>
-    <ClInclude Include="type.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Util.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="payment.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-  </ItemGroup>
-  <ItemGroup>
     <None Include=".editorconfig" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="types.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="utils.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="dirent.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="login.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="main_prompts.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="payment_prompts.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="sell_prompts.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="login.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="main.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="main_prompts.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="payment_prompts.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="sell_prompts.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="utils.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>

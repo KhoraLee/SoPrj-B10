@@ -184,17 +184,24 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="POS.c" />
-    <ClCompile Include="Util.c" />
-    <ClCompile Include="payment.c" />
-  </ItemGroup>
-  <ItemGroup>
-    <ClInclude Include="type.h" />
-    <ClInclude Include="Util.h" />
-    <ClInclude Include="payment.h" />
-  </ItemGroup>
-  <ItemGroup>
     <None Include=".editorconfig" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="dirent.h" />
+    <ClInclude Include="login.h" />
+    <ClInclude Include="main_prompts.h" />
+    <ClInclude Include="payment_prompts.h" />
+    <ClInclude Include="sell_prompts.h" />
+    <ClInclude Include="types.h" />
+    <ClInclude Include="utils.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="login.c" />
+    <ClCompile Include="main.c" />
+    <ClCompile Include="main_prompts.c" />
+    <ClCompile Include="payment_prompts.c" />
+    <ClCompile Include="sell_prompts.c" />
+    <ClCompile Include="utils.c" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
