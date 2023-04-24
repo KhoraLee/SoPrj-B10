@@ -102,15 +102,12 @@ void table_management_prompt(int table_num) {
             printf("-----------------+-------------------------------------+----------------------------------");
         }
         free(input); // 입력받은 문자열 free
-        if (table_num > 0) {
-            table_management_prompt(table_num);
-        }
     }
 }
 
 // 주문내역출력
 void print_receipt(int table_num) {
-    Table table = tables[table_num - 1];
+    Table *table = &tables[table_num - 1];
     int total_price = 0;
     
     printf("  <주문 내역>\n");
@@ -118,9 +115,9 @@ void print_receipt(int table_num) {
     printf("    주문 내역 : \n");
     
     // 주문 내역 출력
-    for (int i = 0; i < table.length; i++) {
-        printf("%s\t%d\t%d\n", table.products[i].name, table.products[i].price, table.products[i].amount);
-        total_price += table.products[i].price * table.products[i].amount;
+    for (int i = 0; i < table->length; i++) {
+        printf("%s\t%d\t%d\n", table->products[i].name, table->products[i].price, table->products[i].amount);
+        total_price += table->products[i].price * table->products[i].amount;
     }
     // 합계 금액 출력
     printf("    합계 : %d원\n", total_price);
@@ -170,47 +167,47 @@ void order_product(int table_num) {
 }
 
 void add_order(int table_num, Product *order_product) {
-    Table table = tables[table_num - 1];
+    Table *table = &tables[table_num - 1];
     int is_already_existing_order = 0; //테이블 내에 상품이 있는지 확인 .. 있으면 1, 없으면 0
     
-    for (int j = 0; j < table.length; j++) {
+    for (int j = 0; j < table->length; j++) {
         char tname[16];
-        strcpy(tname, table.products[j].name);
+        strcpy(tname, table->products[j].name);
         if (!strcmp(order_product->name, tname)) // 테이블 내에 상품이 이미 있음
         {    //한개 시켰다가 취소해서 0인경우 ?  ... 상관없음
             is_already_existing_order = 1;
-            table.products[j].amount++; //주문한 상품의 개수 +1
+            table->products[j].amount++; //주문한 상품의 개수 +1
             break;
         }
     }
     if (!is_already_existing_order) {
-        if (table.length == 0) {  //주문내역이 아예 비어있음
-            if ((table.products = malloc(sizeof(Product))) == NULL) { //메모리 부족으로 malloc 호출 실패하면 종료됨
+        if (table->length == 0) {  //주문내역이 아예 비어있음
+            if ((table->products = malloc(sizeof(Product))) == NULL) { //메모리 부족으로 malloc 호출 실패하면 종료됨
                 fprintf(stderr, "메모리가 부족하여 주문이 불가합니다.");
                 exit(EXIT_FAILURE);
             }
-            strcpy(table.products[0].name, order_product->name); //상품명 저장
-            table.products[0].price = order_product->price; //가격 저장
-            table.products[0].amount = 1; //개수 저장
-            table.length += 1; //다음 인덱스를 가리킴
+            strcpy(table->products[0].name, order_product->name); //상품명 저장
+            table->products[0].price = order_product->price; //가격 저장
+            table->products[0].amount = 1; //개수 저장
+            table->length++; //다음 인덱스를 가리킴
         } else {
-            void* realloced = realloc(table.products, (table.length + 1) * sizeof(Product));
+            void* realloced = realloc(table->products, (table->length + 1) * sizeof(Product));
             if (realloced == NULL) {
                 fprintf(stderr, "메모리가 부족하여 주문이 불가합니다.");
                 exit(EXIT_FAILURE);
             } else {
-                table.products = realloced;
+                table->products = realloced;
             }
-            strcpy(table.products[table.length].name, order_product->name); //상품명 저장
-            table.products[table.length].price = order_product->price; //가격 저장
-            table.products[table.length].amount = 1; //개수 저장
-            table.length++;
+            strcpy(table->products[table->length].name, order_product->name); //상품명 저장
+            table->products[table->length].price = order_product->price; //가격 저장
+            table->products[table->length].amount = 1; //개수 저장
+            table->length++;
         }
     }
 }
 
 void cancel_order(int table_num) {
-    Table table = tables[table_num - 1];
+    Table *table = &tables[table_num - 1];
     int is_existing_order = 0;
     print_receipt(table_num);
 
@@ -220,16 +217,16 @@ void cancel_order(int table_num) {
         trim(input);
         remove_all_space(input); // string 을 입력받고, 공백을 다 없애줌
         
-        for (int i = 0; i < table.length; i++) {
+        for (int i = 0; i < table->length; i++) {
             char comparing[16];
-            strcpy(comparing, table.products[i].name);
+            strcpy(comparing, table->products[i].name);
             remove_all_space(comparing);
             to_lower(comparing);
             if (!strcmp(input, comparing)) { // 주문내역에 상품이 이미 있음
-                 if (table.products[i].amount == 0) {
+                 if (table->products[i].amount == 0) {
                      printf("오류 : 주문내역에 없는 상품명입니다. 주문내역에 있는 상품명을 입력해주세요\n");
                  } else {
-                     table.products[i].amount--; //주문한 상품의 개수 -1
+                     table->products[i].amount--; //주문한 상품의 개수 -1
                      is_existing_order = 1;
                      break;
                  }

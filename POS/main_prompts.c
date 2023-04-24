@@ -54,9 +54,9 @@ void main_prompt() {
 
 int exit_check() {
     for (int i = 0; i < 4; i++) {
-        Table table = tables[i];
-        for (int j = 0; j < table.length; j++) {
-            if (table.products[j].amount != 0) {
+        Table *table = &tables[i];
+        for (int j = 0; j < table->length; j++) {
+            if (table->products[j].amount != 0) {
                 return -1;
             }
         }

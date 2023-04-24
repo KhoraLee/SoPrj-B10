@@ -53,11 +53,11 @@ void process_payment(int table) {
 // 현재 테이블의 총 주문금액을 반환
 // 주문금액 0원 이하일 시 -1 반환
 int get_total_price(int table_num) {
-    Table table = tables[table_num - 1];
+    Table *table = &tables[table_num - 1];
     int i;
     int order_price = 0; // 주문액 총합 저장
-    for (i = 0; i < table.length; i++) { // 현재 테이블에 주문상품 종류 수만큼 반복
-        order_price += table.products[i].price * table.products[i].amount;
+    for (i = 0; i < table->length; i++) { // 현재 테이블에 주문상품 종류 수만큼 반복
+        order_price += table->products[i].price * table->products[i].amount;
     }
     if (order_price <= 0) { // 주문 총액이 0 이하일 경우 -1 반환
         return -1;
@@ -94,7 +94,7 @@ void pay_all_at_once(int table_num) {
     printf("결제가 완료되었습니다.\n");
     printf("결제 금액 : %d\n", order_price);
     printf("결제 일시 : %d\n", date);
-
+    end_purchase(table_num);
 }
 
 void pay_with_ratio(int table_num) {
@@ -163,22 +163,21 @@ void pay_with_ratio(int table_num) {
     printf("결제가 완료되었습니다.\n");
     printf("총 결제 금액 : %d\n", order_price);
     for (int i = 0; i < people_num; i++) {
-        printf("%d/%d인 결제 금액 : %d", i + 1, people_num, result_arr[i]);
+        printf("%d/%d인 결제 금액 : %d\n", i + 1, people_num, result_arr[i]);
     }
-    printf("결제 일시 : %d", date);
-    return;
-    
+    printf("결제 일시 : %d\n", date);
+    end_purchase(table_num);
 }
 
 void pay_partially(int table_num) {
-    Table table = tables[table_num - 1];
+    Table *table = &tables[table_num - 1];
     int order_price = get_total_price(table_num);
 
     printf("주문 금액 확인 : %d\n", order_price);
     printf("주문내역 :\n");
     // 주문 내역 출력
-    for (int i = 0; i < table.length; i++) {
-        printf("%s\t%d\t%d\n", table.products[i].name, table.products[i].price, table.products[i].amount);
+    for (int i = 0; i < table->length; i++) {
+        printf("%s\t%d\t%d\n", table->products[i].name, table->products[i].price, table->products[i].amount);
     }
     printf("부분 결제할 상품: ");
     char *input = read_line();
@@ -236,22 +235,23 @@ void calculate_ratio(int tablenum, int number_of_people, int ratio[], int pay_in
 // 테이블 주문내역 초기화
 // 전체 리스트에 결제된 수량 더해주기
 void end_purchase(int tablenum) {
+    Table *table = &tables[tablenum - 1];
     // 전체 리스트에 결제된 수량 더하기
     int i, j;
-    for (i = 0; i < tables[tablenum].length; i++) { // tables[tablenum].list[] 인덱스
+    for (i = 0; i < table->length; i++) { // tables[tablenum].list[] 인덱스
         for (j = 0; j < all_products.length; j++) { // allproduct.list[] 인덱스
             // 주문시에 all_product와 같은 주문명 받아오므로 공백 검사 불필요
             // 특정 상품이 주문된 상태에서 상품 정보 변경될 시 고려 필요
-            if (!strcmp(tables[tablenum].products[i].name, all_products.products[j].name)) {
-                all_products.products[j].amount += tables[tablenum].products[i].amount; // 결제수량 더해주기
+            if (!strcmp(table->products[i].name, all_products.products[j].name)) {
+                all_products.products[j].amount += table->products[i].amount; // 결제수량 더해주기
                 break; // 다음 tables[tablenum].list 탐색
             }
         }
     }
 
     // 테이블 주문내역 초기화
-    free(tables[tablenum].products);
-    tables[tablenum].length = 0;
+    free(table->products);
+    table->length = 0;
 }
 
 // 문자열을 입력받아 상품명들과 수량을 분석하여 조건에 따라
