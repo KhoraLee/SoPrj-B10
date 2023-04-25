@@ -63,7 +63,7 @@ int add_product_prompt2(){
                 }
                 break;
             }else{
-                while(getc(stdin) != '\n')
+                while(getchar() != '\n')
                     ;
             }
         }
@@ -73,7 +73,7 @@ int add_product_prompt2(){
             if(read_price(&price)){
                 break;
             }else{
-                while(getc(stdin) != '\n')
+                while(getchar() != '\n')
                     ;
             }
         }
@@ -153,8 +153,11 @@ int read_name(char* np) {
     while ((c = getc(stdin)) == ' ' || c == '\t') //횡공백류열 제거
         ;
         
-    if (c == '\n') //횡공백류열만 입력한 라인
+    if (c == '\n'){
+        ungetc(c,stdin);
+        printf("오류 : 상품명을 입력해주세요.\n");
         return 0;
+    }
     if (!is_alpha(c)) { //상품명에 알파벳이 아닌 글자 포함
         printf("오류 : 상품명에 알파벳이 아닌 것이 포함되어 있습니다. 상품명은 알파벳으로만 입력할 수 있습니다.\n");
         // \n까지 읽어야
@@ -209,6 +212,11 @@ int read_price(int* pp) {
 
     while ((c = getc(stdin)) == ' ' || c == '\t')//횡공백류열 제거
         ;
+    if(c == '\n'){
+        ungetc(c,stdin);
+        printf("오류 : 상품가격을 입력해주세요.\n");
+        return 0;
+    }
     if (!isdigit(c)) {//상품가격이 숫자가 아니면 에러
         printf("오류 : 상품가격에 숫자가 아닌 것이 포함되어 있습니다. 상품가격은 숫자로만 입력할 수 있습니다.\n");
         return 0;
