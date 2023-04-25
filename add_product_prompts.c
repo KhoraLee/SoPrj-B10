@@ -47,7 +47,7 @@ void add_product_prompt() {
 
     
 int add_product_prompt2(){
-    char name[16];
+    char name[16]={0};
     int price;
     int idx;
     

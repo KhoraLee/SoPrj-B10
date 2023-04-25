@@ -102,20 +102,6 @@ int read_settlement_file(char date_input[]) {
         return -1;
     }
 
-    if (read_settlement_line(fp, date_input) == -1) {
-        err = 1;
-        fsetpos(fp, &p);
-        printf("오류 : 첫 번째 행은 항상 정산레코드 형식에 맞아야합니다.\n");
-        while ((c = fgetc(fp)) != '\n') {
-            if (c == EOF) {
-                fclose(fp);
-                return -1;
-            }
-            putchar(c);
-        }
-        putchar(c);
-    }
-
     while (1) {
         fgetpos(fp, &p);//잘못된 입력 출력하기 위해
         switch (c = read_settlement_product_line(fp)) {//각 행을 읽어서 올바른 입력인지 파악
