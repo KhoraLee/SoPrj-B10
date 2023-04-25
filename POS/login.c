@@ -48,7 +48,7 @@ int makeFile(char date[]) {
             exit(1);
         }
         else {
-            printf("데이터 파일 위치 %s에 정산파일을 성공적으로 생성했습니다: %s\n", base_dir, date_str);
+            printf("데이터 파일 위치 %s에 정산파일을 성공적으로 생성했습니다: \n%s\n", base_dir, date_str);
             return 0;
         }
     }
