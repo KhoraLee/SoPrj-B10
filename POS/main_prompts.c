@@ -25,7 +25,7 @@ void main_prompt() {
         if (!strcmp(input, "1") || !strcmp(input, "one")) {
             sell_prompt();
         } else if (!strcmp(input, "2") || !strcmp(input, "two")) {
-//            settlement_prompt();
+            settlement_prompt();
         } else if (!strcmp(input, "3") || !strcmp(input, "three")) {
 //            add_product_prompt();
         } else if (!strcmp(input, "4") || !strcmp(input, "four")) {

@@ -22,12 +22,15 @@ extern char base_dir[];
 
 int read_product_file(void){
     
+    char datafile_dir[FILENAME_MAX];
+    sprintf(datafile_dir ,"%s%s", base_dir, PRODUCTFILE);
+    
     int ret = mkdir(base_dir, 0777);
     if (ret == 0) {
-        printf("오류: 데이터 폴더 %s가 없습니다.\n", base_dir);
+        printf("오류: 데이터 폴더 %s가 없습니다.\n", datafile_dir);//base_dir -> datafile_dir
         printf("데이터 폴더를 새로 생성했습니다.\n");
     } if(ret == -1 && errno != EEXIST) {
-        printf("오류: 데이터 폴더 %s가 없습니다.\n", base_dir);
+        printf("오류: 데이터 폴더 %s가 없습니다.\n", datafile_dir);
         printf("오류: 데이터 폴더를 생성하지 못했습니다. 프로그램을 종료합니다.\n");
         exit(EXIT_FAILURE);
     }
@@ -36,8 +39,6 @@ int read_product_file(void){
     FILE* fp;
     fpos_t p;
     
-    char datafile_dir[FILENAME_MAX];
-    sprintf(datafile_dir ,"%s%s", base_dir, PRODUCTFILE);
 //    strcpy(datafile_dir, base_dir);
 //    strcat(datafile_dir, PRODUCTFILE);
     
