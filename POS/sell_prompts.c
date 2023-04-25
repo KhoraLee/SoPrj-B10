@@ -17,9 +17,10 @@ extern Table tables[4]; // 테이블
 extern Product_Array all_products;
 
 void sell_prompt() {
-    int table_num = -1;
+    int table_num;
 
     while (1) {
+        table_num =-1;
         printf("<테이블 리스트>\n");
         printf("\t1. 1번 테이블\n");
         printf("\t2. 2번 테이블\n");

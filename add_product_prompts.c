@@ -275,6 +275,7 @@ int read_price(int* pp) {
         return 0;            //에러
     }
     else if(price % 100){
+        ungetc(c,stdin);
         printf("오류 : 상품가격은 100으로 나누었을 때 나머지가 0이 아닙니다. 상품가격은 100단위로 정해야합니다.\n");
         return 0;
     } {
