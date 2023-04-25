@@ -141,11 +141,10 @@ void order_product(int table_num) {
     Product *product_to_order = NULL;
     
     while(1) {
-        printf("상품 주문하기\n");
-        printf("주문하시겠습니까?\n");
-        printf("1. 상품 주문\n");
-        printf("0. 돌아가기\n");
-        printf("POS / 상품 주문 - 번호 선택 > ");
+        printf("<상품 주문>\n");
+        printf("\t1. 상품명 입력\n");
+        printf("\t0. 돌아가기\n");
+        printf("POS / (상품 주문) - 번호 선택 > ");
         char* confirm_str = read_line(); // 선택지 입력받기
 
         trim(confirm_str);
@@ -163,7 +162,7 @@ void order_product(int table_num) {
     }
     
     printf("<상품 주문>");
-    printf("\t테이블 번호 %d\n", table_num);
+    printf("\t테이블 번호 %d번\n", table_num);
     printf("\t상품 목록:\n");
     for (i = 0; i < all_products.length; i++)
     {

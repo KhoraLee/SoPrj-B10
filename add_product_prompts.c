@@ -15,7 +15,7 @@ void add_product_prompt() {
         printf("\t1. 상품명 입력\n");
         printf("\t0. 돌아가기\n");
         
-        printf("POS / 새 상품 추가 - 번호 입력 > ");
+        printf("POS / 새 상품 추가 - 번호 선택 > ");
         char* input = read_line(); // 선택지 입력받기
         trim(input);
         to_lower(input);

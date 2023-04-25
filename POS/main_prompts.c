@@ -24,7 +24,11 @@ void main_prompt() {
         trim(input);
         to_lower(input);
         if (!strcmp(input, "1") || !strcmp(input, "one")) {
-            sell_prompt();
+            if(all_products.length){
+                sell_prompt();
+            }else{
+                printf("오류 : 상품추가를 먼저 해주세요.\n");
+            }
         } else if (!strcmp(input, "2") || !strcmp(input, "two")) {
             settlement_prompt();
         } else if (!strcmp(input, "3") || !strcmp(input, "three")) {
