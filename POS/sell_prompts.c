@@ -53,7 +53,12 @@ void sell_prompt() {
                 printf("오류 : '%s'이라는 명령어는 없습니다\n", input);
             }
             printf("-----------------+-------------------------------------+----------------------------------\n");
-            // TODO: 올바른 입력 출력
+            printf("명령어군\t|\t설명\n");
+            printf("1 one\t|\t선택지의 1번 메뉴로 갑니다.\n");
+            printf("2 two\t|\t선택지의 2번 메뉴로 갑니다.\n");
+            printf("3 three\t|\t선택지의 3번 메뉴로 갑니다.\n");
+            printf("4 four\t|\t선택지의 4번 메뉴로 갑니다.\n");
+            printf("0 back\t|\t이전 메뉴로 돌아갑니다.\n");
             printf("-----------------+-------------------------------------+----------------------------------\n");
         }
         free(input); // 입력받은 문자열 free
@@ -105,12 +110,17 @@ void table_management_prompt(int table_num) {
             } else if (is_contain_spaces(input)) {
                 printf("오류 : 명령어가 너무 많습니다. 최대 1개의 명령어만 인자로 입력해주세요.\n");
             } else if ((cmd_int = is_correct_command(input)) != -1) {
-                printf("오류 : 현재 메뉴에 '%d'번 선택지는 존재하지 않습니다.\n", cmd_int);
+                printf("오류 : 현재 메뉴에 해당 선택지는 존재하지 않습니다.\n");
             } else {
                 printf("오류 : ‘%s’이라는 명령어는 없습니다\n", input);
             }
             printf("-----------------+-------------------------------------+----------------------------------\n");
-            // TODO: 올바른 입력 출력
+            printf("명령어군\t|\t설명\n");
+            printf("1 one\t|\t선택지의 1번 메뉴로 갑니다.\n");
+            printf("2 two\t|\t선택지의 2번 메뉴로 갑니다.\n");
+            printf("3 three\t|\t선택지의 3번 메뉴로 갑니다.\n");
+            printf("4 four\t|\t선택지의 4번 메뉴로 갑니다.\n");
+            printf("0 back\t|\t이전 메뉴로 돌아갑니다.\n");
             printf("-----------------+-------------------------------------+----------------------------------\n");
         }
         free(input); // 입력받은 문자열 free
@@ -155,10 +165,25 @@ void order_product(int table_num) {
         } else if (!strcmp(confirm_str, "1") || !strcmp(confirm_str, "one")){
             free(confirm_str); // 기존 문자열 free
             break; // 결제 진행
+        }else {
+            int cmd_int;
+            if (strlen(confirm_str) == 0) {
+                printf("오류 : 명령어를 입력해주세요.\n");
+            } else if (is_contain_spaces(confirm_str)) {
+                printf("오류 : 명령어가 너무 많습니다. 최대 1개의 명령어만 인자로 입력해주세요.\n");
+            } else if ((cmd_int = is_correct_command(confirm_str)) != -1) {
+                printf("오류 : 현재 메뉴에 해당 선택지는 존재하지 않습니다.\n");
+            } else {
+                printf("오류 : '%s'이라는 명령어는 없습니다\n", confirm_str);
+            }
+            printf("-----------------+-------------------------------------+----------------------------------\n");
+            printf("명령어군\t|\t설명\n");
+            printf("1 one\t|\t선택지의 1번 메뉴로 갑니다.\n");
+            printf("0 back\t|\t이전 메뉴로 돌아갑니다.\n");
+            printf("-----------------+-------------------------------------+----------------------------------\n");
         }
-        // 입력 오류, 다시 입력받기
-        printf("오류 : 0(back) 또는 1(one)만 입력하십시오.\n");
-        free(confirm_str); // 기존 문자열 free
+        free(confirm_str);
+
     }
     
     printf("<상품 주문>");
@@ -209,10 +234,27 @@ void order_product(int table_num) {
         } else if (!strcmp(confirm_str, "1") || !strcmp(confirm_str, "one")) {
             free(confirm_str); // 기존 문자열 free
             break; // 주문 진행
+        }else {
+            int cmd_int;
+            if (strlen(confirm_str) == 0) {
+                printf("오류 : 명령어를 입력해주세요.\n");
+            } else if (is_contain_spaces(confirm_str)) {
+                printf("오류 : 명령어가 너무 많습니다. 최대 1개의 명령어만 인자로 입력해주세요.\n");
+            } else if ((cmd_int = is_correct_command(confirm_str)) != -1) {
+                printf("오류 : 현재 메뉴에 해당 선택지는 존재하지 않습니다.\n");
+            } else {
+                printf("오류 : '%s'이라는 명령어는 없습니다\n", confirm_str);
+            }
+            printf("-----------------+-------------------------------------+----------------------------------\n");
+            printf("명령어군\t|\t설명\n");
+            printf("1 one\t|\t선택지의 1번 메뉴로 갑니다.\n");
+            printf("0 back\t|\t이전 메뉴로 돌아갑니다.\n");
+            printf("-----------------+-------------------------------------+----------------------------------\n");
         }
-        // 입력 오류, 다시 입력받기
-        printf("오류 : 0(back) 또는 1(one)만 입력하십시오.\n");
-        free(confirm_str); // 기존 문자열 free
+        free(confirm_str);
+//        // 입력 오류, 다시 입력받기
+//        printf("오류 : 0(back) 또는 1(one)만 입력하십시오.\n");
+//        free(confirm_str); // 기존 문자열 free
     }
 
     // 주문목록에 추가
@@ -278,10 +320,27 @@ void cancel_order(int table_num) {
         } else if (!strcmp(confirm_str, "1") || !strcmp(confirm_str, "one")){
             free(confirm_str); // 기존 문자열 free
             break; // 결제 진행
+        }else {
+            int cmd_int;
+            if (strlen(confirm_str) == 0) {
+                printf("오류 : 명령어를 입력해주세요.\n");
+            } else if (is_contain_spaces(confirm_str)) {
+                printf("오류 : 명령어가 너무 많습니다. 최대 1개의 명령어만 인자로 입력해주세요.\n");
+            } else if ((cmd_int = is_correct_command(confirm_str)) != -1) {
+                printf("오류 : 현재 메뉴에 해당 선택지는 존재하지 않습니다.\n");
+            } else {
+                printf("오류 : '%s'이라는 명령어는 없습니다\n", confirm_str);
+            }
+            printf("-----------------+-------------------------------------+----------------------------------\n");
+            printf("명령어군\t|\t설명\n");
+            printf("1 one\t|\t선택지의 1번 메뉴로 갑니다.\n");
+            printf("0 back\t|\t이전 메뉴로 돌아갑니다.\n");
+            printf("-----------------+-------------------------------------+----------------------------------\n");
         }
-        // 입력 오류, 다시 입력받기
-        printf("오류 : 0(back) 또는 1(one)만 입력하십시오.\n");
-        free(confirm_str); // 기존 문자열 free
+        free(confirm_str);
+//        // 입력 오류, 다시 입력받기
+//        printf("오류 : 0(back) 또는 1(one)만 입력하십시오.\n");
+//        free(confirm_str); // 기존 문자열 free
     }
     
     print_receipt(table_num);
@@ -332,10 +391,27 @@ void cancel_order(int table_num) {
         } else if (!strcmp(confirm_str, "1") || !strcmp(confirm_str, "one")) {
             free(confirm_str); // 기존 문자열 free
             break; // 취소 진행
+        }else {
+            int cmd_int;
+            if (strlen(confirm_str) == 0) {
+                printf("오류 : 명령어를 입력해주세요.\n");
+            } else if (is_contain_spaces(confirm_str)) {
+                printf("오류 : 명령어가 너무 많습니다. 최대 1개의 명령어만 인자로 입력해주세요.\n");
+            } else if ((cmd_int = is_correct_command(confirm_str)) != -1) {
+                printf("오류 : 현재 메뉴에 해당 선택지는 존재하지 않습니다.\n");
+            } else {
+                printf("오류 : '%s'이라는 명령어는 없습니다\n", confirm_str);
+            }
+            printf("-----------------+-------------------------------------+----------------------------------\n");
+            printf("명령어군\t|\t설명\n");
+            printf("1 one\t|\t선택지의 1번 메뉴로 갑니다.\n");
+            printf("0 back\t|\t이전 메뉴로 돌아갑니다.\n");
+            printf("-----------------+-------------------------------------+----------------------------------\n");
         }
-        // 입력 오류, 다시 입력받기
-        printf("오류 : 0(back) 또는 1(one)만 입력하십시오.\n");
-        free(confirm_str); // 기존 문자열 free
+        free(confirm_str);
+//        // 입력 오류, 다시 입력받기
+//        printf("오류 : 0(back) 또는 1(one)만 입력하십시오.\n");
+//        free(confirm_str); // 기존 문자열 free
     }
     
     table->products[idx].amount--; //주문한 상품의 개수 -1
