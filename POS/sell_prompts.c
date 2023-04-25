@@ -141,7 +141,7 @@ void order_product(int table_num) {
     Product *product_to_order = NULL;
     
     while(1) {
-        printf("상품 주문하기");
+        printf("상품 주문하기\n");
         printf("주문하시겠습니까?\n");
         printf("1. 상품 주문\n");
         printf("0. 돌아가기\n");

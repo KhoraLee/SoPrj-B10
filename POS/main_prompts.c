@@ -2,6 +2,7 @@
 #include "sell_prompts.h"
 #include "utils.h"
 #include "product.h"
+#include "settlement.h"
 
 #include <stdlib.h>
 #include <string.h>
@@ -27,10 +28,11 @@ void main_prompt() {
         } else if (!strcmp(input, "2") || !strcmp(input, "two")) {
             settlement_prompt();
         } else if (!strcmp(input, "3") || !strcmp(input, "three")) {
-//            add_product_prompt();
+            add_product_prompt();
         } else if (!strcmp(input, "4") || !strcmp(input, "four")) {
             if (exit_check() == 0) {
                 write_product_file();
+                save_settlement();
                 return;
             } else {
                 printf("오류 : 모든 테이블에 결제가 끝나지 않아 종료가 불가능합니다.\n");

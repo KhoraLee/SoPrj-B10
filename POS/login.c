@@ -24,11 +24,7 @@ int process_login(char date[]) {
     }
     if ((ret = makeFile(date)) != 0) {
         latest_login_date = ret;
-        if (day == ret){
-            return -3;
-        } else {
-            return -4;
-        }
+        return -3;
     } else {
         return day;
     }

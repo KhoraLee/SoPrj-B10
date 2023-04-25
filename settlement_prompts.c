@@ -5,7 +5,7 @@
 //  Created by 정준규 on 2023/04/25.
 //
 
-#include "settlement_prompt.h"
+#include "settlement_prompts.h"
 #include "utils.h"
 
 #include <stdio.h>

@@ -5,7 +5,7 @@
 
 int read_product_file(void);
 int read_product_line(FILE* fp);
-int product_cmp(char* name);
+int productcmp(char* name);
 void add_product(char* name, int price);
 void write_product_file(void);
 

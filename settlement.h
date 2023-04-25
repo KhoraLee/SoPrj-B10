@@ -3,7 +3,7 @@
 
 #include <stdio.h>
 
-int save_settlement(char date[]);
+int save_settlement(void);
 void print_settlement(char date[]);
 int read_settlement_file(char date_input[]);
 int read_settlement_line(FILE* fp, char date_input[]);

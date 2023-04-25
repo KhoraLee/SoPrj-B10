@@ -12,16 +12,17 @@
 #include <ctype.h>
 
 extern Product_Array all_products;
+extern char base_dir[FILENAME_MAX];
+extern int date;
 
-int save_settlement(char date[8]) {
+int save_settlement() {
     FILE* fp;
     int sum = 0;
 
-    int day = checkDate(date);
-    char date_str[9];
-    sprintf(date_str, "%d", day);
+    char datafile_dir[FILENAME_MAX];
+    sprintf(datafile_dir ,"%s%08d", base_dir, date);
 
-    fp = fopen(date_str, "w");
+    fp = fopen(datafile_dir, "w");
     if (fp == NULL) {
         printf("존재하지 않는 파일");
         return -1;
@@ -29,8 +30,8 @@ int save_settlement(char date[8]) {
     else {
         for (int i = 0; i < all_products.length; i++) {
             sum += all_products.products[i].price * all_products.products[i].amount;
-            fprintf(fp, "%d\t%d\n", checkDate(date), sum);
         }
+        fprintf(fp, "%d\t%d\n", date, sum);
         for (int i = 0; i < all_products.length; i++) {
             fprintf(fp, "%s\t%d\t%d\t%d\n", all_products.products[i].name, all_products.products[i].price, all_products.products[i].amount, all_products.products[i].price * all_products.products[i].amount);
         }
@@ -45,6 +46,8 @@ void print_settlement(char date[]) {
     char c;
 
     int day = checkDate(date);
+    
+    
     if (day == -1) {
         printf("오류 : YYYYMMDD 혹은 YYMMDD형식으로 작성해주세요.\n");
         return;
@@ -53,16 +56,16 @@ void print_settlement(char date[]) {
         printf("오류 : 그레고리력에 존재하지 않는 날짜입니다.\n");
         return;
     }
-    char date_str[9];
-    sprintf(date_str, "%d", day);
+    char datafile_dir[FILENAME_MAX];
+    sprintf(datafile_dir ,"%s%08d", base_dir, day);
 
-    fp = fopen(date_str, "r");
+    fp = fopen(datafile_dir, "r");
     if (fp == NULL) {
         printf("해당 일자의 정산 파일이 존재하지 않습니다.\n");
         return;
     }
     else {
-        if (read_settlement_file(date) == 0) {
+        if (read_settlement_file(datafile_dir) == 0) {
             while ((c = fgetc(fp)) != EOF) {
                 putchar(c);
             }
@@ -80,6 +83,24 @@ int read_settlement_file(char date_input[]) {
     fpos_t p;
 
     fgetpos(fp, &p);
+    
+    switch(read_settlement_line(fp, date_input)){
+    case -1:
+            err = 1;
+            fsetpos(fp, &p);
+            printf("오류 : 첫 번째 행은 항상 정산레코드 형식에 맞아야합니다.\n");
+            while ((c = fgetc(fp)) != '\n') {
+                if (c == EOF) {
+                    fclose(fp);
+                    return -1;
+                }
+                putchar(c);
+            }
+            putchar(c);
+    case -2:
+            printf("오류 : 정산파일에 정산내역이 존재하지 않습니다.\n");
+        return -1;
+    }
 
     if (read_settlement_line(fp, date_input) == -1) {
         err = 1;
@@ -186,8 +207,11 @@ int read_settlement_line(FILE* fp, char date_input[]) {
     char c, date[8];
     int price = 0;
 
+    c = getc(fp);
+    if(c == EOF)
+        return -2;
 
-
+    ungetc(c,fp);
     for (length = 0; length < 8; length++) { //최대 8글자까지 읽음
         c = getc(fp);
         if (isdigit(c)) { //날짜는 숫자
