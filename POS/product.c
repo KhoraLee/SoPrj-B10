@@ -305,7 +305,7 @@ void add_product(char* name, int price){
     
     if ((idx=productcmp(name))>=0) { //productcmp로 동치비교를 해서 동치인 인덱스 반환
         if (all_products.products[idx].amount > 0) {
-            printf("오늘 이미 판매된적 있는 상품입니다. 상품정보를 변경할 수 없습니다.\n");
+            printf("오류 : 오늘 이미 판매된적 있는 상품입니다. 상품정보를 변경할 수 없습니다.\n");
             return;
         }
         //sprintf(all_products.products[idx].name, "%s", name);
@@ -319,7 +319,7 @@ void add_product(char* name, int price){
             printf("오류 : 메모리 부족으로 상품 추가에 실패하였습니다.\n");
             return;
         }
-        //sprintf(all_products.products[all_products.length].name, name);
+        //sprintf(all_products.products[all_products.length].name,"%s", name);
         strcpy(all_products.products[all_products.length].name, name);
         all_products.products[all_products.length].price = price;
         all_products.products[all_products.length].amount = 0;
