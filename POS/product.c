@@ -308,7 +308,8 @@ void add_product(char* name, int price){
             printf("오늘 이미 판매된적 있는 상품입니다. 상품정보를 변경할 수 없습니다.\n");
             return;
         }
-        strcpy(all_products.products[idx].name, name);//동치인 Product 있으면
+        sprintf(all_products.products[idx].name, "%s", name);
+//        strcpy(all_products.products[idx].name, name);//동치인 Product 있으면
         all_products.products[idx].price = price;    //가격 이름 갱신
         return;
     } else {// 동치인 상품명 없으면
@@ -318,7 +319,8 @@ void add_product(char* name, int price){
             printf("오류 : 메모리 부족으로 상품 추가에 실패하였습니다.\n");
             return;
         }
-        strcpy(all_products.products[all_products.length].name, name);
+        sprintf(all_products.products[all_products.length].name, name);
+        //strcpy(all_products.products[all_products.length].name, name);
         all_products.products[all_products.length].price = price;
         all_products.products[all_products.length].amount = 0;
         all_products.length++;//all_product.list에 Product 할당

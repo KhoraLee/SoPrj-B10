@@ -13,12 +13,12 @@ extern int date;
 
 void process_payment(int table) {
     while(1) {
-        printf("1. 한번에 결제\n");
-        printf("2. 비율 결제\n");
-        printf("3. 일부만 결제\n");
-        printf("0. 돌아가기\n");
+        printf("\t1. 한번에 결제\n");
+        printf("\t2. 비율 결제\n");
+        printf("\t3. 일부만 결제\n");
+        printf("\t0. 돌아가기\n");
 
-        printf("결제 방식 선택 - 번호 선택 > ");
+        printf("POS / 결제 방식 선택 - 번호 선택 > ");
         char* input = read_line(); // 선택지 입력받기
         trim(input);
         to_lower(input);
@@ -69,8 +69,8 @@ void pay_all_at_once(int table_num) {
     while(1) {
         printf("주문 금액 확인 : %d\n", order_price);
         printf("결제하시겠습니까?\n");
-        printf("1. 결제\n");
-        printf("0. 돌아가기\n");
+        printf("\t1. 결제하기\n");
+        printf("\t0. 돌아가기\n");
         printf("POS / 한 번에 결제 - 번호 선택 > ");
         char* confirm_str = read_line(); // 선택지 입력받기
 
@@ -99,10 +99,8 @@ void pay_with_ratio(int table_num) {
     char* input;
     char* confirm_str;
     while(1) {
-        printf("비율 결제\n");
-        printf("결제하시겠습니까?\n");
-        printf("1. 결제\n");
-        printf("0. 돌아가기\n");
+        printf("\t1. 비율 입력받기\n");
+        printf("\t0. 돌아가기\n");
         printf("POS / 비율 결제 - 번호 선택 > ");
         confirm_str = read_line(); // 선택지 입력받기
         
@@ -141,7 +139,7 @@ void pay_with_ratio(int table_num) {
                 }
             }
         }
-        printf("오류 : 인원수는 2에서 10 사이의 정수만 가능합니다. 유효한 숫자를 입력해 주세요.\n");
+        printf("오류 : 인원수는 2에서 10 사이의 숫자만 가능합니다. 유효한 숫자를 입력해 주세요.\n");
         free(input);
     }
 
@@ -162,7 +160,7 @@ void pay_with_ratio(int table_num) {
                 free(input); // 기존 문자열 free
                 break;
             } else {
-                printf("오류 : 비율은 1에서 9 사이의 정수입니다. 유효한 숫자를 입력해 주세요.\n");
+                printf("오류 : 비율은 1에서 9 사이의 숫자입니다. 유효한 숫자를 입력해 주세요.\n");
             }
             free(input); // 기존 문자열 free
         }
@@ -170,8 +168,8 @@ void pay_with_ratio(int table_num) {
 
     while(1) {
         printf("이대로 결제하시겠습니까?\n");
-        printf("1. 결제\n");
-        printf("0. 돌아가기\n");
+        printf("\t1. 결제하기\n");
+        printf("\t0. 돌아가기\n");
         printf("POS / 비율 결제 - 번호 선택 > ");
         confirm_str = read_line(); // 선택지 입력받기
         
@@ -206,10 +204,8 @@ void pay_partially(int table_num) {
     int order_price = get_total_price(table_num);
 
     while(1) {
-        printf("일부만 결제\n");
-        printf("결제하시겠습니까?\n");
-        printf("1. 결제\n");
-        printf("0. 돌아가기\n");
+        printf("\t1. 일부 결제할 상품 입력\n");
+        printf("\t0. 돌아가기\n");
         printf("POS / 일부만 결제 - 번호 선택 > ");
         char* confirm_str = read_line(); // 선택지 입력받기
 
@@ -426,8 +422,8 @@ int partial_pay(int table_num, char* input) {
     // 정말로 결제?
     while(1) {
         printf("이대로 결제하시겠습니까?\n");
-        printf("1. 결제\n");
-        printf("0. 돌아가기\n");
+        printf("\t1. 결제하기\n");
+        printf("\t0. 돌아가기\n");
         printf("POS / 일부만 결제 - 번호 선택 > ");
         
         char* confirm_str = read_line(); // 선택지 입력받기
