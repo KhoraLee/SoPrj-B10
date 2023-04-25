@@ -187,22 +187,28 @@
     <None Include=".editorconfig" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="add_product_prompts.h" />
     <ClInclude Include="dirent.h" />
     <ClInclude Include="login.h" />
     <ClInclude Include="main_prompts.h" />
     <ClInclude Include="payment_prompts.h" />
     <ClInclude Include="product.h" />
     <ClInclude Include="sell_prompts.h" />
+    <ClInclude Include="settlement.h" />
+    <ClInclude Include="settlement_prompts.h" />
     <ClInclude Include="types.h" />
     <ClInclude Include="utils.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="add_product_prompts.c" />
     <ClCompile Include="login.c" />
     <ClCompile Include="main.c" />
     <ClCompile Include="main_prompts.c" />
     <ClCompile Include="payment_prompts.c" />
     <ClCompile Include="product.c" />
     <ClCompile Include="sell_prompts.c" />
+    <ClCompile Include="settlement.c" />
+    <ClCompile Include="settlement_prompts.c" />
     <ClCompile Include="utils.c" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

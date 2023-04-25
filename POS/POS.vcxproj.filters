@@ -42,6 +42,15 @@
     <ClInclude Include="product.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="settlement_prompts.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="settlement.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="add_product_prompts.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="login.c">
@@ -63,6 +72,15 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="product.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="add_product_prompts.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="settlement.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="settlement_prompts.c">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
