@@ -10,6 +10,8 @@
 #include "types.h"
 
 #include <ctype.h>
+#include <string.h>
+#include <stdlib.h>
 
 extern Product_Array all_products;
 extern char base_dir[FILENAME_MAX];
@@ -192,12 +194,14 @@ int read_settlement_line(FILE* fp, char date_input[]) {
     int length;
     char c, date[8];
     int price = 0;
+    char checkdate[8];
+    int day, checkday;
 
     c = getc(fp);
     if(c == EOF)
         return -2;
-
     ungetc(c,fp);
+    
     for (length = 0; length < 8; length++) { //최대 8글자까지 읽음
         c = getc(fp);
         if (isdigit(c)) { //날짜는 숫자
@@ -208,9 +212,15 @@ int read_settlement_line(FILE* fp, char date_input[]) {
             return -1;
         }
     }
-    //    if (!strcmp(date, "20221111"))
-    //        return -1; // 파일 이름과 정산레코드의 날짜 부분은 같아야함
-
+    
+    
+    for(int i=7;i>=0;i--){
+        checkdate[i]=date_input[strlen(date_input)-(8-i)];
+    }
+    checkday = atoi(checkdate);
+    day = atoi(date);
+        if (day!=checkday)
+            return -1; // 파일 이름과 정산레코드의 날짜 부분은 같아야함
     if ((c = getc(fp)) != '\t')
         return -1;
 

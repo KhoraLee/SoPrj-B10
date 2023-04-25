@@ -262,7 +262,8 @@ void pay_partially(int table_num) {
 // 계산값 저장할 인자는 호출할 함수에서 미리 선언
 void calculate_ratio(int tablenum, int number_of_people, int ratio[], int pay_individual_param[]) {
     int pay_sum = get_total_price(tablenum); // 결제할 총액
-
+    int temp = pay_sum;
+    
     int i;
     int ratio_sum = 0; // 비율의 총합을 저장할 변수
 
@@ -273,9 +274,9 @@ void calculate_ratio(int tablenum, int number_of_people, int ratio[], int pay_in
     // 나머지는 처음 비율 입력한 사람이 계산
     for (i = 1; i < number_of_people; i++) { // 첫 번째 사람 제외 결제금액 할당
         pay_individual_param[i] = (((pay_sum * ratio[i]) / ratio_sum) / 100) * 100;
-        pay_sum -= pay_individual_param[i];
+        temp -= pay_individual_param[i];
     }
-    pay_individual_param[0] = pay_sum;
+    pay_individual_param[0] = temp;
 }
 
 // 테이블에 있는 "전체" 상품 결제 완료 후

@@ -50,6 +50,7 @@ int add_product_prompt2(){
     char name[16]={0};
     int price;
     int idx;
+    int i;
     
     while(1){
         while(1){
@@ -63,6 +64,8 @@ int add_product_prompt2(){
                 }
                 break;
             }else{
+                for(i=0; i<16; i++)
+                    name[i] = '\0';
                 while(getchar() != '\n')
                     ;
             }
@@ -123,6 +126,8 @@ int add_product_prompt2(){
             to_lower(input);
             if (!strcmp(input, "1") || !strcmp(input, "one")) {
                 add_product(name, price);
+                for(i=0; i<16; i++)
+                    name[i] = '\0';
                 break;
             }
             else if (!strcmp(input, "0") || !strcmp(input, "back")) {
