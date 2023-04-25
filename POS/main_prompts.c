@@ -42,7 +42,7 @@ void main_prompt() {
             } else if (is_contain_spaces(input)) {
                 printf("오류 : 명령어가 너무 많습니다. 최대 1개의 명령어만 인자로 입력해주세요.\n");
             } else if ((cmd_int = is_correct_command(input)) != -1) {
-                printf("오류 : 현재 메뉴에 '%d'번 선택지는 존재하지 않습니다.", cmd_int);
+                printf("오류 : 현재 메뉴에 '%d'번 선택지는 존재하지 않습니다.\n", cmd_int);
             } else {
                 printf("오류 : '%s'이라는 명령어는 없습니다\n", input);
             }
