@@ -24,10 +24,13 @@ void process_payment(int table) {
         to_lower(input);
         if (!strcmp(input, "1") || !strcmp(input, "one")) {
             pay_all_at_once(table);
+            return;
         } else if (!strcmp(input, "2") || !strcmp(input, "two")) {
             pay_with_ratio(table);
+            return;
         } else if (!strcmp(input, "3") || !strcmp(input, "three")) {
             pay_partially(table);
+            return;
         } else if (!strcmp(input, "0") || !strcmp(input, "back")) {
             return;
         } else {
@@ -306,7 +309,7 @@ void pay_partially(int table_num) {
         char *input = read_line();
         int ret = partial_pay(table_num, input);
         if (ret == -1) {
-            printf("오류 : .\n");
+            printf("오류 : 입력이 없거나, 상품명과 수량의 짝이 맞지 않습니다. 유효한 상품명과 수량을 입력해 주십시오.\n");
         } else if (ret == -2) {
             printf("오류 : 존재하지 않는 상품명입니다. 유효한 상품명을 입력해 주십시오.\n");
         } else if (ret == -3) {
