@@ -556,8 +556,8 @@ int partial_pay(int table_num, char* input) {
     }
     free(products);
     
-    printf("결제가 완료되었습니다.");
-    printf("총 결제 금액 : %d", total_price);
+    printf("결제가 완료되었습니다.\n");
+    printf("총 결제 금액 : %d\n", total_price);
     
     return total_price;
 }
