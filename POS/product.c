@@ -27,7 +27,7 @@ int read_product_file(void){
     
     int ret = mkdir(base_dir, 0777);
     if (ret == 0) {
-        printf("오류: 데이터 폴더 %s가 없습니다.\n", datafile_dir);//base_dir -> datafile_dir
+        printf("오류: 데이터 폴더 %s가 없습니다.\n", base_dir);//base_dir -> datafile_dir
         printf("데이터 폴더를 새로 생성했습니다.\n");
     } if(ret == -1 && errno != EEXIST) {
         printf("오류: 데이터 폴더 %s가 없습니다.\n", datafile_dir);

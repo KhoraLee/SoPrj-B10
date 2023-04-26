@@ -84,7 +84,7 @@ void table_management_prompt(int table_num) {
         to_lower(input);
         if (!strcmp(input, "1") || !strcmp(input, "one")) {
             if (is_empty_table(table_num)) {
-                printf("오류 : 테이블에 주문된 상품이 없습니다.\n");
+                printf("오류 : 주문된 상품이 없습니다.\n");
             } else {
                 print_receipt(table_num);
             }
@@ -144,7 +144,7 @@ void print_receipt(int table_num) {
         total_price += table->products[i].price * table->products[i].amount;
     }
     // 합계 금액 출력
-    printf("\t총 가격 : %d원\n", total_price);
+    printf("\t합계 : %d원\n", total_price);
 }
 
 void order_product(int table_num) {
@@ -221,8 +221,8 @@ void order_product(int table_num) {
     
     while(1) {
         printf("정말로 주문하시겠습니까?\n");
-        printf("1. 주문\n");
-        printf("0. 돌아가기\n");
+        printf("\t1. 주문\n");
+        printf("\t0. 돌아가기\n");
         printf("POS / 상품 주문 - 번호 선택 > ");
         
         char* confirm_str = read_line(); // 선택지 입력받기
@@ -308,7 +308,8 @@ void cancel_order(int table_num) {
     
     while(1) {
         printf("<상품 취소>\n");
-        printf("\t1. 상품명 입력\n");
+        printf("취소하시겠습니까?\n");
+        printf("\t1. 상품 취소\n");
         printf("\t0. 돌아가기\n");
         printf("POS / (상품 취소) - 번호 선택 > ");
         char* confirm_str = read_line(); // 선택지 입력받기
@@ -378,8 +379,8 @@ void cancel_order(int table_num) {
     
     while(1) {
         printf("정말로 취소하시겠습니까?\n");
-        printf("1. 취소\n");
-        printf("0. 돌아가기\n");
+        printf("\t1. 취소\n");
+        printf("\t0. 돌아가기\n");
         printf("POS / (상품 취소) - 번호 선택 > ");
         
         char* confirm_str = read_line(); // 선택지 입력받기
