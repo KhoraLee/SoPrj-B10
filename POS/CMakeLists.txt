@@ -5,6 +5,7 @@ add_library(
 	login.h
 	main_prompts.h
 	payment_prompts.h
+	pos_main.h
 	product.h
 	sell_prompts.h
 	settlement.h
@@ -13,7 +14,7 @@ add_library(
 	utils.h
 	add_product_prompts.c
 	login.c
-	main.c
+	pos_main.c
 	main_prompts.c
 	payment_prompts.c
 	product.c
@@ -23,7 +24,6 @@ add_library(
 	utils.c
 )
 
+target_include_directories(core INTERFACE ${CMAKE_CURRENT_LIST_DIR})
 target_link_libraries(core PUBLIC dirent)
-
-add_library(core-include INTERFACE)
-target_include_directories(core-include PUBLIC .)
+set_property(TARGET core PROPERTY FOLDER POS)
