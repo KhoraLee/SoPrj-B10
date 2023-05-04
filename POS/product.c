@@ -7,12 +7,8 @@
 #include <string.h>
 #include <stdlib.h>
 
-#ifdef _WIN32
-#include "dirent.h"
-#else
 #include <dirent.h>
 #include <sys/stat.h>
-#endif
 
 #define PRODUCTFILE "product.txt"
 
