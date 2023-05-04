@@ -5,7 +5,10 @@ set(CMAKE_C_STANDARD 11) # C11
 set_property(GLOBAL PROPERTY USE_FOLDERS TRUE)
 
 if(MSVC)
+	add_definitions(-D_CRT_SECURE_NO_WARNINGS)
 	add_compile_options("$<$<C_COMPILER_ID:MSVC>:/utf-8>") # Force UTF-8
+	add_compile_options("$<$<C_COMPILER_ID:MSVC>:/wd4819>") # Disable warning C4819
+	set_property(DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR} PROPERTY VS_STARTUP_PROJECT runner)
 endif()
 
 add_subdirectory(external)
@@ -21,9 +24,3 @@ set_target_properties(runner PROPERTIES OUTPUT_NAME POS
 	LIBRARY_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/lib"
 	RUNTIME_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/../bin"
 )
-
-
-if(MSVC)
-	target_compile_options(POS PUBLIC "/wd4819") # Disable warning C4996
-endif()
-
