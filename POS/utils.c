@@ -53,13 +53,18 @@ void trim(char* string) {
     int pre = 0;
     int suf = len - 1;
     
-    int flag = 0;
+    int flag = 0; // 0: 횡공백류열만 있음, 1: 횡공백류열이 아닌 문자가 포함됨
     for (int i = 0; i < len && flag == 0; i++) {
-        if (is_alpha(string[i]) || isdigit(string[i])) {
+        if (string[i] != ' ' && string[i] != '\t') {
             flag = 1;
+            break;
         }
     }
-    if (flag == 0) string[0] = '\0';
+    // 횡공백류열만 있으므로
+    if (flag == 0){
+        string[0] = '\0'; // 빈 문자열로 만들고
+        return; // Early return
+    }
 
     // 횡공백류가 아닌 첫번째 위치 찾기
     while (string[pre] == ' ' || string[pre] == '\t') {
