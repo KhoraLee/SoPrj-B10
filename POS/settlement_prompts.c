@@ -5,6 +5,7 @@
 //  Created by 정준규 on 2023/04/25.
 //
 
+#include "common_prompts.h"
 #include "settlement_prompts.h"
 #include "utils.h"
 
@@ -18,42 +19,16 @@ void settlement_prompt() {
         printf("\t1. 특정 날짜 입력\n");
         printf("\t0. 돌아가기\n");
         printf("POS / 메인 메뉴 - 번호 선택 > ");
-
-        char* input = read_line(); // 선택지 입력받기
-        trim(input);
-        to_lower(input);
-
-        if (!strcmp(input, "1") || !strcmp(input, "one")) {
+        
+        int ret = command_prompt(1);
+        if (ret == 0) {
+            return;
+        } else if (ret == 1) {
             printf("날짜별 정산 내역 - 날짜입력 > ");
             char* date_input = read_line();
             trim(date_input);
             to_lower(date_input);
             print_settlement(date_input);
         }
-        else if (!strcmp(input, "0") || !strcmp(input, "back")) {
-            return;
-        }
-        else {
-            int cmd_int;
-            if (strlen(input) == 0) {
-                printf("오류 : 명령어를 입력해주세요.\n");
-            }
-            else if (is_contain_spaces(input)) {
-                printf("오류 : 명령어가 너무 많습니다. 최대 1개의 명령어만 인자로 입력해주세요.\n");
-            }
-            else if ((cmd_int = is_correct_command(input)) != -1) {
-                printf("오류 : 현재 메뉴에 해당 선택지는 존재하지 않습니다.\n");
-//                printf("오류 : 현재 메뉴에 '%d'번 선택지는 존재하지 않습니다.\n", cmd_int);
-            }
-            else {
-                printf("오류 : '%s'이라는 명령어는 없습니다\n", input);
-            }
-            printf("-----------------+-------------------------------------+----------------------------------\n");
-            printf("명령어군\t|\t설명\n");
-            printf("1 one\t|\t선택지의 1번 메뉴로 갑니다.\n");
-            printf("0 back\t|\t이전 메뉴로 돌아갑니다.\n");
-            printf("-----------------+-------------------------------------+----------------------------------\n");
-        }
-        free(input);
     }
 }

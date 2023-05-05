@@ -1,4 +1,5 @@
 #include "add_product_prompts.h"
+#include "common_prompts.h"
 #include "types.h"
 #include "product.h"
 #include "utils.h"
@@ -16,35 +17,14 @@ void add_product_prompt() {
         printf("\t0. 돌아가기\n");
         
         printf("POS / 새 상품 추가 - 번호 선택 > ");
-        char* input = read_line(); // 선택지 입력받기
-        trim(input);
-        to_lower(input);
-        if (!strcmp(input, "1") || !strcmp(input, "one")) {
-            if(add_product_prompt2()==0){
+        int ret = command_prompt(1);
+        if (ret == 0) {
+            return;
+        } else if (ret == 1) {
+            if (add_product_prompt2() == 0){
                 return;
             }
         }
-        else if (!strcmp(input, "0") || !strcmp(input, "back")) {
-            return;
-        }
-        else {
-            int cmd_int;
-            if (strlen(input) == 0) {
-                printf("오류 : 명령어를 입력해주세요.\n");
-            } else if (is_contain_spaces(input)) {
-                printf("오류 : 명령어가 너무 많습니다. 최대 1개의 명령어만 인자로 입력해주세요.\n");
-            } else if ((cmd_int = is_correct_command(input)) != -1) {
-                printf("오류 : 현재 메뉴에 해당 선택지는 존재하지 않습니다.\n");
-            } else {
-                printf("오류 : '%s'이라는 명령어는 없습니다\n", input);
-            }
-            printf("-----------------+-------------------------------------+----------------------------------\n");
-            printf("명령어군\t|\t설명\n");
-            printf("1 one\t|\t선택지의 1번 메뉴로 갑니다.\n");
-            printf("0 back\t|\t이전 메뉴로 돌아갑니다.\n");
-            printf("-----------------+-------------------------------------+----------------------------------\n");
-        }
-        free(input);
     }
 }
 
@@ -91,34 +71,14 @@ int add_product_prompt2(){
             printf("\t1. 저장하기\n");
             printf("\t0. 돌아가기\n");
             printf("\t저장하시겠습니까? > ");
-            char* input = read_line();
-            trim(input);
-            to_lower(input);
-            if (!strcmp(input, "1") || !strcmp(input, "one")) {
+            
+            int ret = command_prompt(1);
+            if (ret == 0) {
+                return 0;
+            } else if (ret == 1) {
                 add_product(name, price);
                 break;
             }
-            else if (!strcmp(input, "0") || !strcmp(input, "back")) {
-                return 0;
-            }
-            else {
-                int cmd_int;
-                if (strlen(input) == 0) {
-                    printf("오류 : 명령어를 입력해주세요.\n");
-                } else if (is_contain_spaces(input)) {
-                    printf("오류 : 명령어가 너무 많습니다. 최대 1개의 명령어만 인자로 입력해주세요.\n");
-                } else if ((cmd_int = is_correct_command(input)) != -1) {
-                    printf("오류 : 현재 메뉴에 해당 선택지는 존재하지 않습니다.\n");
-                } else {
-                    printf("오류 : '%s'이라는 명령어는 없습니다\n", input);
-                }
-                printf("-----------------+-------------------------------------+----------------------------------\n");
-                printf("명령어군\t|\t설명\n");
-                printf("1 one\t|\t선택지의 1번 메뉴로 갑니다.\n");
-                printf("0 back\t|\t이전 메뉴로 돌아갑니다.\n");
-                printf("-----------------+-------------------------------------+----------------------------------\n");
-            }
-            free(input);
         }
         
         while(1){
@@ -127,36 +87,15 @@ int add_product_prompt2(){
             printf("\t0. 돌아가기\n");
             printf("계속 추가하시겠습니까? > ");
             
-            char* input = read_line();
-            trim(input);
-            to_lower(input);
-            if (!strcmp(input, "1") || !strcmp(input, "one")) {
+            int ret = command_prompt(1);
+            if (ret == 0) {
+                return 0;
+            } else if (ret == 1) {
                 add_product(name, price);
                 for(i=0; i<16; i++)
                     name[i] = '\0';
                 break;
             }
-            else if (!strcmp(input, "0") || !strcmp(input, "back")) {
-                return 0;
-            }
-            else {
-                int cmd_int;
-                if (strlen(input) == 0) {
-                    printf("오류 : 명령어를 입력해주세요.\n");
-                } else if (is_contain_spaces(input)) {
-                    printf("오류 : 명령어가 너무 많습니다. 최대 1개의 명령어만 인자로 입력해주세요.\n");
-                } else if ((cmd_int = is_correct_command(input)) != -1) {
-                    printf("오류 : 현재 메뉴에 해당 선택지는 존재하지 않습니다.\n");
-                } else {
-                    printf("오류 : '%s'이라는 명령어는 없습니다\n", input);
-                }
-                printf("-----------------+-------------------------------------+----------------------------------\n");
-                printf("명령어군\t|\t설명\n");
-                printf("1 one\t|\t선택지의 1번 메뉴로 갑니다.\n");
-                printf("0 back\t|\t이전 메뉴로 돌아갑니다.\n");
-                printf("-----------------+-------------------------------------+----------------------------------\n");
-            }
-            free(input);
         }
     }
 }

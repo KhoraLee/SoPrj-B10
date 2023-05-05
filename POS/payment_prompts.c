@@ -1,3 +1,4 @@
+#include "common_prompts.h"
 #include "types.h"
 #include "utils.h"
 #include "payment_prompts.h"
@@ -19,40 +20,19 @@ void process_payment(int table) {
         printf("\t0. 돌아가기\n");
 
         printf("POS / 결제 방식 선택 - 번호 선택 > ");
-        char* input = read_line(); // 선택지 입력받기
-        trim(input);
-        to_lower(input);
-        if (!strcmp(input, "1") || !strcmp(input, "one")) {
+        int ret = command_prompt(3);
+        if (ret == 0) {
+            return;
+        } else if (ret == 1) {
             pay_all_at_once(table);
             return;
-        } else if (!strcmp(input, "2") || !strcmp(input, "two")) {
+        } else if (ret == 2) {
             pay_with_ratio(table);
             return;
-        } else if (!strcmp(input, "3") || !strcmp(input, "three")) {
+        } else if (ret == 3) {
             pay_partially(table);
             return;
-        } else if (!strcmp(input, "0") || !strcmp(input, "back")) {
-            return;
-        } else {
-            int cmd_int;
-            if (strlen(input) == 0) {
-                printf("오류 : 명령어를 입력해주세요.\n");
-            } else if (is_contain_spaces(input)) {
-                printf("오류 : 명령어가 너무 많습니다. 최대 1개의 명령어만 인자로 입력해주세요.\n");
-            } else if ((cmd_int = is_correct_command(input)) != -1) {
-                printf("오류 : 현재 메뉴에 해당 선택지는 존재하지 않습니다.\n");
-            } else {
-                printf("오류 : '%s'이라는 명령어는 없습니다\n", input);
-            }
-            printf("-----------------+-------------------------------------+----------------------------------\n");
-            printf("명령어군\t|\t설명\n");
-            printf("1 one\t|\t선택지의 1번 메뉴로 갑니다.\n");
-            printf("2 two\t|\t선택지의 2번 메뉴로 갑니다.\n");
-            printf("3 three\t|\t선택지의 3번 메뉴로 갑니다.\n");
-            printf("0 back\t|\t이전 메뉴로 돌아갑니다.\n");
-            printf("-----------------+-------------------------------------+----------------------------------\n");
         }
-        free(input);
     }
 }
 
@@ -80,34 +60,13 @@ void pay_all_at_once(int table_num) {
         printf("\t1. 결제하기\n");
         printf("\t0. 돌아가기\n");
         printf("POS / 한 번에 결제 - 번호 선택 > ");
-        char* confirm_str = read_line(); // 선택지 입력받기
         
-        trim(confirm_str);
-        to_lower(confirm_str);
-        if (!strcmp(confirm_str, "0") || !strcmp(confirm_str, "back")) {
-            free(confirm_str); // 기존 문자열 free
-            return; // 돌아가기
-        } else if (!strcmp(confirm_str, "1") || !strcmp(confirm_str, "one")){
-            free(confirm_str); // 기존 문자열 free
-            break; // 결제 진행
-        }else {
-            int cmd_int;
-            if (strlen(confirm_str) == 0) {
-                printf("오류 : 명령어를 입력해주세요.\n");
-            } else if (is_contain_spaces(confirm_str)) {
-                printf("오류 : 명령어가 너무 많습니다. 최대 1개의 명령어만 인자로 입력해주세요.\n");
-            } else if ((cmd_int = is_correct_command(confirm_str)) != -1) {
-                printf("오류 : 현재 메뉴에 해당 선택지는 존재하지 않습니다.\n");
-            } else {
-                printf("오류 : '%s'이라는 명령어는 없습니다\n", confirm_str);
-            }
-            printf("-----------------+-------------------------------------+----------------------------------\n");
-            printf("명령어군\t|\t설명\n");
-            printf("1 one\t|\t선택지의 1번 메뉴로 갑니다.\n");
-            printf("0 back\t|\t이전 메뉴로 돌아갑니다.\n");
-            printf("-----------------+-------------------------------------+----------------------------------\n");
+        int ret = command_prompt(1);
+        if (ret == 0) {
+            return;
+        } else if (ret == 1) {
+            break;
         }
-        free(confirm_str); // 입력받은 문자열 free
     }
     end_purchase(table_num); // 결제 종료
     printf("결제가 완료되었습니다.\n");
@@ -120,45 +79,22 @@ void pay_with_ratio(int table_num) {
     int people_num;
     char* input;
     char* confirm_str;
+    
     while(1) {
         printf("\t1. 비율 입력받기\n");
         printf("\t0. 돌아가기\n");
         printf("POS / 비율 결제 - 번호 선택 > ");
-        confirm_str = read_line(); // 선택지 입력받기
         
-        trim(confirm_str);
-        to_lower(confirm_str);
-        if (!strcmp(confirm_str, "0") || !strcmp(confirm_str, "back")) {
-            free(confirm_str); // 기존 문자열 free
-            return; // 돌아가기
-        } else if (!strcmp(confirm_str, "1") || !strcmp(confirm_str, "one")){
-            free(confirm_str); // 기존 문자열 free
-            break; // 결제 진행
-        } else {
-            int cmd_int;
-            if (strlen(confirm_str) == 0) {
-                printf("오류 : 명령어를 입력해주세요.\n");
-            } else if (is_contain_spaces(confirm_str)) {
-                printf("오류 : 명령어가 너무 많습니다. 최대 1개의 명령어만 인자로 입력해주세요.\n");
-            } else if ((cmd_int = is_correct_command(confirm_str)) != -1) {
-                printf("오류 : 현재 메뉴에 해당 선택지는 존재하지 않습니다.\n");
-            } else {
-                printf("오류 : '%s'이라는 명령어는 없습니다\n", confirm_str);
-            }
-            printf("-----------------+-------------------------------------+----------------------------------\n");
-            printf("명령어군\t|\t설명\n");
-            printf("1 one\t|\t선택지의 1번 메뉴로 갑니다.\n");
-            printf("0 back\t|\t이전 메뉴로 돌아갑니다.\n");
-            printf("-----------------+-------------------------------------+----------------------------------\n");
+        int ret = command_prompt(1);
+        if (ret == 0) {
+            return;
+        } else if (ret == 1) {
+            break;
         }
-        free(confirm_str); // 입력받은 문자열 free
-//        // 입력 오류, 다시 입력받기
-//        printf("오류 : 0(back) 또는 1(one)만 입력하십시오.\n");
-//        free(confirm_str); // 기존 문자열 free
     }
 
-    
     printf("주문 금액 확인 : %d\n", order_price);
+
     while (1) {
         printf("결제할 사람 수 : ");
         input = read_line(); // 입력받기
@@ -210,33 +146,13 @@ void pay_with_ratio(int table_num) {
         printf("\t1. 결제하기\n");
         printf("\t0. 돌아가기\n");
         printf("POS / 비율 결제 - 번호 선택 > ");
-        confirm_str = read_line(); // 선택지 입력받기
         
-        trim(confirm_str);
-        to_lower(confirm_str);
-        if (!strcmp(confirm_str, "0") || !strcmp(confirm_str, "back")) return; // 돌아가기
-        else if (!strcmp(confirm_str, "1") || !strcmp(confirm_str, "one")) break; // 결제 진행
-        else {
-           int cmd_int;
-           if (strlen(confirm_str) == 0) {
-               printf("오류 : 명령어를 입력해주세요.\n");
-           } else if (is_contain_spaces(confirm_str)) {
-               printf("오류 : 명령어가 너무 많습니다. 최대 1개의 명령어만 인자로 입력해주세요.\n");
-           } else if ((cmd_int = is_correct_command(confirm_str)) != -1) {
-               printf("오류 : 현재 메뉴에 '%d'번 선택지는 존재하지 않습니다.\n", cmd_int);
-           } else {
-               printf("오류 : '%s'이라는 명령어는 없습니다\n", confirm_str);
-           }
-           printf("-----------------+-------------------------------------+----------------------------------\n");
-           printf("명령어군\t|\t설명\n");
-           printf("1 one\t|\t선택지의 1번 메뉴로 갑니다.\n");
-           printf("0 back\t|\t이전 메뉴로 돌아갑니다.\n");
-           printf("-----------------+-------------------------------------+----------------------------------\n");
-       }
-       free(confirm_str); // 입력받은 문자열 free
-//        // 입력 오류, 다시 입력받기
-//        printf("오류 : 0(back) 또는 1(one)만 입력하십시오.\n");
-//        free(confirm_str); // 기존 문자열 free
+        int ret = command_prompt(1);
+        if (ret == 0) {
+            return;
+        } else if (ret == 1) {
+            break;
+        }
     }
 
     int *result_arr = malloc(sizeof(int) * people_num);
@@ -263,39 +179,13 @@ void pay_partially(int table_num) {
         printf("\t1. 일부 결제할 상품 입력\n");
         printf("\t0. 돌아가기\n");
         printf("POS / 일부만 결제 - 번호 선택 > ");
-        char* confirm_str = read_line(); // 선택지 입력받기
-
-        trim(confirm_str);
-        to_lower(confirm_str);
-        if (!strcmp(confirm_str, "0") || !strcmp(confirm_str, "back")) {
-            free(confirm_str); // 기존 문자열 free
-            return; // 돌아가기
-        } else if (!strcmp(confirm_str, "1") || !strcmp(confirm_str, "one")){
-            free(confirm_str); // 기존 문자열 free
-            break; // 결제 진행
-        }else {
-            int cmd_int;
-            if (strlen(confirm_str) == 0) {
-                printf("오류 : 명령어를 입력해주세요.\n");
-            } else if (is_contain_spaces(confirm_str)) {
-                printf("오류 : 명령어가 너무 많습니다. 최대 1개의 명령어만 인자로 입력해주세요.\n");
-            } else if ((cmd_int = is_correct_command(confirm_str)) != -1) {
-                printf("오류 : 현재 메뉴에 해당 선택지는 존재하지 않습니다.\n");
-            } else {
-                printf("오류 : '%s'이라는 명령어는 없습니다\n", confirm_str);
-            }
-            printf("-----------------+-------------------------------------+----------------------------------\n");
-            printf("명령어군\t|\t설명\n");
-            printf("1 one\t|\t선택지의 1번 메뉴로 갑니다.\n");
-            printf("0 back\t|\t이전 메뉴로 돌아갑니다.\n");
-            printf("-----------------+-------------------------------------+----------------------------------\n");
+        int ret = command_prompt(1);
+        if (ret == 0) {
+            return;
+        } else if (ret == 1) {
+            break;
         }
-        free(confirm_str);
-//        // 입력 오류, 다시 입력받기
-//        printf("오류 : 0(back) 또는 1(one)만 입력하십시오.\n");
-//        free(confirm_str); // 기존 문자열 free
     }
-
     
     printf("주문 금액 확인 : %d\n", order_price);
     printf("주문내역 :\n");
@@ -500,34 +390,12 @@ int partial_pay(int table_num, char* input) {
         printf("\t0. 돌아가기\n");
         printf("POS / 일부만 결제 - 번호 선택 > ");
         
-        char* confirm_str = read_line(); // 선택지 입력받기
-
-        trim(confirm_str);
-        to_lower(confirm_str);
-        if (!strcmp(confirm_str, "0") || !strcmp(confirm_str, "back")) {
-            free(confirm_str); // 기존 문자열 free
-            return -10; // 돌아가기
-        } else if (!strcmp(confirm_str, "1") || !strcmp(confirm_str, "one")) {
-            free(confirm_str); // 기존 문자열 free
-            break; // 결제 진행
-        }else {
-            int cmd_int;
-            if (strlen(confirm_str) == 0) {
-                printf("오류 : 명령어를 입력해주세요.\n");
-            } else if (is_contain_spaces(confirm_str)) {
-                printf("오류 : 명령어가 너무 많습니다. 최대 1개의 명령어만 인자로 입력해주세요.\n");
-            } else if ((cmd_int = is_correct_command(confirm_str)) != -1) {
-                printf("오류 : 현재 메뉴에 해당 선택지는 존재하지 않습니다.\n");
-            } else {
-                printf("오류 : '%s'이라는 명령어는 없습니다\n", confirm_str);
-            }
-            printf("-----------------+-------------------------------------+----------------------------------\n");
-            printf("명령어군\t|\t설명\n");
-            printf("1 one\t|\t선택지의 1번 메뉴로 갑니다.\n");
-            printf("0 back\t|\t이전 메뉴로 돌아갑니다.\n");
-            printf("-----------------+-------------------------------------+----------------------------------\n");
+        int ret = command_prompt(1);
+        if (ret == 0) {
+            return -10;
+        } else if (ret == 1) {
+            break;
         }
-        free(confirm_str);
     }
 
     int total_price = 0; // 결제하려는 토탈 금액
