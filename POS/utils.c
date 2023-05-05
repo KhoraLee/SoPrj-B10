@@ -126,7 +126,7 @@ int is_correct_command(char *string) {
     };
     int flag = -1;
     for (int i = 0; i < 10 && flag == -1; i++) {
-        if(strcmp(command_list[i], string)) {
+        if(strcmp(command_list[i], string) == 0) {
             if (i % 2 != 0) {
                 return (i - 1) / 2;
             } else {
