@@ -172,7 +172,7 @@ int checkDate(char date_input[]) { // 날짜 규칙확인
         year = day / 10000;
         month = (day / 100) - year * 100;
         date = day % 100;
-        if (month > 12)
+        if (month > 12 && month <1)
             return -2; // 그레고리 력에 존재하는 날이 아님
         if ((year % 4 == 0) && !((year % 100) == 0 && year % 400 != 0)) {
             if (date <= leap_year_dates[month - 1]&&date>0)
@@ -197,16 +197,16 @@ int checkDate(char date_input[]) { // 날짜 규칙확인
         year = day / 10000;
         month = (day / 100) - year * 100;
         date = day % 100;
-        if (month > 12)
+        if (month > 12 && month<1)
             return -2; // 그레고리 력에 존재하는 날이 아님
         if ((year % 4 == 0) && !((year % 100) == 0 && year % 400 != 0)) {
-            if (date <= leap_year_dates[month - 1])
+            if (date <= leap_year_dates[month - 1] && date >0)
                 return day;// 올바른 입력
             else
                 return -2;// 그레고리 력에 존재하는 날이 아님
         }
         else {
-            if (date <= non_leap_year_dates[month - 1])
+            if (date <= non_leap_year_dates[month - 1] && date>0)
                 return day;// 올바른 입력
             else
                 return -2;// 그레고리 력에 존재하는 날이 아님
