@@ -11,5 +11,6 @@
 #include <stdio.h>
 
 int command_prompt(int max);
+int command_prompt_b(int max, int back);
 
 #endif /* common_prompts_h */

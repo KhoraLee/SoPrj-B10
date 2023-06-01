@@ -12,6 +12,10 @@
 #include <stdlib.h>
 
 int command_prompt(int max) {
+    return command_prompt_b(max, 1);
+}
+
+int command_prompt_b(int max, int back) {
     char* input = read_line(); // 선택지 입력받기
     trim(input);
     to_lower(input);
@@ -20,7 +24,7 @@ int command_prompt(int max) {
         printf("오류 : 명령어를 입력해주세요.\n");
     } else if (is_contain_spaces(input)) {
         printf("오류 : 명령어가 너무 많습니다. 최대 1개의 명령어만 인자로 입력해주세요.\n");
-    } else if (ret > max) {
+    } else if (ret > max || (back == 0 && ret == 0)) {
         printf("오류 : 현재 메뉴에 '%d'번 선택지는 존재하지 않습니다.\n", ret);
     } else if (ret < 0) {
         printf("오류 : '%s'이라는 명령어는 없습니다\n", input);
@@ -34,7 +38,7 @@ int command_prompt(int max) {
     if (2 <= max) printf("2 two\t|\t선택지의 2번 메뉴로 갑니다.\n");
     if (3 <= max) printf("3 three\t|\t선택지의 3번 메뉴로 갑니다.\n");
     if (4 <= max) printf("4 four\t|\t선택지의 4번 메뉴로 갑니다.\n");
-    printf("0 back\t|\t이전 메뉴로 돌아갑니다.\n");
+    if (back == 1) printf("0 back\t|\t이전 메뉴로 돌아갑니다.\n");
     printf("-----------------+-------------------------------------+----------------------------------\n");
 
     free(input);
