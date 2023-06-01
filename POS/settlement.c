@@ -201,10 +201,12 @@ int read_settlement_file(char date_input[]) {
 
 int read_settlement_line(FILE* fp, char date_input[]) {
     int length;
-    char c, date[8];
+    char c;
     int price = 0;
-    char checkdate[8];
+    char checkdate[9], date[9];
     int day, checkday;
+    memset(date, '\0', sizeof(date));
+    memset(checkdate, '\0', sizeof(checkdate));
 
     c = getc(fp);
     if(c == EOF)
