@@ -277,7 +277,7 @@ int read_product_line(FILE* fp){
 int productcmp(char* name){//상품명 인수로 받아서 all_product.list랑 동치비교
     int i, j, k;
     for(i=0; i<all_products.length; i++){
-        for(j = k = 0; name[j] || all_products.products[i].name[k]; j++, k++){
+        for(j = k = 0; name[j] || all_products.products[i].name[k]; ){
             if(name[j] == ' '){//공백 무시
                 j++;
                 continue;
@@ -288,6 +288,8 @@ int productcmp(char* name){//상품명 인수로 받아서 all_product.list랑 �
             }
             if(tolower(name[j])!=tolower(all_products.products[i].name[k]))//대소문자 구분 X
                 break;
+            j++;
+            k++;
             }
         if(!name[j] && !all_products.products[i].name[k]){
             return i;//둘 다 \0까지 도달하면 인덱스 반환
