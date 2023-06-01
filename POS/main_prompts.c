@@ -17,7 +17,7 @@ void main_prompt() {
         printf("<메인 메뉴>\n");
         printf("\t1. 판매 관리\n");
         printf("\t2. 날짜별 정산\n");
-        printf("\t3. 새 상품 추가\n");
+        printf("\t3. 상품 관리\n");
         printf("\t4. 종료\n");
 
         printf("POS / 메인 메뉴 - 번호 선택 > ");
@@ -44,7 +44,7 @@ void main_prompt() {
             } else if (ret == 2) {
                 settlement_prompt();
             } else if (ret == 3) {
-                add_product_prompt();
+                product_management_prompt();
             } else if (ret == 4) {
                 if (exit_check() == 0) {
                     write_product_file();

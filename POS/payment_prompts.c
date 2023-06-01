@@ -248,17 +248,17 @@ void calculate_ratio(int tablenum, int number_of_people, int ratio[], int pay_in
 void end_purchase(int tablenum) {
     Table *table = &tables[tablenum - 1];
     // 전체 리스트에 결제된 수량 더하기
-    int i, j;
-    for (i = 0; i < table->length; i++) { // tables[tablenum].list[] 인덱스
-        for (j = 0; j < all_products.length; j++) { // allproduct.list[] 인덱스
-            // 주문시에 all_product와 같은 주문명 받아오므로 공백 검사 불필요
-            // 특정 상품이 주문된 상태에서 상품 정보 변경될 시 고려 필요
-            if (!strcmp(table->products[i].name, all_products.products[j].name)) {
-                all_products.products[j].amount += table->products[i].amount; // 결제수량 더해주기
-                break; // 다음 tables[tablenum].list 탐색
-            }
-        }
-    }
+    //int i, j;
+    //for (i = 0; i < table->length; i++) { // tables[tablenum].list[] 인덱스
+    //    for (j = 0; j < all_products.length; j++) { // allproduct.list[] 인덱스
+    //        // 주문시에 all_product와 같은 주문명 받아오므로 공백 검사 불필요
+    //        // 특정 상품이 주문된 상태에서 상품 정보 변경될 시 고려 필요
+    //        if (!strcmp(table->products[i].name, all_products.products[j].name)) {
+
+    //            break; // 다음 tables[tablenum].list 탐색
+    //        }
+    //    }
+    //}
 
     // 테이블 주문내역 초기화
     free(table->products);

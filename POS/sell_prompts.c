@@ -156,6 +156,7 @@ void order_product(int table_num) {
         if (ret == 0) {
             return;
         } else if (ret == 1) {
+
             break;
         }
     }
@@ -175,6 +176,7 @@ void add_order(int table_num, Product *order_product) {
         {    //한개 시켰다가 취소해서 0인경우 ?  ... 상관없음
             is_already_existing_order = 1;
             table->products[j].amount++; //주문한 상품의 개수 +1
+            all_products.products[j].amount++;
             break;
         }
     }
@@ -269,6 +271,7 @@ void cancel_order(int table_num) {
     }
     
     table->products[idx].amount--; //주문한 상품의 개수 -1
+    all_products.products[idx].amount--;
 }
 
 int is_empty_table(int table_num) {
