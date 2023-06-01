@@ -13,4 +13,6 @@
 int command_prompt(int max);
 int command_prompt_b(int max, int back);
 
+int read_amount(void);
+
 #endif /* common_prompts_h */

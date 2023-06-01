@@ -145,6 +145,14 @@ int is_contain_spaces(char* string) {
     return flag;
 }
 
+int is_contain_non_number(char* string) {
+    int flag = 0;
+    for (int i = 0; i < strlen(string) && flag == 0; i++) {
+        if (string[i] < '0' || string[i] > '9') flag = 1;
+    }
+    return flag;
+}
+
 int is_alpha(int c){
     return ((c >= 'a' && c <= 'z') || (c >= 'A' && c <= 'Z') ? 1 : 0);
 }

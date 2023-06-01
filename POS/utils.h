@@ -25,6 +25,9 @@ int is_correct_command(char *string);
 // 문자열 내부에 공백이 있는지 체크
 int is_contain_spaces(char* string);
 
+// 문자열 내부에 숫자가 아닌 문자가 있는지 체크
+int is_contain_non_number(char* string);
+
 // 문자가 알파벳인지 체크
 // isalpha가 있지만 윈도우 환경에서 한글이 들어가면 뻗어버리는 문제가 있음.
 int is_alpha(int c);

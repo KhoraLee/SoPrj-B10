@@ -60,6 +60,13 @@ void test_isAlpha(void) {
     TEST_ASSERT_EQUAL_INT(0, is_alpha('\t'));
 }
 
+void test_is_contain_non_number(void) {
+    TEST_ASSERT_EQUAL_INT(0, is_contain_non_number("12498"));
+    TEST_ASSERT_EQUAL_INT(1, is_contain_non_number("a123s"));
+    TEST_ASSERT_EQUAL_INT(1, is_contain_non_number("-1="));
+    TEST_ASSERT_EQUAL_INT(1, is_contain_non_number("가나13"));
+}
+
 //void test_isNum
  
 int main(void) {
@@ -67,5 +74,6 @@ int main(void) {
     RUN_TEST(test_trim);
     RUN_TEST(test_isAlpha);
     RUN_TEST(test_check_correct_command);
+    RUN_TEST(test_is_contain_non_number);
     return UNITY_END();
 }

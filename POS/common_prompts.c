@@ -44,3 +44,27 @@ int command_prompt_b(int max, int back) {
     free(input);
     return -1;
 }
+
+int read_amount() {
+    char* input = read_line(); // 개수 입력받기
+    trim(input); // 앞뒤 횡공백류 제거
+    int result = 0;
+    if (strlen(input) == 0) {
+        result = -1;
+    } else if (is_contain_spaces(input)) {
+        result = -2;
+    } else if (is_contain_non_number(input)) {
+        result = -3;
+    } else if (input[0] == '0') {
+        if (strlen(input) == 1) {
+            result = -5;
+        } else {
+            result = -4;
+        }
+    } else {
+        result = atoi(input);
+        if (result > 20) result = -5;
+    }
+    free(input);
+    return result;
+}
