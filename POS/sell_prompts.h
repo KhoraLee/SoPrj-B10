@@ -11,7 +11,7 @@ void print_receipt(int table_num);
 
 void order_product(int table_num);
 
-void add_order(int table_num, Product *order_product);
+void add_order(int table_num, Product *order_product, int order_quantity);
 
 void cancel_order(int table_num);
 

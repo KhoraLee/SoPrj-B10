@@ -123,7 +123,7 @@ void order_product(int table_num) {
         printf("%d. %s\t%lld\n", i + 1, all_products.products[i].name, all_products.products[i].price);
     }
 
-    // 입력받기
+    // 상품명 입력받기
     while (1) {
         printf("POS /(상품 주문) - 상품명 입력 > ");
         char *input = read_line();
@@ -146,6 +146,31 @@ void order_product(int table_num) {
 
         printf("오류 : 상품목록에 없는 상품명입니다. 상품목록에 있는 상품명을 입력해주세요\n");
     }
+
+    // 상품수량 입력받기
+    int temp_amount;
+    printf("상품을 몇개 주문 하시겠습니까?\n");
+    while (1) {
+        printf("POS /(상품 주문) - 상품 개수 입력 > ");
+        temp_amount = read_amount();
+        if (temp_amount == -1) {
+            printf("오류 : 개수를 입력해주세요.\n");
+        }
+        else if (temp_amount == -2) {
+            printf("오류 : 개수는 다음과 같은 형식으로 입력할 수 있습니다. <횡공백류열0><개수><횡공백류열0>\n");
+        }
+        else if (temp_amount == -3) {
+            printf("오류 : 개수에 숫자가 아닌 것이 포함되어 있습니다. 개수는 숫자로만 입력할 수 있습니다.\n");
+        }
+        else if (temp_amount == -4) {
+            printf("오류 : 개수의 첫글자가 0입니다. 개수는 0으로 시작할 수 없습니다.\n");
+        }
+        else if (temp_amount == -5) {
+            printf("오류 : 개수는 1이상 20이하의 숫자여야 합니다.");
+        }
+        else 
+            break;
+    }
     
     while(1) {
         printf("정말로 주문하시겠습니까?\n");
@@ -162,10 +187,10 @@ void order_product(int table_num) {
     }
 
     // 주문목록에 추가
-    add_order(table_num, product_to_order);
+    add_order(table_num, product_to_order, temp_amount);
 }
 
-void add_order(int table_num, Product *order_product) {
+void add_order(int table_num, Product *order_product, int order_quantity) {
     Table *table = &tables[table_num - 1];
     int is_already_existing_order = 0; //테이블 내에 상품이 있는지 확인 .. 있으면 1, 없으면 0
     
@@ -175,8 +200,8 @@ void add_order(int table_num, Product *order_product) {
         if (!strcmp(order_product->name, tname)) // 테이블 내에 상품이 이미 있음
         {    //한개 시켰다가 취소해서 0인경우 ?  ... 상관없음
             is_already_existing_order = 1;
-            table->products[j].amount++; //주문한 상품의 개수 +1
-            all_products.products[j].amount++;
+            all_products.products[j].amount += order_quantity;
+            table->products[j].amount += order_quantity; //주문한 상품의 개수 더해주기
             break;
         }
     }
@@ -188,7 +213,7 @@ void add_order(int table_num, Product *order_product) {
             }
             strcpy(table->products[0].name, order_product->name); //상품명 저장
             table->products[0].price = order_product->price; //가격 저장
-            table->products[0].amount = 1; //개수 저장
+            table->products[0].amount = order_quantity; //개수 저장
             table->length++; //다음 인덱스를 가리킴
         } else {
             void* realloced = realloc(table->products, (table->length + 1) * sizeof(Product));
@@ -200,7 +225,7 @@ void add_order(int table_num, Product *order_product) {
             }
             strcpy(table->products[table->length].name, order_product->name); //상품명 저장
             table->products[table->length].price = order_product->price; //가격 저장
-            table->products[table->length].amount = 1; //개수 저장
+            table->products[table->length].amount = order_quantity; //개수 저장
             table->length++;
         }
     }
@@ -255,6 +280,35 @@ void cancel_order(int table_num) {
             break;
         }
     }
+
+    int temp_amount;
+    printf("상품을 몇개 취소하시겠습니까?\n");
+    while (1) {
+        printf("POS / 상품 취소 - 상품 개수 입력 > ");
+        temp_amount = read_amount();
+        if (temp_amount == -1) {
+            printf("오류 : 개수를 입력해주세요.\n");
+        }
+        else if (temp_amount == -2) {
+            printf("오류 : 개수는 다음과 같은 형식으로 입력할 수 있습니다. <횡공백류열0><개수><횡공백류열0>\n");
+        }
+        else if (temp_amount == -3) {
+            printf("오류 : 개수에 숫자가 아닌 것이 포함되어 있습니다. 개수는 숫자로만 입력할 수 있습니다.\n");
+        }
+        else if (temp_amount == -4) {
+            printf("오류 : 개수의 첫글자가 0입니다. 개수는 0으로 시작할 수 없습니다.\n");
+        }
+        else if (temp_amount == -5) {
+            printf("오류 : 개수는 1이상 20이하의 숫자여야 합니다.");
+        }
+        else {
+            if (temp_amount > table->products[idx].amount) {
+                printf("오류 : 취소하는 상품의 개수가 너무 많습니다. 주문된 상품의 개수 이하로 입력할 수 있습니다.\n");
+            }
+            else
+                break;
+        }
+    }
     
     while(1) {
         printf("정말로 취소하시겠습니까?\n");
@@ -270,8 +324,8 @@ void cancel_order(int table_num) {
         }
     }
     
-    table->products[idx].amount--; //주문한 상품의 개수 -1
-    all_products.products[idx].amount--;
+    all_products.products[idx].amount -= temp_amount;
+    table->products[idx].amount -= temp_amount; //주문한 상품의 개수 빼주기
 }
 
 int is_empty_table(int table_num) {
