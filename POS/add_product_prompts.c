@@ -10,26 +10,31 @@
 
 extern Product_Array all_products; // 모든 상품들의 목록을 포함한 구조체
 
-void add_product_prompt() {
+void product_management_prompt() {
     while (1) {
         printf("<상품 추가>\n");
-        printf("\t1. 상품명 입력\n");
+        printf("\t1. 새 상품 추가\n");
+        printf("\t2. 상품 삭제\n");
         printf("\t0. 돌아가기\n");
         
-        printf("POS / 새 상품 추가 - 번호 선택 > ");
-        int ret = command_prompt(1);
+        printf("POS / 상품 관리 - 번호 선택 > ");
+        int ret = command_prompt(2);
         if (ret == 0) {
             return;
         } else if (ret == 1) {
-            if (add_product_prompt2() == 0){
-                return;
-            }
+            add_product_prompt();
+            return;
+            
+        }
+        else if (ret == 2) {
+            remove_product_prompt();
+            return;
         }
     }
 }
 
     
-int add_product_prompt2(){
+void add_product_prompt(){
     char name[16]={0};
     int price;
     int idx;
@@ -42,7 +47,7 @@ int add_product_prompt2(){
                 if ((idx = productcmp(name)) >= 0) { //product_cmp로 동치비교를 해서 동치인 인덱스 반환
                     if (all_products.products[idx].amount > 0) {
                         printf("오류 : 오늘 이미 판매된적 있는 상품입니다. 상품정보를 변경할 수 없습니다.\n");
-                        return 0;
+                        return;
                     }
                 }
                 break;
@@ -74,7 +79,7 @@ int add_product_prompt2(){
             
             int ret = command_prompt(1);
             if (ret == 0) {
-                return 0;
+                return;
             } else if (ret == 1) {
                 add_product(name, price);
                 break;
@@ -89,9 +94,8 @@ int add_product_prompt2(){
             
             int ret = command_prompt(1);
             if (ret == 0) {
-                return 0;
+                return;
             } else if (ret == 1) {
-                add_product(name, price);
                 for(i=0; i<16; i++)
                     name[i] = '\0';
                 break;
@@ -100,6 +104,86 @@ int add_product_prompt2(){
     }
 }
     
+void remove_product_prompt() {
+    char name[16] = { 0 };
+    int idx;
+    int i;
+    if (all_products.length == 0) {
+        printf("오류 : 삭제할 상품이 존재하지 않습니다.\n");
+        return;
+    }
+
+    while (1) {
+        while (1) {
+            printf("상품 목록 :\n");
+            for (i = 0; i < all_products.length; i++)
+                printf("%d.%s\n", i + 1, all_products.products[i].name);
+            printf("POS / 상품 삭제 - 상품명 입력 > ");
+            if (read_name(name))
+                break;
+            else {
+                printf("오류 : 존재하지 않는 상품명입니다. 올바른 상품명을 입력해주세요.\n");
+                for (i = 0; i < 16; i++)
+                    name[i] = '\0';
+                while (getchar() != '\n');
+            }
+        }
+
+        if ((idx = productcmp(name)) >= 0) { //product_cmp로 동치비교를 해서 동치인 인덱스 반환
+            if (all_products.products[idx].amount > 0) {
+                printf("오류 : 오늘 이미 판매된적 있는 상품입니다. 상품을 삭제할 수 없습니다.\n");
+                return;
+            }
+        }
+
+        while (1) {
+            printf("정말 삭제하시겠습니까?\n");
+            printf("\t상품명: %s\n", name);
+            printf("\t1. 삭제하기\n");
+            printf("\t0. 돌아가기\n");
+            printf("POS / 상품 삭제 - 번호선택 > ");
+
+            int ret = command_prompt(1);
+            if (ret == 0) {
+                return;
+            }
+            else if (ret == 1) {
+                remove_product(idx);
+                break;
+            }
+        }
+
+        while (1) {
+            printf("계속 삭제하시겠습니까? > \n");
+            printf("\t1. 계속 삭제하기\n");
+            printf("\t0. 돌아가기\n");
+            printf("POS / 상품 삭제 - 번호 선택 > \n");
+
+
+            int ret = command_prompt(1);
+            if (ret == 0) {
+                return 0;
+            }
+            else if (ret == 1) {
+                for (i = 0; i < 16; i++)
+                    name[i] = '\0';
+                break;
+            }
+        }
+    }
+}
+
+void remove_product(int idx){
+    for (int i = idx; i < all_products.length-1; i++) {
+        all_products.products[i].amount = all_products.products[i + 1].amount;
+        strcpy(all_products.products[i].name, all_products.products[i + 1].name);
+        all_products.products[i].price = all_products.products[i + 1].price;
+    }
+    all_products.length--;
+    return;
+}
+
+
 int read_name(char* np) {
     char c;
     int length;
