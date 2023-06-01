@@ -14,7 +14,7 @@
 #include <stdlib.h>
 #include <string.h>
 
-extern Table tables[4]; // 테이블
+extern Table *tables; // 테이블
 extern Product_Array all_products;
 
 void sell_prompt() {
@@ -90,7 +90,7 @@ void print_receipt(int table_num) {
     // 주문 내역 출력
     for (int i = 0; i < table->length; i++) {
         if (table->products[i].amount == 0) continue;
-        printf("\t%d.%s\t%d\t%d\n", i+1, table->products[i].name, table->products[i].price, table->products[i].amount);
+        printf("\t%d.%s\t%lld\t%lld\n", i+1, table->products[i].name, table->products[i].price, table->products[i].amount);
         total_price += table->products[i].price * table->products[i].amount;
     }
     // 합계 금액 출력
@@ -120,7 +120,7 @@ void order_product(int table_num) {
     printf("\t상품 목록:\n");
     for (i = 0; i < all_products.length; i++)
     {
-        printf("%d. %s\t%d\n", i + 1, all_products.products[i].name, all_products.products[i].price);
+        printf("%d. %s\t%lld\n", i + 1, all_products.products[i].name, all_products.products[i].price);
     }
 
     // 입력받기

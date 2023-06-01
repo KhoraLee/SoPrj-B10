@@ -8,7 +8,7 @@
 #include <string.h>
 #include <ctype.h>
 
-extern Table tables[4]; // 테이블 4개
+extern Table *tables; // 테이블
 extern Product_Array all_products; // 모든 상품들의 목록을 포함한 구조체
 extern int date;
 
@@ -191,7 +191,7 @@ void pay_partially(int table_num) {
     printf("주문내역 :\n");
     // 주문 내역 출력
     for (int i = 0; i < table->length; i++) {
-        printf("%s\t%d\t%d\n", table->products[i].name, table->products[i].price, table->products[i].amount);
+        printf("%s\t%lld\t%lld\n", table->products[i].name, table->products[i].price, table->products[i].amount);
     }
     
     while(1) {

@@ -12,7 +12,7 @@
 
 #define PRODUCTFILE "product.txt"
 
-extern Table tables[4]; // 테이블 4개
+extern Table *tables; // 테이블
 extern Product_Array all_products; // 모든 상품들의 목록을 포함한 구조체
 extern char base_dir[];
 
@@ -338,7 +338,7 @@ void write_product_file(void){
     }
     
     for(i=0; i<all_products.length; i++){
-        fprintf(fp, "%-15s\t\t%d\n", all_products.products[i].name, all_products.products[i].price);
+        fprintf(fp, "%-15s\t\t%lld\n", all_products.products[i].name, all_products.products[i].price);
     }
     fclose(fp);
 }

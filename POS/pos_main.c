@@ -8,7 +8,8 @@
 #include <stdlib.h>
 #include <locale.h>
 
-Table tables[4]; // 테이블 4개
+Table *tables; // 테이블 4개
+int table_amount;
 Product_Array all_products; // 모든 상품들의 목록을 포함한 구조체
 char base_dir[FILENAME_MAX];
 int date; // 로그인된 날짜
@@ -21,6 +22,8 @@ void pos_main(char* path) {
     get_current_dir(path, base_dir);
     // 파일 무결성 검사
     if(read_product_file() == -1) exit(EXIT_FAILURE);
+    
+    tables = malloc(sizeof(Table) * 4); // for tmp TODO: allocate memory based on file
     
     // 로그인
     while (1) {

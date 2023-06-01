@@ -8,7 +8,7 @@
 #include <stdlib.h>
 #include <string.h>
 
-extern Table tables[4]; // 테이블 4개
+extern Table *tables; // 테이블
 extern Product_Array all_products; // 모든 상품들의 목록을 포함한 구조체
 extern int date;
 
