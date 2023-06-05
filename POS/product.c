@@ -1,5 +1,6 @@
 #include "product.h"
 #include "types.h"
+#include "utils.h"
 
 #include <ctype.h>
 #include <errno.h>
@@ -13,6 +14,7 @@
 #define PRODUCTFILE "product.txt"
 
 extern Table *tables; // 테이블
+extern int table_amount;
 extern Product_Array all_products; // 모든 상품들의 목록을 포함한 구조체
 extern char base_dir[];
 
@@ -70,6 +72,8 @@ int read_product_file(void){
         printf("오류 : 상품파일 %s에 대한 입출력 권한이 없습니다. 프로그램을 종료합니다.\n", datafile_dir);
         exit(EXIT_FAILURE);
     }
+    
+    table_amount = read_table_amounts_line(fp);
 
     while(1){
         fgetpos(fp, &p);//잘못된 입력 출력하기 위해
@@ -339,8 +343,49 @@ void write_product_file(void){
         exit(EXIT_FAILURE);
     }
     
+    // 테이블 개수
+    fprintf(fp, "%d\n", table_amount);
+    
+    // 상품
     for(i=0; i<all_products.length; i++){
         fprintf(fp, "%-15s\t\t%lld\n", all_products.products[i].name, all_products.products[i].price);
     }
     fclose(fp);
+}
+
+int read_table_amounts_line(FILE* fp) {
+    char tmp;
+    int amount;
+    
+    // EOF Check
+    if ((tmp = getc(fp)) == EOF) {
+        return -1;
+    } else {
+        ungetc(tmp, fp);
+    }
+
+    char* line = read_line_f(fp);
+    if (strlen(line) == 0){
+        printf("오류 : 테이블 개수가 입력되어있지 않습니다.\n");
+        printf("%s\n", line);
+        exit(EXIT_FAILURE);
+    } else if (is_contain_non_number(line)) {
+        printf("오류 : 테이블 개수는 숫자로만 입력될 수 있습니다.\n");
+        printf("%s\n", line);
+        exit(EXIT_FAILURE);
+    } else if (line[0] == '0') {
+        if (strlen(line) == 1) {
+            printf("오류 : 테이블 개수는 0일 수 없습니다.\n");
+        } else {
+            printf("오류 : 테이블 개수는 0으로 시작될 수 없습니다.\n");
+        }
+        printf("%s\n", line);
+        exit(EXIT_FAILURE);
+    } else if ((amount = atoi(line)) > 20) {
+        printf("오류 : 테이블 개수는 20을 넘을 수 없습니다.\n");
+        printf("%s\n", line);
+        exit(EXIT_FAILURE);
+    }
+    free(line);
+    return amount;
 }

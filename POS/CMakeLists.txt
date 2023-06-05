@@ -13,6 +13,7 @@ add_library(
 	types.h
 	utils.h
     common_prompts.h
+    table_amount_prompt.h
 	add_product_prompts.c
 	login.c
 	pos_main.c
@@ -24,6 +25,7 @@ add_library(
 	settlement_prompts.c
 	utils.c
     common_prompts.c
+    table_amount_prompt.c
 )
 
 target_include_directories(core INTERFACE ${CMAKE_CURRENT_LIST_DIR})

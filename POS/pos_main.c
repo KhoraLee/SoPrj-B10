@@ -2,6 +2,7 @@
 #include "types.h"
 #include "login.h"
 #include "main_prompts.h"
+#include "table_amount_prompt.h"
 #include "product.h"
 
 #include <stdio.h>
@@ -23,7 +24,19 @@ void pos_main(char* path) {
     // 파일 무결성 검사
     if(read_product_file() == -1) exit(EXIT_FAILURE);
     
-    tables = malloc(sizeof(Table) * 4); // for tmp TODO: allocate memory based on file
+    // table_amount가 -1이라면 테이블 개수 입력 테이블로
+    if (table_amount == -1) table_amount_prompt();
+    if ((tables = malloc(sizeof(Table) * table_amount)) == NULL) {
+        printf("메모리 할당에 실패하였습니다. 프로그램을 종료합니다.\n");
+        exit(EXIT_FAILURE);
+    }
+    
+    // init tables
+    for (int i = 0; i < table_amount; i++) {
+        tables[i].length = 0;
+        tables[i].status = kOrdinary;
+        tables[i].delegate = -1;
+    }
     
     // 로그인
     while (1) {
