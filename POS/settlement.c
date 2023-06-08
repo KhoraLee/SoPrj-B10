@@ -13,6 +13,7 @@
 #include <string.h>
 #include <stdlib.h>
 
+extern int table_amount;
 extern Product_Array all_products;
 extern char base_dir[FILENAME_MAX];
 extern int date;
@@ -314,7 +315,7 @@ int read_settlement_product_line(FILE* fp) {
         return -3;
 
 
-    for (length = 0; length < 4; length++) {
+    for (length = 0; length < table_amount; length++) {
         c = getc(fp);
         if (!isdigit(c)) { //상품개수는 숫자
             break;

@@ -1,4 +1,4 @@
-#include "add_product_prompts.h"
+#include "product_management_prompts.h"
 #include "common_prompts.h"
 #include "types.h"
 #include "product.h"

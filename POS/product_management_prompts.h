@@ -1,5 +1,5 @@
-#ifndef add_product_prompts_h
-#define add_product_prompts_h
+#ifndef product_management_prompts_h
+#define product_management_prompts_h
 
 void product_management_prompt();
 
