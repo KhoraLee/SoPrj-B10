@@ -16,6 +16,7 @@
 
 extern Table *tables; // 테이블
 extern Product_Array all_products;
+extern int table_amount;
 
 void sell_prompt() {
     int table_num;
@@ -47,11 +48,12 @@ void table_management_prompt(int table_num) {
         printf("\t2. 상품 주문\n");
         printf("\t3. 상품 취소\n");
         printf("\t4. 결제\n");
+        printf("\t5. 테이블 합치기\n");
         printf("\t0. 돌아가기\n");
 
         printf("POS / %d번 테이블 - 테이블 번호 선택 > ", table_num);
         
-        int ret = command_prompt(4);
+        int ret = command_prompt(5);
         if (ret == 0) {
             return;
         } else if (ret == 1) {
@@ -74,6 +76,8 @@ void table_management_prompt(int table_num) {
             } else {
                 process_payment(table_num);
             }
+        } else if (ret == 5) {
+            combine_Table(table_num);
         }
     }
 }
@@ -338,5 +342,121 @@ int is_empty_table(int table_num) {
         return 1;
     } else {
         return 0;
+    }
+}
+
+void combine_Table(int table_num) {
+    while (1) {
+        int selected_table;
+
+        while (1) {
+            printf("<%d번 테이블>\n", table_num);
+            printf("\t1. 테이블 합치기\n");
+            printf("\t0. 돌아가기\n");
+            printf("POS / (테이블 합치기) - 번호 선택 > ");
+            int ret = command_prompt(2);
+            if (ret == 0) {
+                return;
+            } else if (ret == 1) {
+                break;
+            }
+        }
+
+        while(1) {
+            printf("<%d번 테이블>\n", table_num);
+            printf("가능한 테이블 목록 :\n");
+            for (int i = 0; i < table_amount; i++) {
+                if ((table_num - 1) == i) continue;
+                if (tables[i].status == kOrdinary) {
+                    printf("\t%d. %d번 테이블\n", i + 1, i + 1);
+                }
+            }
+            printf("POS / (테이블 합치기) - 테이블 번호 선택 > ");
+            selected_table = read_amount();
+            
+            if (selected_table == -1) {
+                printf("오류 : 개수를 입력해주세요.\n");
+            } else if (selected_table == -2) {
+                printf("오류 : 개수는 다음과 같은 형식으로 입력할 수 있습니다. <횡공백류열0><개수><횡공백류열0>\n");
+            } else if (selected_table == -3) {
+                printf("오류 : 개수에 숫자가 아닌 것이 포함되어 있습니다. 개수는 숫자로만 입력할 수 있습니다.\n");
+            } else if (selected_table == -4) {
+                printf("오류 : 개수의 첫글자가 0입니다. 개수는 0으로 시작할 수 없습니다.\n");
+            } else if (selected_table == -5) {
+                printf("오류 : 개수는 1이상 20이하의 숫자여야 합니다.\n");
+            } else if (selected_table > table_amount || tables[selected_table - 1].status != kOrdinary || table_num == selected_table) {
+                printf("오류 : 가능한 테이블 목록에 있는 숫자를 입력해주세요.\n");
+            } else {
+                break;
+            }
+        }
+
+        while (1) {
+            printf("정말로 합치시겠습니까?\n");
+            printf("\t1. 합치기\n");
+            printf("\t0. 돌아가기\n");
+            printf("POS / (테이블 합치기) - 번호 선택 > ");
+            int ret = command_prompt(2);
+            if (ret == 0) {
+                return;
+            } else if (ret == 1) {
+                break;
+            }
+        }
+
+        Table *currunt_T = &tables[table_num - 1];
+        Table *selected_T= &tables[selected_table - 1];
+
+        if (currunt_T->length == 0 && selected_T->length != 0) {
+            if (currunt_T->products == NULL) free(currunt_T->products);
+            currunt_T->products = selected_T->products;
+            currunt_T->length = selected_T->length;
+            selected_T->products = NULL;
+            selected_T->length = 0;
+        } else if (selected_T->length != 0) {
+            for (int i = 0; i < selected_T->length; i++) {
+                int combined = 0;
+                for (int j = 0; j < currunt_T->length && combined == 0; j++) {
+                    if (strcmp(currunt_T->products[j].name, selected_T->products[i].name) == 0) {
+                        currunt_T->products[j].amount += selected_T->products[i].amount;
+                        combined = 1;
+                    }
+                }
+                if (combined == 0) {
+                    currunt_T->length += 1;
+                    void* realloced = realloc(currunt_T->products, currunt_T->length * sizeof(Product));
+                    if (realloced == NULL) {
+                        printf("오류 : 메모리 문제로 테이블 합치기에 실패하였습니다.\n");
+                        exit(EXIT_FAILURE);
+                    } else {
+                        currunt_T->products = realloced;
+                        strcpy(currunt_T->products[currunt_T->length - 1].name, selected_T->products[i].name);
+                        currunt_T->products[currunt_T->length - 1].amount = selected_T->products[i].amount;
+                        currunt_T->products[currunt_T->length - 1].price = selected_T->products[i].price;
+                    }
+
+                }
+            }
+            free(selected_T->products);
+            selected_T->products = NULL;
+            selected_T->length = 0;
+        }
+
+        currunt_T->status = kDelegate;
+        selected_T->status = kCombined;
+        selected_T->delegate = selected_table - 1;
+
+        while (1) {
+            printf("계속하시겠습니까?\n");
+            printf("\t1. 계속하기\n");
+            printf("\t0. 그만두기\n");
+            printf("POS / (테이블 합치기) - 번호 선택 > ");
+            int ret = command_prompt(2);
+            if (ret == 0) {
+                return;
+            } else if (ret == 1) {
+                break;
+            }
+        }
     }
 }
