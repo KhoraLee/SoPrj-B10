@@ -33,7 +33,7 @@ void main_prompt() {
         } else if (ret == 2) {
             settlement_prompt();
         } else if (ret == 3) {
-            product_management_prompt();
+            product_management_prompts();
         } else if (ret == 4) {
             if (exit_check() == 0) {
                 write_product_file();

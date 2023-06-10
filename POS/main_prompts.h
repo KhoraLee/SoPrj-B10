@@ -9,7 +9,7 @@ int exit_check(void);
 
 void settlement_prompt(void);
 
-void product_management_prompt(void);
+void product_management_prompts(void);
 
 
 #endif
