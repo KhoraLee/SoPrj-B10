@@ -357,14 +357,15 @@ void cancel_order(int table_num) {
             strcpy(table->products[i].name, table->products[i + 1].name);
         }
 
-        void* realloced = realloc(table->products, updateLength * sizeof(Product));
-        if (realloced == NULL) {
-            printf("오류 : 메모리 문제로 취소에 실패하였습니다. 이전 메뉴로 돌아갑니다.\n");
-            return;
-        }
-        else {
-            table->products = realloced;
-        }
+        table->products = safe_realloc_trim(table->products, updateLength * sizeof(Product));
+//        void* realloced = realloc(table->products, updateLength * sizeof(Product));
+//        if (realloced == NULL) {
+//            printf("오류 : 메모리 문제로 취소에 실패하였습니다. 이전 메뉴로 돌아갑니다.\n");
+//            return;
+//        }
+//        else {
+//            table->products = realloced;
+//        }
         table->length--;
     }
 }
@@ -464,7 +465,8 @@ void combine_Table(int table_num) {
                     void* realloced = realloc(currunt_T->products, currunt_T->length * sizeof(Product));
                     if (realloced == NULL) {
                         printf("오류 : 메모리 문제로 테이블 합치기에 실패하였습니다.\n");
-                        exit(EXIT_FAILURE);
+                        currunt_T->length -= 1;
+                        return;
                     } else {
                         currunt_T->products = realloced;
                         strcpy(currunt_T->products[currunt_T->length - 1].name, selected_T->products[i].name);

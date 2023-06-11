@@ -242,3 +242,8 @@ void get_current_dir(char *from, char *at) {
     strncpy(at, from, last + 1);
     sprintf(at, "%s%s%c", at, "posdata", divider);
 }
+
+void* safe_realloc_trim(void *p, size_t n) {
+    void *p2 = realloc(p, n);
+    return p2 ? p2 : p;
+}
