@@ -405,19 +405,53 @@ int partial_pay(int table_num, char* input) {
 
     int total_price = 0; // 결제하려는 토탈 금액
 
+    Table* table = &tables[table_num - 1];
+
     for (int i = 0; i < arr_size; i++) {
         int index = index_table[i];
         tables[table_num - 1].products[index].amount -= numbers[i]; // 테이블에 존제하는 갯수 감소
 
-        int ap_index = -1;
-        for (int j = 0; j < all_products.length; j++) {
-            if (strcmp(all_products.products[j].name, tables[table_num - 1].products[index].name) == 0) {
-                ap_index = j;
-                break;
+//        int ap_index = -1;
+//        for (int j = 0; j < all_products.length; j++) {
+//            if (strcmp(all_products.products[j].name, tables[table_num - 1].products[index].name) == 0) {
+//                ap_index = j;
+//                break;
+//            }
+//        }
+//        all_products.products[ap_index].amount += numbers[i]; // 정산을 위해 판매 내역에 더하기
+        total_price += numbers[i] * tables[table_num - 1].products[index].price;
+        
+        // 개수가 0이 되면 배열 당기기
+        if (table->products[index].amount == 0) { //상품이 0개가 되면 realloc 후 땡김
+            int64_t updateLength = table->length - 1; //새로운 realloc 크기
+
+            for (int64_t i = index; i < updateLength; i++) { //앞으로 한칸씩 땡김
+                table->products[i].amount = table->products[i + 1].amount;
+                table->products[i].price = table->products[i + 1].price;
+                strcpy(table->products[i].name, table->products[i + 1].name);
             }
+
+            void* realloced = realloc(table->products, updateLength * sizeof(Product));
+            if (realloced == NULL) {
+                printf("오류 : 메모리 문제로 취소에 실패하였습니다. 이전 메뉴로 돌아갑니다.\n");
+                return;
+            }
+            else {
+                table->products = realloced;
+            }
+            table->length--;
         }
-        all_products.products[ap_index].amount += numbers[i]; // 정산을 위해 판매 내역에 더하기
-        total_price += numbers[i] * all_products.products[ap_index].price;
+    }
+    
+    int purchase_end = 1;
+    for (int i = 0; i < table->length && purchase_end == 1; i++) {
+        if (table->products[i].amount != 0) {
+            purchase_end = 0;
+        }
+    }
+    
+    if (purchase_end == 1) {
+        end_purchase(table_num);
     }
     
     // 작업이 끝났으니 malloc 한 항목들 free
