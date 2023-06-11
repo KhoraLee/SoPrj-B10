@@ -24,20 +24,37 @@ void sell_prompt() {
     while (1) {
         table_num =-1;
         printf("<테이블 리스트>\n");
-        printf("\t1. 1번 테이블\n");
-        printf("\t2. 2번 테이블\n");
-        printf("\t3. 3번 테이블\n");
-        printf("\t4. 4번 테이블\n");
+        for (int i = 1; i <= table_amount; i++) {
+            if (tables[i - 1].status == kCombined) continue;
+            printf("\t%d. %d번 테이블\n", i, i);
+        }
         printf("\t0. 돌아가기\n");
 
         printf("POS / 판매관리(테이블 관리) - 테이블 번호 선택 > ");
         
-        int ret = command_prompt(4);
-        if (ret == 0) {
-            return;
-        } else if (ret != -1) {
-            table_management_prompt(ret);
+        int selected_table;
+        char* input = read_line(); // 개수 입력받기
+        trim(input); // 앞뒤 횡공백류 제거
+        if (strlen(input) == 0) {
+            printf("오류 : 테이블 번호를 입력해주세요.\n");
+        } else if (is_contain_spaces(input)) {
+            printf("오류 : 테이블 번호는 다음과 같은 형식으로 입력할 수 있습니다. <횡공백류열0><개수><횡공백류열0>\n");
+        } else if (is_contain_non_number(input)) {
+            printf("오류 : 테이블 번호의 숫자가 아닌 것이 포함되어 있습니다. 개수는 숫자로만 입력할 수 있습니다.\n");
+        } else if (input[0] == '0') {
+            if (strlen(input) == 1) {
+                return;
+            } else {
+                printf("오류 : 테이블 번호의 첫글자가 0입니다. 개수는 0으로 시작할 수 없습니다.\n");
+            }
+        } else if ((selected_table = atoi(input)) > 20) {
+            printf("오류 : 테이블 번호는 1이상 20이하의 숫자여야 합니다.\n");
+        } else if (selected_table > table_amount || tables[selected_table - 1].status == kCombined) {
+            printf("오류 : 가능한 테이블 목록에 있는 숫자를 입력해주세요.\n");
+        } else {
+            table_management_prompt(selected_table);
         }
+        free(input);
     }
 }
 
@@ -303,7 +320,7 @@ void cancel_order(int table_num) {
             printf("오류 : 개수의 첫글자가 0입니다. 개수는 0으로 시작할 수 없습니다.\n");
         }
         else if (temp_amount == -5) {
-            printf("오류 : 개수는 1이상 20이하의 숫자여야 합니다.");
+            printf("오류 : 개수는 1이상 20이하의 숫자여야 합니다.\n");
         }
         else {
             if (temp_amount > table->products[idx].amount) {
@@ -375,15 +392,15 @@ void combine_Table(int table_num) {
             selected_table = read_amount();
             
             if (selected_table == -1) {
-                printf("오류 : 개수를 입력해주세요.\n");
+                printf("오류 : 테이블 번호를 입력해주세요.\n");
             } else if (selected_table == -2) {
-                printf("오류 : 개수는 다음과 같은 형식으로 입력할 수 있습니다. <횡공백류열0><개수><횡공백류열0>\n");
+                printf("오류 : 테이블 번호는 다음과 같은 형식으로 입력할 수 있습니다. <횡공백류열0><개수><횡공백류열0>\n");
             } else if (selected_table == -3) {
-                printf("오류 : 개수에 숫자가 아닌 것이 포함되어 있습니다. 개수는 숫자로만 입력할 수 있습니다.\n");
+                printf("오류 : 테이블 번호의 숫자가 아닌 것이 포함되어 있습니다. 개수는 숫자로만 입력할 수 있습니다.\n");
             } else if (selected_table == -4) {
-                printf("오류 : 개수의 첫글자가 0입니다. 개수는 0으로 시작할 수 없습니다.\n");
+                printf("오류 : 테이블 번호의 첫글자가 0입니다. 개수는 0으로 시작할 수 없습니다.\n");
             } else if (selected_table == -5) {
-                printf("오류 : 개수는 1이상 20이하의 숫자여야 합니다.\n");
+                printf("오류 : 테이블 번호는 1이상 20이하의 숫자여야 합니다.\n");
             } else if (selected_table > table_amount || tables[selected_table - 1].status != kOrdinary || table_num == selected_table) {
                 printf("오류 : 가능한 테이블 목록에 있는 숫자를 입력해주세요.\n");
             } else {
