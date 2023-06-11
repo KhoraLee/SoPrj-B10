@@ -246,6 +246,7 @@ void calculate_ratio(int tablenum, int number_of_people, int ratio[], int pay_in
 // 테이블에 있는 "전체" 상품 결제 완료 후
 // 테이블 주문내역 초기화
 // 전체 리스트에 결제된 수량 더해주기
+// + 합쳐진 테이블 있는지 돌고 병합 해제
 void end_purchase(int tablenum) {
     Table *table = &tables[tablenum - 1];
     // 전체 리스트에 결제된 수량 더하기
@@ -260,6 +261,9 @@ void end_purchase(int tablenum) {
     //        }
     //    }
     //}
+    
+    // 테이블 병합 해제
+    uncombine_Table(tablenum);
 
     // 테이블 주문내역 초기화
     free(table->products);
