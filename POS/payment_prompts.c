@@ -10,6 +10,7 @@
 
 extern Table *tables; // 테이블
 extern Product_Array all_products; // 모든 상품들의 목록을 포함한 구조체
+extern int table_amount;
 extern int date;
 
 void process_payment(int table) {
@@ -428,4 +429,13 @@ int partial_pay(int table_num, char* input) {
     printf("총 결제 금액 : %d\n", total_price);
     
     return total_price;
+}
+
+void uncombine_Table(int table_num) {
+    for (int i = 0; i < table_amount; i++) { //전체 테이블 for loop 돌면서
+        if (tables[i].delegate == table_num && tables[i].status == kCombined) { // 대표테이블이 현재 테이블과 같다면
+            tables[i].delegate = -1;
+            tables[i].status = kOrdinary;
+        }
+    }
 }

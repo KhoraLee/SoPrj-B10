@@ -445,7 +445,7 @@ void combine_Table(int table_num) {
         Table *selected_T= &tables[selected_table - 1];
 
         if (currunt_T->length == 0 && selected_T->length != 0) {
-            if (currunt_T->products == NULL) free(currunt_T->products);
+            if (currunt_T->products != NULL) free(currunt_T->products);
             currunt_T->products = selected_T->products;
             currunt_T->length = selected_T->length;
             selected_T->products = NULL;
@@ -481,7 +481,7 @@ void combine_Table(int table_num) {
 
         currunt_T->status = kDelegate;
         selected_T->status = kCombined;
-        selected_T->delegate = selected_table - 1;
+        selected_T->delegate = selected_table;
 
         while (1) {
             printf("계속하시겠습니까?\n");
