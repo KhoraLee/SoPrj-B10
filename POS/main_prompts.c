@@ -1,4 +1,4 @@
-#include "add_product_prompts.h"
+#include "product_management_prompts.h"
 #include "common_prompts.h"
 #include "main_prompts.h"
 #include "sell_prompts.h"
@@ -10,6 +10,7 @@
 #include <string.h>
 
 extern Table *tables; // 테이블
+extern int table_amount;
 extern Product_Array all_products; // 모든 상품들의 목록을 포함한 구조체
 extern int date;
 
@@ -32,7 +33,7 @@ void main_prompt() {
         } else if (ret == 2) {
             settlement_prompt();
         } else if (ret == 3) {
-            product_management_prompt();
+            product_management_prompts();
         } else if (ret == 4) {
             if (exit_check() == 0) {
                 write_product_file();
@@ -46,7 +47,7 @@ void main_prompt() {
 }
 
 int exit_check() {
-    for (int i = 0; i < 4; i++) {
+    for (int i = 0; i < table_amount; i++) {
         Table *table = &tables[i];
         for (int j = 0; j < table->length; j++) {
             if (table->products[j].amount != 0) {

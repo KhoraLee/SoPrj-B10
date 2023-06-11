@@ -1,4 +1,4 @@
-#include "add_product_prompts.h"
+#include "product_management_prompts.h"
 #include "common_prompts.h"
 #include "types.h"
 #include "product.h"
@@ -10,7 +10,7 @@
 
 extern Product_Array all_products; // 모든 상품들의 목록을 포함한 구조체
 
-void product_management_prompt() {
+void product_management_prompts() {
     while (1) {
         printf("<상품 추가>\n");
         printf("\t1. 새 상품 추가\n");
@@ -23,12 +23,11 @@ void product_management_prompt() {
             return;
         } else if (ret == 1) {
             add_product_prompt();
-            return;
-            
+//            return;
         }
         else if (ret == 2) {
             remove_product_prompt();
-            return;
+//            return;
         }
     }
 }
@@ -108,24 +107,24 @@ void remove_product_prompt() {
     char name[16] = { 0 };
     int idx;
     int i;
-    if (all_products.length == 0) {
-        printf("오류 : 삭제할 상품이 존재하지 않습니다.\n");
-        return;
-    }
 
     while (1) {
+        if (all_products.length == 0) {
+            printf("오류 : 삭제할 상품이 존재하지 않습니다.\n");
+            return;
+        }
         while (1) {
             printf("상품 목록 :\n");
             for (i = 0; i < all_products.length; i++)
                 printf("%d.%s\n", i + 1, all_products.products[i].name);
             printf("POS / 상품 삭제 - 상품명 입력 > ");
-            if (read_name(name))
+            if (read_name(name)){
                 break;
-            else {
-                printf("오류 : 존재하지 않는 상품명입니다. 올바른 상품명을 입력해주세요.\n");
+            }else {
                 for (i = 0; i < 16; i++)
                     name[i] = '\0';
                 while (getchar() != '\n');
+                continue;
             }
         }
 
@@ -134,11 +133,17 @@ void remove_product_prompt() {
                 printf("오류 : 오늘 이미 판매된적 있는 상품입니다. 상품을 삭제할 수 없습니다.\n");
                 return;
             }
+        }else {
+            printf("오류 : 존재하지 않는 상품명입니다. 올바른 상품명을 입력해주세요.\n");
+            for (i = 0; i < 16; i++)
+                name[i] = '\0';
+//            while (getc(stdin) != '\n');
+            continue;
         }
 
         while (1) {
             printf("정말 삭제하시겠습니까?\n");
-            printf("\t상품명: %s\n", name);
+            printf("\t상품명: %s\n", all_products.products[idx].name);
             printf("\t1. 삭제하기\n");
             printf("\t0. 돌아가기\n");
             printf("POS / 상품 삭제 - 번호선택 > ");
@@ -157,7 +162,7 @@ void remove_product_prompt() {
             printf("계속 삭제하시겠습니까? > \n");
             printf("\t1. 계속 삭제하기\n");
             printf("\t0. 돌아가기\n");
-            printf("POS / 상품 삭제 - 번호 선택 > \n");
+            printf("POS / 상품 삭제 - 번호 선택 > ");
 
 
             int ret = command_prompt(1);
