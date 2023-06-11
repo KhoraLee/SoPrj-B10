@@ -348,6 +348,25 @@ void cancel_order(int table_num) {
     
     all_products.products[idx].amount -= temp_amount;
     table->products[idx].amount -= temp_amount; //주문한 상품의 개수 빼주기
+    if (table->products[idx].amount == 0) { //상품이 0개가 되면 realloc 후 땡김
+        int64_t updateLength = table->length - 1; //새로운 realloc 크기
+
+        for (int64_t i = idx; i < updateLength; i++) { //앞으로 한칸씩 땡김
+            table->products[i].amount = table->products[i + 1].amount;
+            table->products[i].price = table->products[i + 1].price;
+            strcpy(table->products[i].name, table->products[i + 1].name);
+        }
+
+        void* realloced = realloc(table->products, updateLength * sizeof(Product));
+        if (realloced == NULL) {
+            printf("오류 : 메모리 문제로 취소에 실패하였습니다. 이전 메뉴로 돌아갑니다.\n");
+            return;
+        }
+        else {
+            table->products = realloced;
+        }
+        table->length--;
+    }
 }
 
 int is_empty_table(int table_num) {
