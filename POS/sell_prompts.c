@@ -278,7 +278,8 @@ void cancel_order(int table_num) {
         char *input = read_line();
         trim(input);
         remove_all_space(input); // string 을 입력받고, 공백을 다 없애줌
-        
+        to_lower(input); //대소문자 오류 수정
+
         for (int i = 0; i < table->length; i++) {
             char comparing[16];
             strcpy(comparing, table->products[i].name);
