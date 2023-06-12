@@ -392,7 +392,7 @@ void combine_Table(int table_num) {
             printf("\t1. 테이블 합치기\n");
             printf("\t0. 돌아가기\n");
             printf("POS / (테이블 합치기) - 번호 선택 > ");
-            int ret = command_prompt(2);
+            int ret = command_prompt(1);
             if (ret == 0) {
                 return;
             } else if (ret == 1) {
@@ -434,7 +434,7 @@ void combine_Table(int table_num) {
             printf("\t1. 합치기\n");
             printf("\t0. 돌아가기\n");
             printf("POS / (테이블 합치기) - 번호 선택 > ");
-            int ret = command_prompt(2);
+            int ret = command_prompt(1);
             if (ret == 0) {
                 return;
             } else if (ret == 1) {
@@ -490,7 +490,7 @@ void combine_Table(int table_num) {
             printf("\t1. 계속하기\n");
             printf("\t0. 그만두기\n");
             printf("POS / (테이블 합치기) - 번호 선택 > ");
-            int ret = command_prompt(2);
+            int ret = command_prompt(1);
             if (ret == 0) {
                 return;
             } else if (ret == 1) {
