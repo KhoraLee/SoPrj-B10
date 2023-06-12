@@ -94,7 +94,16 @@ void table_management_prompt(int table_num) {
                 process_payment(table_num);
             }
         } else if (ret == 5) {
-            combine_Table(table_num);
+            int possible_combine = 0;
+            for (int i = 0; i < table_amount && possible_combine == 0; i++) {
+                if (i == table_num - 1) continue;
+                if (tables[i].status == kOrdinary) possible_combine = 1;
+            }
+            if (possible_combine == 1) {
+                combine_Table(table_num);
+            } else {
+                printf("오류 : 합칠 수 있는 테이블이 없습니다.\n");
+            }
         }
     }
 }
@@ -484,6 +493,15 @@ void combine_Table(int table_num) {
         currunt_T->status = kDelegate;
         selected_T->status = kCombined;
         selected_T->delegate = selected_table;
+        
+        int possible_combine = 0;
+        for (int i = 0; i < table_amount && possible_combine == 0; i++) {
+            if (i == table_num - 1) continue;
+            if (tables[i].status == kOrdinary) possible_combine = 1;
+        }
+        if (possible_combine == 0) {
+            return;
+        }
 
         while (1) {
             printf("계속하시겠습니까?\n");
