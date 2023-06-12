@@ -34,7 +34,7 @@ int save_settlement() {
         for (int i = 0; i < all_products.length; i++) {
             sum += all_products.products[i].price * all_products.products[i].amount;
         }
-        fprintf(fp, "%d\t%d\n", date, sum);
+        fprintf(fp, "%08d\t%d\n", date, sum);
         for (int i = 0; i < all_products.length; i++) {
             fprintf(fp, "%s\t%lld\t%lld\t%lld\n", all_products.products[i].name, all_products.products[i].price, all_products.products[i].amount, all_products.products[i].price * all_products.products[i].amount);
         }
