@@ -266,7 +266,9 @@ void end_purchase(int tablenum) {
     uncombine_Table(tablenum);
 
     // 테이블 주문내역 초기화
-    free(table->products);
+    if (table->products != NULL) {
+        free(table->products);
+    }
     table->length = 0;
 }
 
