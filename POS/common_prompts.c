@@ -64,7 +64,7 @@ int read_amount() {
         }
     } else {
         result = atoi(input);
-        if (result > 20) result = -5;
+        if (strlen(input) >= 3 || result > 20) result = -5;
     }
     free(input);
     return result;
