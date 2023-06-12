@@ -23,7 +23,7 @@ void sell_prompt() {
 
     while (1) {
         table_num =-1;
-        printf("<테이블 리스트>\n");
+        printf("<가능한 테이블 목록>\n");
         for (int i = 1; i <= table_amount; i++) {
             if (tables[i - 1].status == kCombined) continue;
             printf("\t%d. %d번 테이블\n", i, i);
@@ -196,7 +196,7 @@ void order_product(int table_num) {
             printf("오류 : 개수의 첫글자가 0입니다. 개수는 0으로 시작할 수 없습니다.\n");
         }
         else if (temp_amount == -5) {
-            printf("오류 : 개수는 1이상 20이하의 숫자여야 합니다.");
+            printf("오류 : 개수는 1이상 20이하의 숫자여야 합니다.\n");
         }
         else 
             break;
